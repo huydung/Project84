@@ -1,0 +1,79 @@
+﻿<template>
+	<name>Wedding template</name>
+  <created_by>contact.huydung@gmail.com</created_by>
+  <create_on>2011-04-14 18:00:00</create_on>
+  <rate>
+    <rated_by>1500</rated_by>
+    <rated>5</rated>
+  </rate>
+  <project>
+    <info>
+      <name>Đám cưới mẫu</name>
+      <description>Template cho việc quản lý và lên kế hoạch cho một đám cưới theo phong tục miền Bắc, Việt Nam</description>
+      <lang>vi</lang>
+    </info>
+    <members>
+      <!-- No members can be defined in a template, of course -->
+    </members>   
+    <milestones>
+      <milestone sid="chamngo" name="Lễ Chạm ngõ" due="-2 months" />
+      <milestone sid="anhoi" name="Lễ Ăn hỏi" due="-3 weeks" />
+      <milestone sid="cuoi" name="Lễ Cưới" due="-1 week" />
+    </milestones>    
+    <links>
+      <link name="Khám sức khỏe tiền hôn nhân" url="http://www.medelab.vn/tin-chi-tiet/kham-suc-khoe-tien-hon-nhan-loi-khuyen-cua-cac-chuyen-gia-ve-gioi/199.html"/>
+      <link name="Cách lập kế hoạch đám cưới" url="http://www.vnhow.vn/contents/view/cach-lap-ke-hoach-cho-mot-dam-cuoi-hoan-hao#axzz1JUlA4Rwp"/>
+      <link name="Cách chụp ảnh cưới đẹp" url="http://www.vnhow.vn/contents/view/cach-chup-anh-cuoi-dep" />
+    </links>
+    <files>
+      <folder name="root" />
+      <folder name="music" parent="root" />
+      <file folder="root" type="PSD" name="Mẫu thiệp cưới" 
+        url="/public/template/wedding/thiep_cuoi.psd"
+        thumbnail="/public/template/wedding/thiep_cuoi_thumbnail.jpg" />
+      <file folder="music" type="MP3" name="Ngày cưới" 
+        url="/public/template/wedding/music/ngay_cuoi.mp3"
+        thumbnail="/public/template/wedding/music/ngay_cuoi_thumbnail.jpg" />
+      <file folder="music" type="MP3" name="Qua đêm nay" 
+        url="/public/template/wedding/music/qua_dem_nay.mp3"
+        thumbnail="/public/template/wedding/music/qua_dem_nay_thumbnail.jpg" />
+    </files>
+    <tasklists>
+      <tasklist sid="kehoach" name="Lên kế hoạch và chuẩn bị" milestone=""/>
+      <tasklist sid="anhcuoi" name="Chụp ảnh cưới" milestone=""/>
+      <tasklist sid="suanha" name="Sửa nhà" milestone=""/>
+      <tasklist sid="noithat" name="Mua sắm đồ nội thất" milestone=""/>
+    </tasklists>
+    <tasks>
+      <task list="anhcuoi" name="Chọn nhà cung cấp ảnh cưới" />
+    </tasks>
+    <transactionlists>
+      <transactionlist sid="dodung" name="Đồ dùng cá nhân" milestone=""/>
+      <transactionlist sid="noithat" name="Đồ đạc nội thất" milestone="anhoi"/>
+      <transactionlist sid="damhoi" name="Chuẩn bị đám hỏi" milestone="cuoi"/>
+      <transactionlist sid="damcuoi" name="Chuẩn bị đám cưới" milestone="cuoi"/>
+      <transactionlist sid="saudamcuoi" name="Sau đám cưới" milestone=""/>
+    </transactionlists>
+    <transactions>
+      <transaction type="ITEM" task="true" list="damhoi" priority="3"
+        amount="1500000" name="Khay trầu"/>
+      <transaction type="ITEM" task="true" list="damhoi" priority="3"
+        amount="1500000" name="Bánh cốm" />
+      <transaction type="SERVICE" task="true" list="damcuoi" priority="2"
+        amount="1500000" name="Thuê xe cưới" />
+    </transactions>
+    <addressbooks>
+      <addressbook sid="nhacungcap" name="Nhà cung cấp dịch vụ" />
+      <addressbook sid="giadinh" name="Gia đình" />
+      <addressbook sid="khachmoivo" name="Khách mời của Vợ" />
+      <addressbook sid="khachmoichong" name="Khách mời của Chồng" />
+      <addressbook sid="khachmoichung" name="Khách mời Chung" />
+    </addressbooks>
+    <contacts>
+      <contact title="Bố cô dâu" name="Tên bố cô dâu" book="giadinh"
+        tel1="" tel2="" email="" note="" />
+      <contact title="Mẹ cô dâu" name="Tên mẹ cô dâu" book="giadinh"
+        tel1="" tel2="" email="" note="" />
+    </contacts>
+  </project>
+</template>

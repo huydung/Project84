@@ -1,0 +1,14 @@
+<a href="http://gravatar.com" target="_blank" class="gravatar">
+    %{    
+    com.huydung.utils.gravatar.Gravatar gravatar = new com.huydung.utils.gravatar.Gravatar();
+	gravatar.setSize(_size);
+	gravatar.setRating(com.huydung.utils.gravatar.GravatarRating.GENERAL_AUDIENCES);
+	gravatar.setDefaultImage(com.huydung.utils.gravatar.GravatarDefaultImage.IDENTICON);
+	String url = gravatar.getUrl(_email);
+    }%
+    
+    <img src="${url}" width="${_size}" height="${_size}"/>
+    #{if _noDescription}
+    <span class="description">&{'actions.changeImage'}</span>
+    #{/if}    
+</a>

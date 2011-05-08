@@ -1,0 +1,180 @@
+﻿<template>
+	<name>Wedding template</name>
+  <created_by>contact.huydung@gmail.com</created_by>
+  <create_on>2011-04-14 18:00:00</create_on>
+  <rate>
+    <rated_by>1500</rated_by>
+    <rated>5</rated>
+  </rate>
+  <project>
+    <info>
+      <name>Đám cưới mẫu</name>
+      <description>Template cho việc quản lý và lên kế hoạch cho một đám cưới theo phong tục miền Bắc, Việt Nam</description>
+      <locale>vi</locale>
+    </info>
+    <members>
+      <!-- No members can be defined in a template, of course -->
+    </members>   
+    
+    <lists>
+      <!--Every Items is: Commentable, Attachable-->
+      <list sid="milestones" name="MileStones" preset="true"
+        back-reference="items,tasks">
+        <fields>
+          <field type="text" name="Name" />
+          <field type="duedate" name="Due Date" />
+        </fields>
+      </list>
+      <list sid="links" name="Links" preset="true" folder="true">      
+        <fields>
+          <field type="text" name="Name" />
+          <field type="url" name="URL" />
+          <field type="star" name="Favorite" />
+        </fields>
+      </list>
+      <!--Default View if not declared is List. Default Checkable is TRUE-->
+      <list sid="files" name="Files" preset="true" folder="true" defaultview="card" checkable="false">
+        <fields>
+          <field type="text" name="Name" />
+          <field type="url" name="URL" upload="true"/>
+          <field type="filetype" name="Filetype" />
+          <field type="image" name="Thumbnail" optional="true"/>
+        </fields>
+      </list>
+      <list sid="tasks" name="Tasks" preset="true" folder="true" reference="milestone">
+        <fields>
+          <field type="text" name="Action" />
+          <field type="priority" name="Priority" optional="true"/>
+          <field type="duedate" name="Due Date" optional="true"/>
+          <field type="contact" name="Assigned To" optional="true"/>
+        </fields>
+      </list>
+      <list sid="items" name="Items" preset="true" folder="true" reference="milestones,vendors">
+        <fields>
+          <field type="text" name="Name" />
+          <!--PriceField already include an attribute for Price and Volume-->
+          <field type="price" name="Price" optional="true"/>
+          <field type="priority" name="Priority" optional="true"/>
+        </fields>
+      </list>
+      <list sid="vendors" name="Vendors" preset="true" folder="true" back-reference="items" checkable="false" checks="Completed">
+        <fields>
+          <!--Will use gravatar for image-->
+          <field type="text" name="Name" />
+          <field type="text" sid="realname" name="Real Name" optional="true"/>
+          <field type="tel" sid="mobile" name="Mobile" optional="true"/>
+          <field type="tel" sid="phone" name="Phone" optional="true"/>
+          <field type="url" sid="website" name="Website" optional="true"/>
+          <field type="email" sid="email" name="Email" optional="true"/>
+          <field type="email" sid="email2" name="Email 2" optional="true"/>
+          <field type="location" sid="location" name="Location" optional="true"/>
+        </fields>
+      </list>
+      <list sid="guests" name="Vendors" preset="true" uitype="tab" tab="vendors" folder="true" back-reference="items">
+        <fields>
+          <field type="text" name="Name" />
+          <field type="select" name="Status" values="Planned,Invited,Confirmed Attend,Received Gift" default="Planned"/>
+          <field type="text" name="Real Name" optional="true"/>
+          <field type="text" name="Role" optional="true"/>
+          <field type="tel" name="Mobile" optional="true"/>
+          <field type="tel" name="Phone" optional="true"/>
+          <field type="url" name="Website" optional="true"/>
+          <field type="email" name="Email" optional="true"/>
+          <field type="email" name="Email 2" optional="true"/>
+          <field type="location" name="Location" optional="true"/>
+        </fields>
+      </list>
+    </lists>   
+    <tabs>
+      <tab name="MileStones" sid="milestones">
+        <panel state="full" list="milestones" view="list" />
+        <panel state="box" list="milestones" view="calendar" />        
+      </tabs>      
+      <tab name="Items" sid="items">
+        <panel state="full" list="items" view="list" total="true"/>
+        <panel state="folders" list="items" view="folders"/>
+      </tabs>   
+      <tab name="Tasks" sid="tasks">
+        <panel state="full" list="tasks" view="list" groupby="checks"/>
+        <panel state="folders" list="tasks" view="folders"/>
+      </tabs>   
+      <tab name="Guests List" sid="guests">
+        <panel state="full" list="guests" view="list" groupby="status"/>
+        <panel state="folders" list="guests" view="folders"/>
+      </tabs>   
+      <tab name="Resources" sid="resources">
+        <panel state="full" list="files" view="list" groupby="filetype"/>
+        <panel state="folders" list="files" view="folders"/>
+        <panel state="small" list="links" view="list" maximizable="true"/>
+      </tabs>   
+      <tab name="Vendors" sid="vendors">
+        <panel state="full"list="vendors" view="list"/>
+        <<panel state="folders" list="vendors" view="folders"/>
+      </tabs>   
+    </tabs>
+    <links>
+      <folder name="root">
+        <link name="Khám sức khỏe tiền hôn nhân" url="http://www.medelab.vn/tin-chi-tiet/kham-suc-khoe-tien-hon-nhan-loi-khuyen-cua-cac-chuyen-gia-ve-gioi/199.html"/>
+        <link name="Cách lập kế hoạch đám cưới" url="http://www.vnhow.vn/contents/view/cach-lap-ke-hoach-cho-mot-dam-cuoi-hoan-hao#axzz1JUlA4Rwp"/>
+        <link name="Cách chụp ảnh cưới đẹp" url="http://www.vnhow.vn/contents/view/cach-chup-anh-cuoi-dep" />
+      </folder>      
+    </links>
+    <files>
+      <folder name="root">
+        <file filetype="PSD" name="Mẫu thiệp cưới" 
+          url="/public/template/wedding/thiep_cuoi.psd"
+          thumbnail="/public/template/wedding/thiep_cuoi_thumbnail.jpg" />
+      </folder>
+      <folder name="music" parent="root">
+        <file filetype="MP3" name="Ngày cưới" 
+          url="/public/template/wedding/music/ngay_cuoi.mp3"
+          thumbnail="/public/template/wedding/music/ngay_cuoi_thumbnail.jpg" />
+        <file filetype="MP3" name="Qua đêm nay" 
+          url="/public/template/wedding/music/qua_dem_nay.mp3"
+          thumbnail="/public/template/wedding/music/qua_dem_nay_thumbnail.jpg" />
+      </folder>      
+    </files>
+    <tasks>
+      <folder name="Lên kế hoạch và chuẩn bị" reference="">
+      </folder>
+      <folder sid="anhcuoi" name="Chụp ảnh cưới" reference="anhoi">
+        <task name="Chọn nhà cung cấp ảnh cưới" />
+        <task name="Khảo sát và chốt địa điểm + ngày giờ chụp ảnh" />
+        <task name="Kí hợp đồng ảnh cưới" />
+        <task name="Đi chụp ảnh" />
+        <task name="Upload ảnh lên website cưới" />
+        <task name="Chốt nhạc cho album ảnh cưới" />
+        <task name="Chọn ảnh cưới để in thành sách" />
+        <task name="Chọn ảnh cưới để phóng" />
+        <task name="Đi phóng ảnh cưới" />
+      </folder>
+      <folder sid="suanha" name="Sửa nhà" reference="">
+      </folder>
+      <folder sid="noithat" name="Mua sắm đồ nội thất" reference="">
+      </folder>
+    </tasks>
+    <items>
+      <folder name="root"></folder>
+      <folder name="Đồ dùng cá nhân" milestone="anhoi"></folder>
+      <folder name="Nội thất" milestone="anhoi"></folder>
+      <folder name="Đồ cho đám hỏi" milestone="anhoi">
+        <item priority="4" price="1500000" amount="10" name="Khay trầu"/>
+        <item priority="4" price="1500000" amount="12" name="Bánh cốm" />
+      </folder>
+      <folder name="Đồ cho đám cưới" milestone="damcuoi">
+        <item priority="3" price="1500000" amount="1" name="Thuê xe cưới" />
+      </folder>
+    </items>
+    <guests>
+      <folder name="root">
+        
+      </folder>
+    </guests>
+    <contacts>
+      <contact title="Bố cô dâu" name="Tên bố cô dâu" book="giadinh"
+        tel1="" tel2="" email="" note="" />
+      <contact title="Mẹ cô dâu" name="Tên mẹ cô dâu" book="giadinh"
+        tel1="" tel2="" email="" note="" />
+    </contacts>
+  </project>
+</template>

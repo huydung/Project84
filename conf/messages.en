@@ -1,0 +1,32 @@
+
+## INTERFACE ##
+interface.copyrighted= Project84 <super>&copy;</super> is a product of <a href="http://www.huydung.com/">Huy Dũng</a> at <a href="http://madeby84.com">MadeBy84</a>
+interface.slogan= Smart. Easy. Super Flexible. Really? Yes, <a href="#" class="modal">take a tour</a> and see for yourself.
+interface.define= Project Management, Redefined.
+interface.welcome = Welcome
+interface.logout = Log out
+
+## TITLES ##
+titles.homepage = Join now or Log in using your existed-account from:
+titles.home = Home
+titles.profile = Your Profile
+
+## ERRORS ##
+errors.oauth = Could not log in using OAuth. Please try again later or try another provider.
+errors.invalidParam = The parameter %s is invalid
+errors.notFound = Could not found the <em>%s</em> with id of <em>%d</em>
+
+## SUCCESS ##
+success.oauth = Congrats, You've successfully signed in with <strong>%s</strong>! Please provide a little more details so we can create and adjust your account to your best preferences.
+
+## ACTIONS ##
+actions.changeImage = change image?
+
+## LABELS ##
+labels.email = Email
+labels.fullName = Full Name
+labels.nickName = Nick Name
+labels.mobile = Mobile
+labels.timeZone = Timezone
+labels.dateFormat = Date Format
+labels.saveProfile = Save Profile

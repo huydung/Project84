@@ -1,0 +1,40 @@
+#{extends 'main.html' /}
+#{set title:messages.get('titles.profile') /}
+#{set pageTitle:messages.get('titles.profile') /}
+
+#{if user}
+<form id="form-profile" action="@{Users.saveProfile()}" method="POST"
+    class="horizontal-form">
+    <div class="grid_9 prefix_1">
+        <input type="hidden" name="user.identifier" value="${user.identifier}" />
+    
+        <label >&{'labels.email'}</label>
+        <input class="text" name="user.email" value="${user.email}" /> 
+        
+        <label >&{'labels.fullName'}</label>
+        <input class="text" name="user.fullName" value="${user.fullName}" />  
+        
+        <label >&{'labels.nickName'}</label>
+        <input class="text" name="user.nickName" value="${user.nickName}" />  
+        
+        <label >&{'labels.mobile'}</label>
+        <input class="text" name="user.mobile" value="${user.mobile}" /> 
+        
+        <label >&{'labels.timeZone'}</label>
+        #{select 'user.timeZone', value:user.timeZone, items:timezones, 
+        labelProperty: 'label', valueProperty:'id' /}
+        
+        <label >&{'labels.dateFormat'}</label>
+        #{select 'user.dateFormat', value:user.dateFormat, items:formats, 
+        labelProperty: 'label', valueProperty:'id' /}
+        
+        <button type="submit" class="button">
+            <span>&{'labels.saveProfile'}</span>
+        </button>  
+   
+    </div>
+    <div class="grid_2">
+     #{gravatar email:user.email, size:100 /}
+    </div>
+</form>
+#{/if}

@@ -1,0 +1,33 @@
+
+
+## INTERFACE ##
+interface.copyrighted = Project84 <super>&copy;</super> là một sản phẩm của <a href="http://www.huydung.com/">Huy Dũng</a> từ <a href="http://madeby84.com">MadeBy84</a>
+interface.slogan = Thông minh. Dễ dàng. Mềm dẻo. Thật sự? Phải, <a href="#" class="modal">hãy tự mình kiểm chứng</a>.
+interface.define = Định nghĩa lại "Quản lý công việc"
+interface.welcome = Xin chào
+interface.logout = Thoát ra
+
+## TITLES ##
+titles.homepage = Tham gia/Đăng nhập sử dụng tài-khoản-có-sẵn của bạn từ:
+titles.home = Trang chủ
+titles.profile = Thông tin tài khoản
+
+## ERRORS ##
+errors.oauth = Có lỗi xảy ra khi đăng nhập. Xin bạn vui lòng thử lại sau hoặc sử dụng nhà cung cấp khác.
+errors.invalidParam = Tham số %s không hợp lệ
+errors.notFound = Không thể tìm thấy <em>%s</em> với mã số <em>%d</em>
+
+## SUCCESS ##
+success.oauth = Bạn vừa đăng nhập thành công bằng tài khoản của <strong>%s</strong>! Xin hãy cung cấp thêm một số thông tin để chúng tôi có thể tạo tài khoản của bạn và tùy biến ứng dụng cho tốt nhất với bạn.
+
+## ACTIONS ##
+actions.changeImage = thay ảnh khác?
+
+## LABELS ##
+labels.email = Email
+labels.fullName = Họ và tên
+labels.nickName = Tên tắt
+labels.mobile = Điện thoại
+labels.timeZone = Múi giờ
+labels.dateFormat = Định dạng ngày
+labels.saveProfile = Lưu hồ sơ

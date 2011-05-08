@@ -1,0 +1,27 @@
+models.User(huydung):
+    email:          contact.huydung@gmail.com
+    fullName:       Nguuyễn Huy Dũng
+    nickname:       huydung
+    password:       hienham
+    timezone:       "GMT+7:00"
+    
+models.User(ngochien):
+    email:          nnh.hien@gmail.com
+    fullName:       Nguyễn Ngọc Hiền
+    nickname:       hiennguyenngoc
+    password:       hienham
+    timezone:       "GMT+7:00"
+    
+models.User(john):
+    email:          john.doe@gmail.com
+    fullName:       John Doe
+    nickname:       john
+    password:       hienham
+    timezone:       "GMT+2:00"
+    
+models.User(nam):
+    email:          trankhanhnam@gmail.com
+    fullName:       Trần Khánh Nam
+    nickname:       khanhnam
+    password:       hienham
+    timezone:       "GMT+8:00"

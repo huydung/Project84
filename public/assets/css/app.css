@@ -1,0 +1,45 @@
+/** General */
+.description{
+	display: block;
+	font-size: .8em;
+	
+}
+.tcenter{
+	text-align: center;
+}
+
+/** Gravatar */
+.gravatar{
+	margin-top: 1em;
+	display: block;
+}
+.gravatar .description{
+	text-align: center;
+}
+.clearleft{
+	clear: left;
+}
+
+/** Horizontal Form */
+.horizontal-form label{
+	width: 180px;
+	clear: left;
+	float: left;
+	margin: 10px 10px 0 0;
+	text-align: right;
+	padding-top: 7px;
+}
+.horizontal-form button{
+	clear:left;
+	margin: 1em 0 0 190px;
+}
+.horizontal-form input.text, .horizontal-form select{
+	float:left;
+	width: 300px;
+	margin: 10px 0 0;
+	padding: 3px 10px;
+}
+.horizontal-form select{ width: 325px; }
+form label:after{
+	content: ":";
+}

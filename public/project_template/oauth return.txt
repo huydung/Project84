@@ -1,0 +1,3 @@
+﻿Google Returned:
+
+{"profile":{"googleUserId":"110870856863940855723","name":{"givenName":"Dũng","familyName":"Nguyễn Huy","formatted":"Dũng Nguyễn Huy"},"verifiedEmail":"oakman.hd@gmail.com","displayName":"oakman.hd","preferredUsername":"oakman.hd","url":"https://www.google.com/profiles/110870856863940855723","providerName":"Google","identifier":"https://www.google.com/profiles/110870856863940855723","email":"oakman.hd@gmail.com"},"stat":"ok"}

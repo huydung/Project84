@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/png" href="@{'/public/assets/images/favicon.png'}" />
+<title>#{get 'pageTitle' /} | Project84</title>
+<link rel="stylesheet" type="text/css" href="@{'/public/assets/css/960.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/assets/css/reset.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/assets/css/text.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/assets/css/blue.css'}" />
+<link rel="stylesheet" type="text/css" href="@{'/public/assets/css/app.css'}" />
+<link type="text/css" href="@{'/public/assets/css/smoothness/ui.css'}" rel="stylesheet" />  
+    
+#{get 'moreStyles' /}
+
+</head>
+
+<body>
+<!-- WRAPPER START -->
+<div class="container_16" id="wrapper"> 
+
+    <!--LOGO-->
+    <div class="grid_15" id="logo">
+    <a href="/" class="image"><img src="/public/assets/images/logo.png"  /></a>
+    <a href="/">&{'interface.define'}</a>
+    <br/>
+    <span class="slogan">&{'interface.slogan'}</span>
+    </div>
+    <div class="float_top_box">
+    <!-- USER TOOLS START -->
+	    <div id="user_tools">
+	    
+	       <span class="languages ${lang}">
+	           <a href="@{Application.switchLanguage('en', request.url)}" class="en">English</a> | 
+	           <a href="@{Application.switchLanguage('vi', request.url)}" class="vi">Tiếng Việt</a>
+	       </span>
+	       #{if user}
+            <span>
+                &{'interface.welcome'} 
+                <a href="@{Users.profile(user.id)}">${user.fullName}</a>  |  
+                <a href="@{Security.logout()}">&{'interface.logout'}</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            </span>
+            #{/if}
+	    </div>
+    </div>
+<!-- USER TOOLS END -->    
+<div class="grid_16" id="header">
+<!-- MENU START -->
+<div id="menu">
+ 
+</div>
+<!-- MENU END -->
+</div>
+<div class="grid_16" id="page-title">
+<!-- TABS START -->
+     <h1 class="#{get 'titleClass' /}">#{get 'title' /}</h1>
+<!-- TABS END -->    
+</div>
+<!-- CONTENT START -->
+    <div class="grid_16" id="content">
+    <!--  TITLE START  --> 
+    <div class="grid_10">
+                
+    </div>    
+    #{if alternateAction}
+    <div class="grid_5" id="eventbox">
+        <a href="@{alternateAction.link}" class="inline_tip">${alternateAction.text}</a>
+    </div>
+    #{/if}
+    <div class="clear"></div>
+    <!--  TITLE END  -->     
+    <div class="grid_15" id="textcontent">
+    #{if flash.contains("success")}
+    <p class="info" id="success">
+        <span class="info_inner">${flash.get("success")}</span>
+    </p>
+    #{/if}
+    #{if flash.contains("warning")}
+    <p class="info" id="warning">
+        <span class="info_inner">${flash.get("warning")}</span>
+    </p>
+    #{/if}
+    #{if flash.contains("info")}
+    <p class="info" id="info">
+        <span class="info_inner">${flash.get("info")}</span>
+    </p>
+    #{/if}
+    #{if flash.contains("error")}
+    <p class="info" id="error">
+        <span class="info_inner">${flash.get("error")}</span>
+    </p>
+    #{/if}
+    #{ifErrors}
+    <p class="info" id="error">
+        <div class="info_inner"><ul>
+        #{errors}
+        <li>${error}</li>
+        #{/errors}</ul></div>
+    </p>
+    #{/ifErrors}
+    
+    #{doLayout /}
+    </div>
+    <div class="clear"> </div>
+<!-- END CONTENT-->    
+  </div>
+<div class="clear"> </div>
+</div>
+<!-- WRAPPER END -->
+<!-- FOOTER START -->
+<div class="container_16" id="footer">
+&{'interface.copyrighted'}
+</div>
+<!-- FOOTER END -->
+<script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/ui.core.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/ui.sortable.js'}"></script>    
+    <script type="text/javascript" src="@{'/public/assets/js/ui.dialog.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/ui.datepicker.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/effects.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/flot/jquery.flot.pack.js'}"></script>
+    <script id="source" language="javascript" type="text/javascript" 
+        src="@{'/public/assets/js/graphs.js'}"></script>
+    #{get 'moreScripts' /}
+</body>
+</html>
