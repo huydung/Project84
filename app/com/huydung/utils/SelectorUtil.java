@@ -1,5 +1,7 @@
 package com.huydung.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +16,8 @@ import com.huydung.helpers.TimeZoneOption;
 public class SelectorUtil {
 	
 	public static ArrayList<TimeZoneOption> getTimezones(){
+		Date d = new Date();
+		SimpleDateFormat dF = new SimpleDateFormat("HH:mm''");
 		String[] ids = TimeZone.getAvailableIDs();
 		final String TIMEZONE_ID_PREFIXES =
 		      "^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*";
@@ -22,19 +26,8 @@ public class SelectorUtil {
 		for( String id : ids ){
 			if( id.matches(TIMEZONE_ID_PREFIXES) ){
 				TimeZone tz = TimeZone.getTimeZone(id);
-
-				int offset = tz.getRawOffset();
-				int hour = Math.abs(offset) / (60*60*1000);
-				String h = (hour > 9 ? "" : "0") + hour; 
-			    int min = Math.abs(offset / (60*1000)) % 60;
-			    String m = (min > 9 ? "" : "0") + min; 
-			    String sign = offset > 0 ? "+" : "-";
-			    String prefix = "(GMT";
-			    if(hour != 0 || min != 0){
-			    	prefix += sign + h + ":" + m;
-			    }
-			    prefix += ") ";
-			    TimeZoneOption tzo = new TimeZoneOption(id, prefix + id);
+				dF.setTimeZone(tz);
+			    TimeZoneOption tzo = new TimeZoneOption(id, "(" + dF.format(d)  + ") " + id);
 			    timezones.add(tzo);
 			}			
 		}

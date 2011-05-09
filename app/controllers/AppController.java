@@ -13,7 +13,7 @@ public class AppController extends Controller {
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {
             User user = User.findById(Long.parseLong(Security.getConnectedUserId()));
-            renderArgs.put("user", user);
+            renderArgs.put("loggedin", user);
         }else{
         	Logger.debug("User is connected");
         	Application.homepage();

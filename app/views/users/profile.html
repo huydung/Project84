@@ -1,34 +1,37 @@
 #{extends 'main.html' /}
 #{set title:messages.get('titles.profile') /}
 #{set pageTitle:messages.get('titles.profile') /}
-
 #{if user}
+
 <form id="form-profile" action="@{Users.saveProfile()}" method="POST"
     class="horizontal-form">
     <div class="grid_9 prefix_1">
         <input type="hidden" name="user.identifier" value="${user.identifier}" />
-    
-        <label >&{'labels.email'}</label>
-        <input class="text" name="user.email" value="${user.email}" /> 
+        <input type="hidden" name="user.id" value="${user.id}" />
         
-        <label >&{'labels.fullName'}</label>
-        <input class="text" name="user.fullName" value="${user.fullName}" />  
+        #{field name:'user.email', value:user.email, labelKey:'labels.email', hasBody:false /}
         
-        <label >&{'labels.nickName'}</label>
-        <input class="text" name="user.nickName" value="${user.nickName}" />  
+        #{field name:'user.fullName', value:user.fullName, labelKey:'labels.fullName', hasBody:false /}
         
-        <label >&{'labels.mobile'}</label>
-        <input class="text" name="user.mobile" value="${user.mobile}" /> 
+        #{field name:'user.nickName', value:user.nickName, labelKey:'labels.nickName', hasBody:false /}
         
-        <label >&{'labels.timeZone'}</label>
-        #{select 'user.timeZone', value:user.timeZone, items:timezones, 
-        labelProperty: 'label', valueProperty:'id' /}
+        #{field name:'user.mobile', value:user.mobile, labelKey:'labels.mobile', hasBody:false /}
         
-        <label >&{'labels.dateFormat'}</label>
-        #{select 'user.dateFormat', value:user.dateFormat, items:formats, 
-        labelProperty: 'label', valueProperty:'id' /}
+        #{field name:'user.timeZone', labelKey:'labels.nowIs', hasBody:true}
+            
+	        #{select 'user.timeZone', value:user.timeZone, 
+	            items:com.huydung.utils.SelectorUtil.getTimezones(), 
+	            valueProperty:'id' /}
+        #{/}
         
-        <button type="submit" class="button">
+        #{field name:'user.dateFormat', labelKey:'labels.dateFormat', hasBody:true}
+            
+            #{select 'user.dateFormat', value:user.dateFormat, 
+            items:com.huydung.utils.SelectorUtil.getDateFormats(), 
+            valueProperty:'id' /}
+        #{/}
+
+        <button type="submit" class="button button_grey">
             <span>&{'labels.saveProfile'}</span>
         </button>  
    

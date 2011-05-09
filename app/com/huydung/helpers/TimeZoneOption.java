@@ -21,4 +21,9 @@ public class TimeZoneOption {
 		this.label = label;
 	}
 	
+	@Override
+	public String toString() {
+		return label;
+	}
+	
 }

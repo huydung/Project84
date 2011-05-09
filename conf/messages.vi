@@ -1,4 +1,32 @@
+## Play ##
+# For use in JavaExtensions.since tag
+since.seconds = %s giây trước
+since.minutes = %s phút trước
+since.hours   = %s giờ trước
+since.days    = %s ngày trước
+since.months  = %s tháng trước
+since.years   = %s năm trước
+since.format  = MMM d, yyyy
 
+# Validation messages
+validation.required=Bắt buộc phải nhập thông tin này
+validation.minSize=Phải nhiều hơn %2$d kí tự
+validation.maxSize=Phải ít hơn %2$d kí tự
+validation.email=Email không hợp lệ
+validation.range=Cần phải nằm trong khoảng %2$d - %3$d
+validation.min=Cần lớn hơn %2$d
+validation.max=Cần nhỏ hơn %2$d
+validation.match=Must match %2$s
+validation.isTrue=Phải được chọn
+validation.equals=Cần phải bằng với &{%2$s}
+validation.invalid=Giá trị không hợp lệ
+validation.future=Cần là một ngày trong tương lai
+validation.after=Cần phải là một ngày sau ngày %2$s
+validation.past=Cần phải là một ngày trong quá khứ
+validation.before=Cần phải là một ngày trước ngày %2$s
+validation.object=Có lỗi xảy ra với dữ liệu đầu vào
+validation.notFound=Không tìm thấy đối tượng có mã số %2$s
+validation.url=Đường link không hợp lệ
 
 ## INTERFACE ##
 interface.copyrighted = Project84 <super>&copy;</super> là một sản phẩm của <a href="http://www.huydung.com/">Huy Dũng</a> từ <a href="http://madeby84.com">MadeBy84</a>
@@ -16,9 +44,12 @@ titles.profile = Thông tin tài khoản
 errors.oauth = Có lỗi xảy ra khi đăng nhập. Xin bạn vui lòng thử lại sau hoặc sử dụng nhà cung cấp khác.
 errors.invalidParam = Tham số %s không hợp lệ
 errors.notFound = Không thể tìm thấy <em>%s</em> với mã số <em>%d</em>
+error.validation = Thông tin bạn vừa cung cấp không hợp lệ. Xin hãy kiểm tra và sửa lại.
+
 
 ## SUCCESS ##
 success.oauth = Bạn vừa đăng nhập thành công bằng tài khoản của <strong>%s</strong>! Xin hãy cung cấp thêm một số thông tin để chúng tôi có thể tạo tài khoản của bạn và tùy biến ứng dụng cho tốt nhất với bạn.
+success.profileSaved = Thông tin cá nhân của bạn (%s) đã được lưu thành công!
 
 ## ACTIONS ##
 actions.changeImage = thay ảnh khác?
@@ -31,3 +62,4 @@ labels.mobile = Điện thoại
 labels.timeZone = Múi giờ
 labels.dateFormat = Định dạng ngày
 labels.saveProfile = Lưu hồ sơ
+labels.nowIs = Bây giờ là

@@ -15,9 +15,11 @@ titles.profile = Your Profile
 errors.oauth = Could not log in using OAuth. Please try again later or try another provider.
 errors.invalidParam = The parameter %s is invalid
 errors.notFound = Could not found the <em>%s</em> with id of <em>%d</em>
+error.validation = Your provided information is invalid. Please recheck and correct the error(s).
 
 ## SUCCESS ##
 success.oauth = Congrats, You've successfully signed in with <strong>%s</strong>! Please provide a little more details so we can create and adjust your account to your best preferences.
+success.profileSaved = Your profile (%s) has been saved!
 
 ## ACTIONS ##
 actions.changeImage = change image?
@@ -30,3 +32,4 @@ labels.mobile = Mobile
 labels.timeZone = Timezone
 labels.dateFormat = Date Format
 labels.saveProfile = Save Profile
+labels.nowIs = Current time

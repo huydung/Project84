@@ -4,10 +4,13 @@ color: #222; }
 #wrapper{position: relative;}
 a, a:active, a:link, a:visited { text-decoration:none; color: #069; }
 a:hover { text-decoration: underline; color: #C00; }
-#logo { font:italic 24px "Trebuchet MS", Arial, Tahoma, sans-serif; font-weight:normal;
+#logo { font:italic 24px "Trebuchet MS", Arial, Tahoma, sans-serif;
+font-weight:normal;
 line-height:69px;
 padding: 1em 0 2.5em;}
-#logo a.image{float:left;margin: 10px 5px 0 0; opacity: 0.7;}
+#logo a.image{float:left;margin: 10px 5px 0 0; opacity: 0.8;}
+.loggedin #logo { padding: 0;  }
+.loggedin #logo a.image{opacity: 0.4;}
 #logo a.image:hover{opacity:1;}
 #logo a{color: #AAA;}
 #logo span{ font-size:16px; line-height: 16px; color: #AAA; margin: -1em 0 1em;display: block;}
@@ -232,7 +235,7 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 }
 #page-title h1 {
 	font-size: 30px;
-	font-family: "Palatino linotype", "Times New Roman", serif;
+	
 	margin: 10px 10px 20px;
 	color: #FFF;
 	text-shadow: 0px -2px 1px #033E6B;
@@ -343,7 +346,7 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 /*******************************************************************************
   FORMS
 *******************************************************************************/
-form label { display:block !important; line-height:normal !important; margin: 5px 0px;  font-size:12px;	font-weight:bold; }
+/*form label { display:block !important; line-height:normal !important; margin: 5px 0px;  font-size:12px;	font-weight:bold; }*/
 input[type=text] { display:block !important; }
 textarea { display:block; }
 .smallInput { padding:3px 3px; border:1px solid #999; background:#FFFFE6; font-size:12px !important; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif !important; color: #333 !important; font-style:italic; }
@@ -391,7 +394,7 @@ form .wide { width:890px; }
   padding: 0px !important;
   border: 0px;
   background: transparent url('../images/but_right_grey.gif') no-repeat scroll top right;
-  color: #555;
+  color: #033E6B;
   display: block;
   float: left;
   height: 30px;
