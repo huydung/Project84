@@ -8,7 +8,7 @@
     }%
     
     <img src="${url}" width="${_size}" height="${_size}"/>
-    #{if _noDescription}
+    #{ifnot _noDescription}
     <span class="description">&{'actions.changeImage'}</span>
-    #{/if}    
+    #{/}    
 </a>

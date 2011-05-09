@@ -1,0 +1,11 @@
+
+<div class="form-field #{ifError _name} error #{/}">
+    <label>&{_labelKey}</label>
+    #{if !_hasBody}
+        <input class="text" name="${_name}" value="${_value}" />
+    #{/if}
+    #{else}
+        #{doBody /}
+    #{/else} 
+    <span class="error">#{error _name /}</span> 
+</div>
