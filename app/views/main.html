@@ -17,7 +17,7 @@
 
 <body>
 <!-- WRAPPER START -->
-<div class="container_16 ${user != null ? 'loggedin' : 'anonymous'}" id="wrapper"> 
+<div class="container_16 ${loggedin != null ? 'loggedin' : 'anonymous'}" id="wrapper"> 
 
     <!--LOGO-->
     <div class="grid_15" id="logo">
@@ -93,17 +93,7 @@
         <span class="info_inner">${flash.get("error")}</span>
     </p>
     #{/if}
-    <!-- 
-    #{ifErrors}
-    <div class="info" id="error">
-        <div class="info_inner"><ul>
-        #{errors}
-        <li>${error}</li>
-        #{/errors}</ul>
-        </div>
-    </div>
-    #{/ifErrors}
-     -->
+
     #{doLayout /}
     </div>
     <div class="clear"> </div>
