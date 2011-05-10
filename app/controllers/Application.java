@@ -17,6 +17,7 @@ import com.sun.org.apache.xpath.internal.res.XPATHErrorResources;
 import models.*;
 
 public class Application extends Controller {
+	
 	@Before(unless={"homepage","rpx","switchLanguage"})
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {
@@ -43,6 +44,12 @@ public class Application extends Controller {
     }
     
     public static void app(){
+    	List<Membership> memberships = Membership.findByUser(
+    		renderArgs.get("loggedin", User.class)
+    	);
+    	if( memberships == null || memberships.size() == 0 ){
+    		Projects.create();
+    	}
     	render();
     }
     

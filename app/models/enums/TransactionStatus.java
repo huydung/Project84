@@ -1,12 +1,12 @@
 package models.enums;
 
-public enum ETransactionStatus {
+public enum TransactionStatus {
 	PLANNED("planned"),
 	PAID("paid"),
 	CANCELLED("cancelled");
 	
 	private final String name;
-	private ETransactionStatus(String name) {
+	private TransactionStatus(String name) {
 		this.name = name;
 	}
 	public String getName(){

@@ -8,8 +8,11 @@
     <div class="grid_9 prefix_1">
         <input type="hidden" name="user.identifier" value="${user.identifier}" />
         <input type="hidden" name="user.id" value="${user.id}" />
+        <input type="hidden" name="user.email" value="${user.email}" />
         
-        #{field name:'user.email', value:user.email, labelKey:'labels.email', hasBody:false /}
+        #{field name:'user.email', value:user.email, labelKey:'labels.email', hasBody: true}
+            <input class="text" value="${user.email}" disabled="disabled" />
+        #{/}
         
         #{field name:'user.fullName', value:user.fullName, labelKey:'labels.fullName', hasBody:false /}
         

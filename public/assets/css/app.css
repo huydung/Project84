@@ -1,4 +1,5 @@
 /** General */
+hr{margin: 1em 0; display: block; clear: both;}
 #page-title h1, form .button{
 	font-family: "Palatino linotype", "Times New Roman", serif;
 }
@@ -24,13 +25,14 @@
 }
 
 /** Horizontal Form */
+
 form label{
 	width: 180px;
 	clear: left;
 	float: left;
 	margin: 10px 10px 0 0;
 	text-align: right;
-	padding-top: 7px;
+	padding-top: 4px;
 	font-weight: bold;
 }
 form button.button{
@@ -39,11 +41,18 @@ form button.button{
 	font-size: 1.4em;
 	line-height: 2em;
 }
-form input.text, form select{
+form .text, form select{
+	border: solid 1px #999;
 	float:left;
 	width: 300px;
 	margin: 10px 0 0;
 	padding: 3px 10px;
+}
+.required label{color: #033E6B}
+.required .text, .required select{
+	
+	border-left: solid 4px #033E6B;
+	margin-left: -4px;
 }
 form select{ width: 325px; }
 form label:after{

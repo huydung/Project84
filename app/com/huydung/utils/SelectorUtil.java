@@ -27,7 +27,7 @@ public class SelectorUtil {
 			if( id.matches(TIMEZONE_ID_PREFIXES) ){
 				TimeZone tz = TimeZone.getTimeZone(id);
 				dF.setTimeZone(tz);
-			    TimeZoneOption tzo = new TimeZoneOption(id, dF.format(d) + "(" + id + ")");
+			    TimeZoneOption tzo = new TimeZoneOption(id, dF.format(d) + "  (" + id + ")");
 			    timezones.add(tzo);
 			}			
 		}

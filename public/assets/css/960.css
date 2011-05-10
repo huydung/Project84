@@ -620,7 +620,9 @@ body {
 /* http://www.yuiblog.com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified */
 
 .clearfix:before,
-.clearfix:after {
+.clearfix:after,
+.form-field:before,
+.form-field:after {
   content: '\0020';
   display: block;
   overflow: hidden;
@@ -629,7 +631,8 @@ body {
   height: 0;
 }
 
-.clearfix:after {
+.clearfix:after,
+.form-field:after {
   clear: both;
 }
 

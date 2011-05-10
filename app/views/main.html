@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/text.css'}" />
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/blue.css'}" />
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/app.css'}" />
-<link type="text/css" href="@{'/public/assets/css/smoothness/ui.css'}" rel="stylesheet" />  
+<link type="text/css" href="@{'/public/assets/css/jquery-ui-1.8.12.custom.css'}" rel="stylesheet" />  
     
 #{get 'moreStyles' /}
 
@@ -75,22 +75,22 @@
     <div class="grid_15" id="textcontent">
     #{if flash.contains("success")}
     <p class="info" id="success">
-        <span class="info_inner">${flash.get("success")}</span>
+        <span class="info_inner">${flash.get("success").raw()}</span>
     </p>
     #{/if}
     #{if flash.contains("warning")}
     <p class="info" id="warning">
-        <span class="info_inner">${flash.get("warning")}</span>
+        <span class="info_inner">${flash.get("warning").raw()}</span>
     </p>
     #{/if}
     #{if flash.contains("info")}
     <p class="info" id="info">
-        <span class="info_inner">${flash.get("info")}</span>
+        <span class="info_inner">${flash.get("info").raw()}</span>
     </p>
     #{/if}
     #{if flash.contains("error")}
     <p class="info" id="error">
-        <span class="info_inner">${flash.get("error")}</span>
+        <span class="info_inner">${flash.get("error").raw()}</span>
     </p>
     #{/if}
 
@@ -109,14 +109,8 @@
 <!-- FOOTER END -->
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/ui.core.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/ui.sortable.js'}"></script>    
-    <script type="text/javascript" src="@{'/public/assets/js/ui.dialog.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/ui.datepicker.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/effects.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/flot/jquery.flot.pack.js'}"></script>
-    <script id="source" language="javascript" type="text/javascript" 
-        src="@{'/public/assets/js/graphs.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/jquery-ui-1.8.12.custom.min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/app.js'}"></script>
     #{get 'moreScripts' /}
 </body>
 </html>

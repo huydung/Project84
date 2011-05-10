@@ -63,3 +63,24 @@ labels.timeZone = Múi giờ
 labels.dateFormat = Định dạng ngày
 labels.saveProfile = Lưu hồ sơ
 labels.nowIs = Bây giờ là
+labels.projectName = Tên dự án
+labels.fromTemplate = Sử dụng mẫu sẵn
+
+## MEMBERSHIP ##
+membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
+membership.alreadyAccepted = %s đã đang là thành viên của dự án này rồi.
+membership.alreadyDenied = %s đã từng được mời tham gia và đã từ chối. Nếu bạn thực sự vẫn muốn mời %s, hãy vui lòng thao tác lại 1 lần nữa.
+membership.alreadyInvited = %s đã từng được mời và chưa trả lời. Nếu bạn muốn nhắc %s, hãy vui lòng thao tác lại 1 lần nữa và kèm theo 1 thông điệp cá nhân.
+membership.invited = Chưa có người dùng nào có email %s, một thư mời tham gia sử dụng Project84 đã được gửi đến email đó.
+
+## PROJECT ##
+project.create = Tạo một dự án mới
+labels.project.create.short = Tạo dự án
+labels.project.name = Tên dự án
+labels.project.deadline = Hạn chót
+labels.project.description = Ghi chú
+labels.project.functions = Các chức năng
+labels.project.needTrackTime = Thống kê thời gian?
+labels.project.needClients = Làm việc với khách hàng?
+labels.project.needMembers = Làm việc theo nhóm?
+labels.project.needFiles = Cần quản lý Files?

@@ -21,6 +21,8 @@ import java.util.*;
 @Entity
 public class User extends Model {
 	
+	/** Attributes **/
+	
 	@Required	
     public String fullName; 
 	
@@ -29,8 +31,6 @@ public class User extends Model {
     public String nickName;
     
     @Required
-
-    
     public String identifier;
     
     @Required
@@ -56,7 +56,14 @@ public class User extends Model {
     
     @Transient
     public Boolean hasProfile = true;
+    
+    /** Relationships **/
+    @OneToMany(mappedBy = "user")
+    public List<Membership> memberships;
   
+    @OneToMany(mappedBy = "user")
+    public List<ProjectTemplate> templates;
+    
     public String toString(){
     	return fullName;
     }
@@ -91,5 +98,8 @@ public class User extends Model {
     		return null;
     	}
     }
-
+    
+    public static User findByEmail(String email){
+    	return User.find("email", email).first();
+    }
 }

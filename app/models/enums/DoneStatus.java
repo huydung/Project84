@@ -1,6 +1,6 @@
 package models.enums;
 
-public enum EDoneStatus {
+public enum DoneStatus {
 	COMPLETED("completed"),
 	LATE("late"),
 	WAITING("waiting"),
@@ -9,7 +9,7 @@ public enum EDoneStatus {
 	ARCHIVED("archived");
 	
 	private final String name;
-	private EDoneStatus(String name) {
+	private DoneStatus(String name) {
 		this.name = name;
 	}
 	public String getName(){

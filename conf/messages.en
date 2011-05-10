@@ -33,3 +33,24 @@ labels.timeZone = Timezone
 labels.dateFormat = Date Format
 labels.saveProfile = Save Profile
 labels.nowIs = Current time
+labels.projectName = Project name
+labels.fromTemplate = From Template
+
+## MEMBERSHIP ##
+membership.created = An invitation to join the project has been sent to %s (%s).
+membership.alreadyAccepted = %s (%s) is already a member of the project.
+membership.alreadyDenied = %s has been invited and has already denied. If you still want to invite %s, please repeat your action.
+membership.alreadyInvited = %s has been invited and has not answered. If you want to remind %s, please repeat your action with a personal message.
+membership.invited = No account using the email %s yet, so an invitation to join Project84 has been sent to %s.
+
+## PROJECT ##
+project.create = Create a Project
+labels.project.create.short = Create Project
+labels.project.name = Project Name
+labels.project.deadline = Deadline
+labels.project.description = Description
+labels.project.functions = Functions
+labels.project.needTrackTime = Need Track Time?
+labels.project.needClients = Has Client?
+labels.project.needMembers = Work with other mates?
+labels.project.needFiles = Need to manage Files?

@@ -1,5 +1,5 @@
 
-<div class="form-field #{ifError _name} error #{/}">
+<div class="form-field required #{ifError _name} error #{/}">
     <label>&{_labelKey}</label>
     #{if !_hasBody}
         <input class="text" name="${_name}" value="${_value}" />

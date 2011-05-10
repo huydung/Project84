@@ -261,8 +261,6 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 *******************************************************************************/
 .info  {
 	display: block;
-	background: url('../images/informationbar_right.gif') no-repeat right top;
-	height: 30px;
 	overflow: hidden;
 	margin-top: 5px;
 	margin-bottom:10px !important;
@@ -270,32 +268,37 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 	font-size: 12px !important;
 	font-weight: bold;
 	cursor: pointer;
-	border: 0px;
+	border: solid 1px;
+	border-radius: 5px;
 	font-style: italic;
 }
 .info .info_inner {
   display: block;
-  height: 30px;
-  padding: 6px 10px 0px 35px;
+  padding: 6px 20px 10px 35px;
 }
+#success {	border-color: #004400;}
+#info {  border-color: #000044;}
+#warning {  border-color: #444400;}
+#error {  border-color: #440000;}
+
 #success .info_inner {
   color: #5a801b;
-  background: url('../images/icon_success.gif') no-repeat left top;
-  border: 0px;
+  background: #9F9;
+  
 }
 #warning .info_inner {
 	color: #E89326;
-	background: url('../images/icon_warning.gif') no-repeat left top;
+	background: #FF9;
 	border: 0px;
 }
 #error .info_inner {
 	color: #C00;
-	background: url('../images/icon_error.gif') no-repeat left top;
+	background: #F99;
 	border: 0px;	
 }
 #info .info_inner {
 	color: #4985B2;
-	background: url('../images/icon_info.gif') no-repeat left top;
+	background: #99F;
 	border: 0px;
 }
 /*******************************************************************************

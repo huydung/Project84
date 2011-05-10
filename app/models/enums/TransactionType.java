@@ -1,6 +1,6 @@
 package models.enums;
 
-public enum ETransactionType {
+public enum TransactionType {
 	EXPENSE("expense", -1, "spend"),
 	INCOME("income", 1, "receive"),
 	DEBT("debt", -1, "return"),
@@ -10,7 +10,7 @@ public enum ETransactionType {
 	
 	private final String name;
 	private final String taskAction;
-	private ETransactionType(String name, int factor, String taskAction) {
+	private TransactionType(String name, int factor, String taskAction) {
 		this.name = name;
 		this.taskAction = taskAction;
 	}
