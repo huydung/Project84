@@ -1,18 +1,18 @@
 
-<div class="grid_5 membercard">
+<div class="grid_6 membercard">
     <div class="actions">
         #{if _member.isInvitation() }
         <a class="icon-link icon-link-delete" 
-            href="@{Memberships.delete(_member.id)}">&{'labels.delete'} &{'labels.invitation'}</a>
+            href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>
         #{/}
         #{else}
         <a class="icon-link icon-link-edit"
-            href="@{Memberships.edit(_member.id)}">&{'labels.edit'} &{'labels.membership'}</a>
+            href="@{Memberships.edit(_member.id)}">&{'labels.edit'}</a>
         <a class="icon-link icon-link-delete"
-            href="@{Memberships.delete(_member.id)}">&{'labels.delete'} &{'labels.membership'}</a>        
+            href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>        
         #{/}
     </div>
-    #{gravatar email:_member.getEmail(), size:100 /}
+    #{gravatar email:_member.getEmail(), size:80, noDescription:true /}
     
     *{***** Is an membership ****}*
     #{if _member.user }
