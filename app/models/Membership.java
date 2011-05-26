@@ -122,6 +122,21 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	return true;
     }
     
+    public String getInvitationStatus(){
+    	if( !isInvitation() ){
+    		return "";
+    	}else{    		
+    		return Messages.get("members.invite." + status.toString());
+    	}
+    }
+    
+    public String getInvitationDescription(){
+    	if( !isInvitation() ){
+    		return "";
+    	}else{
+    		return Messages.get("members.invite.description." + status.toString());
+    	}
+    }
     
     public void addRole(Role role){
     	if( !hasRole(role) ){
@@ -135,6 +150,10 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     
     public static List<Membership> findByUserEmailAndStatus(String email, ApprovalStatus status){
     	return Membership.find("userEmail = ? AND status = ?", email, status).fetch();
+    }
+    
+    public static Membership findByProjectAndUserEmail(Project project, String email){
+    	return Membership.find("project = ? AND userEmail = ?", project, email).first();
     }
     
     public static List<Membership> findByUser(User user){

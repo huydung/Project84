@@ -1,36 +1,47 @@
-
-<div class="grid_6 membercard">
-    <div class="actions">
+<div class="grid_6 membercard portlet ui-widget ui-widget-content 
+            ui-helper-clearfix ui-corner-all">
+      
+      <div class="portlet-header ui-widget-header ui-corner-top clearfix">
+        
         #{if _member.isInvitation() }
-        <a class="icon-link icon-link-delete" 
+        <a class="fright icon-link icon-link-delete" 
             href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>
         #{/}
         #{else}
-        <a class="icon-link icon-link-edit"
-            href="@{Memberships.edit(_member.id)}">&{'labels.edit'}</a>
-        <a class="icon-link icon-link-delete"
+        <strong>${_member.user.nickName}</strong>
+        <a class="fright icon-link icon-link-delete"
             href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>        
-        #{/}
-    </div>
-    #{gravatar email:_member.getEmail(), size:80, noDescription:true /}
-    
-    *{***** Is an membership ****}*
-    #{if _member.user }
-    <ul>
-        <li class="role-title">${_member.title}</li>
-        <li>
-            <strong class="name">${_member.user.fullName}</strong>&nbsp;
-            (${_member.user.nickName})
-        </li>
-        <li>#{link-mail _member.user.email /}</li>
-        <li>#{link-tel _member.user.mobile /}</li>
-        <li class="roles">${ _member.roles }</li>
-    </ul>
-    #{/}
-    
-    *{***** Is an invitation ****}*
-    
-    #{else}
-    #{/}
-    
-</div>
+        <a class="fright icon-link icon-link-edit"
+            href="@{Memberships.edit(_member.id)}">&{'labels.edit'}</a>
+         #{/}
+      </div>
+      <div class="portlet-content" style="display: block; ">
+	      #{gravatar email:_member.getEmail(), size:80, noDescription:true /}
+	    
+		    *{***** Is an membership ****}*
+		    #{if !_member.isInvitation() }
+		    <ul>
+		        <li class="role-title">${_member.title}</li>
+		        <li>
+		            <strong class="name">${_member.user.fullName}</strong>
+		        </li>
+		        <li>#{link-mail _member.user.email /}</li>
+		        <li>#{link-tel _member.user.mobile /}</li>
+		        <li class="roles">${ _member.roles }</li>
+		    </ul>
+		    #{/}
+		    
+		    *{***** Is an invitation ****}*
+		    
+		    #{else}
+		    <ul>
+		        <li class="role-title">&{'labels.invitation'}</li>
+		        <li>
+		            <strong class="name">{${_member.getInvitationStatus()}}</strong>
+		        </li>
+		        <li>#{link-mail _member.userEmail /}</li>
+		        <li><span>${_member.getInvitationDescription()}</span></li>
+		    </ul>        
+		    #{/}
+      </div>    
+  </div>

@@ -11,6 +11,7 @@ public class ActionResult {
 	
 	public ActionResult(boolean success, String message) {
 		this(success);
+		this.message = message;
 	}
 	
 	public ActionResult(boolean success, String message, boolean isWaning) {

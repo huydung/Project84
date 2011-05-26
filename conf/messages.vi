@@ -84,9 +84,15 @@ labels.invitation = Lời mời
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
 membership.alreadyAccepted = %s đã đang là thành viên của dự án này rồi.
-membership.alreadyDenied = %s đã từng được mời tham gia và đã từ chối. Nếu bạn thực sự vẫn muốn mời %s, hãy vui lòng thao tác lại 1 lần nữa.
-membership.alreadyInvited = %s đã từng được mời và chưa trả lời. Nếu bạn muốn nhắc %s, hãy vui lòng thao tác lại 1 lần nữa và kèm theo 1 thông điệp cá nhân.
+membership.alreadyDenied = %s đã từng được mời tham gia và đã từ chối. Xin hãy xóa lời mời hiện tại trước khi thử thao tác lại.
+membership.alreadyInvited = %s đã từng được mời và chưa trả lời.
 membership.invited = Chưa có người dùng nào có email %s, một thư mời tham gia sử dụng Project84 đã được gửi đến email đó.
+members.invite.DENIED = Lời mời bị từ chối
+members.invite.WAITING_INVITE = Chờ trả lời
+members.invite.UNREAD = Đang gửi lời mời
+members.invite.description.DENIED = Lời mời của bạn đã bị từ chối. Lời mời này sẽ tự động được xóa trong vòng vài ngày tới.
+members.invite.description.WAITING_INVITE = Thư mời này đã được gửi đi nhưng chưa nhận được phản hồi.
+members.invite.description.UNREAD = 
 
 ## PROJECT ##
 project.create = Tạo dự án mới

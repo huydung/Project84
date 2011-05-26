@@ -112,21 +112,27 @@ public class Project extends BasicItem {
     					Messages.get("membership.alreadyDenied", user.nickName, user.nickName));
     			}else{
     				return new ActionResult(false, 
-    					Messages.get("membership.alreadyInvited", user.nickName, user.nickName), true);
+    					Messages.get("membership.alreadyInvited", user.nickName), true);
     			}
     		}
     	} 
     	//If an account is not existed with the provided email, 
     	//Create a Membership for her and send out invitation
     	else {
-    		m = new Membership(this, userEmail);
-    		m.status = ApprovalStatus.WAITING_INVITE;
-    		if( m.validateAndSave() ){
-    			return new ActionResult(true, 
-    				Messages.get("membership.invited", userEmail, userEmail));
+    		m = Membership.findByProjectAndUserEmail(this, userEmail);
+    		if( m != null ){
+    			return new ActionResult(false, 
+    					Messages.get("membership.alreadyInvited", userEmail), true);
     		}else{
-    			return new ActionResult(false, "Fatal Error In Project.addmember");
-    		}
+    			m = new Membership(this, userEmail);
+        		m.status = ApprovalStatus.WAITING_INVITE;
+        		if( m.validateAndSave() ){
+        			return new ActionResult(true, 
+        				Messages.get("membership.invited", userEmail, userEmail));
+        		}else{
+        			return new ActionResult(false, "Fatal Error In Project.addmember");
+        		}
+    		}    		
     	}
     }
     

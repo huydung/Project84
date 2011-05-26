@@ -38,14 +38,16 @@ public class AppController extends Controller {
 
 	protected static void displayWarning(String message, String action){
 		flash.put("warning", 
-				message + "<br/>" +
-				Messages.get("actions.contactWarning", action));	
+				message + "<br/>" 
+				//+	Messages.get("actions.contactWarning", action)
+				);	
 	}
 	
 	protected static void displayError(String message, String action){
 		flash.put("error", 
-				message + "<br/>" +
-				Messages.get("actions.contactError", action));
+				message + "<br/>" 
+				//+ Messages.get("actions.contactError", action)
+				);
 		
 	}
 	

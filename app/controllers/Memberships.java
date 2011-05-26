@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.internet.PreencodedMimeBodyPart;
+
+import com.huydung.helpers.ActionResult;
+
+import play.data.validation.Required;
+import play.data.validation.Valid;
+import play.data.validation.Validation;
+
 import models.Membership;
 import models.Project;
 import models.enums.Role;
@@ -33,6 +41,25 @@ public class Memberships extends AppController {
 	
 	public static void create(Long project_id){
 		render();
+	}
+	
+	public static void save(
+			@Required String email, @Required String title,
+			@Required Long projectId, @Required String previousPage){
+		if( Validation.hasErrors() ){
+			validationMessage();
+			redirect(previousPage);
+		}
+		Project p = Project.findById(projectId);
+		if( p == null ){
+			validationMessage();
+			redirect(previousPage);
+		}
+		ActionResult r = p.addMember(email, title);
+		if( !r.isSuccess() ){
+			displayError(r.getMessage(), "add-member");
+		}
+		redirect(previousPage);
 	}
 	
 	public static void edit(Long id){

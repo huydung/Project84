@@ -15,6 +15,7 @@ a.icon-link, button.icon-link{
 	text-transform: uppercase;
 	height: 16px;
 	line-height: 16px;
+	margin: 0 10px 0 0;
 }
 a.icon-link:hover, button.icon-link:hover{
 	color: #000;
@@ -212,85 +213,29 @@ h3.widget-title{
 
 /** Membership **/
 .membercard{
-	
-	float:left;
-	margin: 40px 45px 20px 0;
-	position: relative;
-	height: 110px;
-	overflow: visible;
+	margin: 20px 25px 10px 0;
+	width: 320px !important;
 }
 .gravatar{
 	float:left; margin: 0 5px 0 0;	
 }
-.membercard > ul, .membercard .gravatar{
-	margin: 15px 5px 10px 10px;
+.membercard ul{
+	margin-bottom: 10px;
 }
 .membercard li{
 	list-style: none;
 }
+.membercard  .portlet-content a{
+	color: #069;line-height: 1.5em;
+}
 .membercard .role-title, 
-.membercard .roles{font-size: .9em; line-height: .9em;color: #666;}
+.membercard .roles{font-size: .9em; line-height: .9em;color: #666;padding-top: 3px;}
 .membercard .name{ font-size: 1.1em; }
 .membercard .actions{ 
 	position: absolute; top: -26px; height: 25px;
     right: -1px; text-align: right; 
-    min-width: 160px;  
-     
+    min-width: 160px;     
 }
-.membercard .actions a{
-	opacity: 0.7;
-}
-.membercard .actions a:hover{
-	opacity: 1;
-}
-.membercard {
-	border:solid 1px #AFC6F7;
-
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 0px;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-bottom-left-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 0px;
-	-moz-border-radius-bottomright: 3px;
-	-moz-border-radius-bottomleft: 3px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
-
-	background: #e5f0ff;
-	background: -moz-linear-gradient(top, #e5f0ff 0%, #f7f8ff 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5f0ff), color-stop(100%,#f7f8ff));
-	background: -webkit-linear-gradient(top, #e5f0ff 0%,#f7f8ff 100%);
-	background: -o-linear-gradient(top, #e5f0ff 0%,#f7f8ff 100%);
-	background: -ms-linear-gradient(top, #e5f0ff 0%,#f7f8ff 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E5F0FF', endColorstr='#F7F8FF',GradientType=0 );
-	background: linear-gradient(top, #e5f0ff 0%,#f7f8ff 100%);
-}
-.membercard .actions{
-	padding: 0 10px;
-	border:solid 1px #AFC6F7;
-	border-bottom: none;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-webkit-border-bottom-right-radius: 0px;
-	-webkit-border-bottom-left-radius: 0px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	-moz-border-radius-bottomright: 0px;
-	-moz-border-radius-bottomleft: 0px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 0px;
-	border-bottom-left-radius: 0px;	
-	
-	background: #f7f8ff;
-	background: -moz-linear-gradient(top, #f7f8ff 0%, #e5f0ff 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f8ff), color-stop(100%,#e5f0ff));
-	background: -webkit-linear-gradient(top, #f7f8ff 0%,#e5f0ff 100%);
-	background: -o-linear-gradient(top, #f7f8ff 0%,#e5f0ff 100%);
-	background: -ms-linear-gradient(top, #f7f8ff 0%,#e5f0ff 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F7F8FF', endColorstr='#E5F0FF',GradientType=0 );
-	background: linear-gradient(top, #f7f8ff 0%,#e5f0ff 100%);
+.portlet-header > strong{
+	font-size: 1.2em; margin-left: 5px; line-height: 1em;
 }

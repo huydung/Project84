@@ -8,17 +8,16 @@
 <h1>&{'members.teamLong'}</h1>
 </div>
 <div class="grid_9">
-    <form class="inline tright" action="@{Memberships.create}" method="POST">
-        
-        <input type="hidden" name="membership.roleNames" 
-            value="${models.enums.Role.MEMBER}" />
-        <input type="hidden" name="membership.project.id" 
+    <form class="inline tright" action="@{Memberships.save}" method="POST">
+        <input type="hidden" name="previousPage" 
+            value="${request.url}" />
+        <input type="hidden" name="projectId" 
             value="${project.id}" size="20" />
         <label>&{'labels.add'}</label>
         <input type="email" required="required" placeholder="&{'labels.emailAddress'}" 
-            name="membership.userEmail"/>
+            name="email"/>
         <span>&{'labels.as'}</span>
-        <input type="text" size="10" placeholder="&{'members.title'}" />
+        <input name="title" type="text" size="10" placeholder="&{'members.title'}" />
         <button class="icon-link icon-link-add" type="submit">&{'labels.doit'}</button>
     </form>
 </div>
