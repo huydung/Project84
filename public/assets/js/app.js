@@ -15,7 +15,7 @@
 
 jQuery.fn.confirm = function(options) {
   options = jQuery.extend({
-    msg: 'Are you sure?',
+    msg: 'Really Delete? ',
     stopAfter: 'never',
     wrapper: '<span></span>',
     eventType: 'click',
@@ -28,8 +28,8 @@ jQuery.fn.confirm = function(options) {
     options.stopAfter = 'never';
   }
   options.buttons = jQuery.extend({
-    ok: 'Yes',
-    cancel: 'No',
+    ok: ' Yes ',
+    cancel: ' No ',
     wrapper:'<a href="#"></a>',
     separator: '/'
   }, options.buttons);
@@ -149,11 +149,22 @@ $(document).ready(function(){
 	})
 	
 	
-	//Allow to click on label to select
+	/** Allow to click on label to select **/
 	$('label,.label').css({cursor:'pointer'}).click(function(){
 		$(this).next('input[type="checkbox"]').click().end()
 				.prev('input[type="checkbox"]').click();
 		return false;
+	});
+	
+	/** Convert delete action link to have confirmation **/
+	$('.icon-link-delete')
+	.click(function(){
+		window.location.href = $(this).attr('href');
+		return false;
+	})
+	.confirm({
+		timeout:5000,
+		wrapper:'<span class="confirmation fright"></span>'
 	});
 });
 
