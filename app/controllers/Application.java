@@ -5,8 +5,6 @@ import play.i18n.Lang;
 import play.i18n.Messages;
 import play.libs.WS;
 import play.libs.XPath;
-import play.modules.router.Get;
-import play.modules.router.Post;
 import play.mvc.*;
 
 import java.util.*;

@@ -44,30 +44,43 @@ public class Memberships extends AppController {
 	}
 	
 	public static void save(
-			@Required String email, @Required String title,
-			@Required Long projectId, @Required String previousPage){
+			@Required String email, @Required String member_title,
+			@Required Long project_id){		
 		if( Validation.hasErrors() ){
-			validationMessage();
-			redirect(previousPage);
+			displayValidationMessage();
+			params.flash();
+			dashboard(project_id);
 		}
-		Project p = Project.findById(projectId);
+		Project p = Project.findById(project_id);
 		if( p == null ){
-			validationMessage();
-			redirect(previousPage);
+			displayValidationMessage();
+			params.flash();
+			dashboard(project_id);
 		}
-		ActionResult r = p.addMember(email, title);
+		ActionResult r = p.addMember(email, member_title);
 		if( !r.isSuccess() ){
+			params.flash();
 			displayError(r.getMessage(), "add-member");
 		}
-		redirect(previousPage);
+		dashboard(project_id);
 	}
 	
-	public static void edit(Long id){
+	public static void edit(@Required Long id, @Required Long project_id){
 		
 	}
 	
-	public static void delete(Long id){
-		
+	public static void delete(@Required Long id, @Required Long project_id){
+		if( Validation.hasErrors() ){
+			displayValidationMessage();			
+		}else{
+			Membership m = Membership.findById(id);
+			if( m != null ){
+				m.deleted = true;
+				m.save();
+				flash.put("success", "Membership deleted");			
+			}
+		}
+		dashboard(project_id);
 	}
 	
 }

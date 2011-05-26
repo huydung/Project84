@@ -15,6 +15,7 @@ import javax.persistence.*;
 
 import models.templates.ProjectTemplate;
 
+import org.hibernate.annotations.Filter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -22,6 +23,7 @@ import org.w3c.dom.Node;
 import java.util.*;
 
 @Entity
+@Filter(name="deleted")
 public class User extends Model {
 	
 	/** Attributes **/
@@ -57,6 +59,8 @@ public class User extends Model {
     
     @Transient
     public Boolean hasProfile = true;
+    
+    public Boolean deleted = false;
     
     /** Relationships **/
 

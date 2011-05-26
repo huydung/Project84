@@ -24,8 +24,6 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.i18n.Lang;
 import play.i18n.Messages;
-import play.modules.router.Get;
-import play.modules.router.Post;
 import play.mvc.*;
 import play.data.binding.*;
 import play.data.binding.types.DateBinder;
@@ -80,7 +78,7 @@ public class Projects extends AppController {
     	
     	Validation.valid("Project", project);
     	if( Validation.hasErrors() ){
-    		validationMessage();
+    		displayValidationMessage();
     		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
     		render("projects/create.html", project, templates);
     	}

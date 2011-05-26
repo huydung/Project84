@@ -269,31 +269,33 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 	font-weight: bold;
 	cursor: pointer;
 	border: solid 1px;
-	border-radius: 5px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
 	font-style: italic;
 }
 .info .info_inner {
   display: block;
   padding: 6px 20px 10px 35px;
+  border-radius: 4px;
 }
-#success {	border-color: #004400;}
-#info {  border-color: #000044;}
-#warning {  border-color: #444400;}
-#error {  border-color: #440000;}
+#success {	border-color: #00AA00;}
+#info {  border-color: #0000AA;}
+#warning {  border-color: #AAAA00;}
+#error {  border-color: #AA0000;}
 
 #success .info_inner {
   color: #5a801b;
-  background: #9F9;
+  background: #EFE;
   
 }
 #warning .info_inner {
 	color: #E89326;
-	background: #FF9;
+	background: #FFE;
 	border: 0px;
 }
 #error .info_inner {
 	color: #C00;
-	background: #F99;
+	background: #FEE;
 	border: 0px;	
 }
 #info .info_inner {

@@ -11,6 +11,7 @@ import play.templates.JavaExtensions;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Filter;
 import org.joda.time.JodaTimePermission;
 
 import com.huydung.utils.Link;
@@ -21,6 +22,7 @@ import models.enums.Role;
 import java.util.*;
 
 @Entity
+@Filter(name="deleted")
 public class Membership extends Model implements IWidget, IWidgetItem {
 	
 	@Required
@@ -38,6 +40,8 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	
 	@Required
     public String roleNames = Role.MEMBER.getName();
+	
+	public Boolean deleted = false; 
     
     @Required
     @Enumerated(EnumType.STRING)

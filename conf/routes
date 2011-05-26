@@ -3,18 +3,19 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.homepage
-POST    /rpx                                    Application.rpx
+GET     /                                                   Application.homepage
+POST    /rpx                                                Application.rpx
 
-GET     /users/profile                          Users.profile
-POST    /users/profile                          Users.saveProfile
+GET     /users/profile                                      Users.profile
+POST    /users/profile                                      Users.saveProfile
 
-GET     /projects                               Projects.overview
-GET     /project/create                         Projects.create
-POST    /project/create                         Projects.save
-GET     /project/{id}                           Projects.dashboard
-GET     /project/{project_id}/memberships       Memberships.dashboard
-GET     /project/{id}/settings                  Projects.structure
+GET     /projects                                           Projects.overview
+GET     /project/create                                     Projects.create
+POST    /project/create                                     Projects.save
+GET     /project/{id}                                       Projects.dashboard
+GET     /project/{project_id}/memberships                   Memberships.dashboard
+GET     /project/{id}/settings                              Projects.structure
+GET     /project/{project_id}/memberships/{id}/delete       Memberships.delete
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

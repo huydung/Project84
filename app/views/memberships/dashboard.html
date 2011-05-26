@@ -9,15 +9,14 @@
 </div>
 <div class="grid_9">
     <form class="inline tright" action="@{Memberships.save}" method="POST">
-        <input type="hidden" name="previousPage" 
-            value="${request.url}" />
-        <input type="hidden" name="projectId" 
+        <input type="hidden" name="project_id" 
             value="${project.id}" size="20" />
         <label>&{'labels.add'}</label>
         <input type="email" required="required" placeholder="&{'labels.emailAddress'}" 
-            name="email"/>
+            name="email" value="&{flash.get('email') ?: ''}"/>
         <span>&{'labels.as'}</span>
-        <input name="title" type="text" size="10" placeholder="&{'members.title'}" />
+        <input required="required" name="member_title" type="text" size="10" 
+            placeholder="&{'members.title'}" value="&{flash.get('member_title') ?: '' }"/>
         <button class="icon-link icon-link-add" type="submit">&{'labels.doit'}</button>
     </form>
 </div>

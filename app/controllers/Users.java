@@ -10,8 +10,6 @@ import models.User;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.i18n.Messages;
-import play.modules.router.Get;
-import play.modules.router.Post;
 import play.mvc.*;
 
 public class Users extends AppController{
@@ -30,7 +28,7 @@ public class Users extends AppController{
 	//@Post("/users/profile")
 	public static void saveProfile(@Valid User user){
 		if( Validation.hasErrors() ){			
-			validationMessage();
+			displayValidationMessage();
 			render("users/profile.html", user);
 		}else{
 			user.save();

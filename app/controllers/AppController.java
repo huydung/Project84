@@ -2,11 +2,14 @@ package controllers;
 
 import java.util.TimeZone;
 
+import org.hibernate.Session;
+
 
 import models.User;
 import play.Logger;
 import play.Play;
 import play.data.binding.types.DateBinder;
+import play.db.jpa.JPA;
 import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -32,6 +35,13 @@ public class AppController extends Controller {
         }
     }
 	
+	@Before
+	static void setFilters(){
+		((Session)JPA.em().getDelegate())
+			.enableFilter("deleted")
+			.setParameter("deleted", false);
+	}
+	
 	protected static User getLoggedin(){
 		return renderArgs.get("loggedin", User.class);
 	}
@@ -51,7 +61,7 @@ public class AppController extends Controller {
 		
 	}
 	
-	protected static void validationMessage(){
+	protected static void displayValidationMessage(){
 		flash.put("error", Messages.get("error.validation") );
 	}
 }

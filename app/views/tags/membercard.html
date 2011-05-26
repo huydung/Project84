@@ -5,14 +5,14 @@
         
         #{if _member.isInvitation() }
         <a class="fright icon-link icon-link-delete" 
-            href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>
+            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
         #{/}
         #{else}
         <strong>${_member.user.nickName}</strong>
         <a class="fright icon-link icon-link-delete"
-            href="@{Memberships.delete(_member.id)}">&{'labels.delete'}</a>        
+            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>        
         <a class="fright icon-link icon-link-edit"
-            href="@{Memberships.edit(_member.id)}">&{'labels.edit'}</a>
+            href="@{Memberships.edit(_member.id, _member.project.id)}">&{'labels.edit'}</a>
          #{/}
       </div>
       <div class="portlet-content" style="display: block; ">
