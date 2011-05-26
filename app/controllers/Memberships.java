@@ -40,7 +40,8 @@ public class Memberships extends AppController {
 	}
 	
 	public static void create(Long project_id){
-		render();
+		Project project = Project.findById(project_id);		
+		render("memberships/form_add.html", project);
 	}
 	
 	public static void save(

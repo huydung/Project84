@@ -18,6 +18,7 @@ import play.mvc.With;
 
 
 public class AppController extends Controller {
+	
 	@Before
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {

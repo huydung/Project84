@@ -8,17 +8,7 @@
 <h1>&{'members.teamLong'}</h1>
 </div>
 <div class="grid_9">
-    <form class="inline tright" action="@{Memberships.save}" method="POST">
-        <input type="hidden" name="project_id" 
-            value="${project.id}" size="20" />
-        <label>&{'labels.add'}</label>
-        <input type="email" required="required" placeholder="&{'labels.emailAddress'}" 
-            name="email" value="&{flash.get('email') ?: ''}"/>
-        <span>&{'labels.as'}</span>
-        <input required="required" name="member_title" type="text" size="10" 
-            placeholder="&{'members.title'}" value="&{flash.get('member_title') ?: '' }"/>
-        <button class="icon-link icon-link-add" type="submit">&{'labels.doit'}</button>
-    </form>
+    #{include "memberships/form_add.html" /}
 </div>
 <hr/>
 <div class="memberships members grid_15">

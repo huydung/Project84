@@ -158,13 +158,32 @@ $(document).ready(function(){
 	
 	/** Convert delete action link to have confirmation **/
 	$('.icon-link-delete')
-	.click(function(){
-		window.location.href = $(this).attr('href');
-		return false;
-	})
-	.confirm({
-		timeout:5000,
-		wrapper:'<span class="confirmation fright"></span>'
+		.click(function(){
+			window.location.href = $(this).attr('href');
+			return false;
+		})
+		.confirm({
+			timeout:5000,
+			wrapper:'<span class="confirmation fright"></span>'
+		});
+	
+	/** Convert modal actions in widget to use AJAX **/
+	$('.modal').click(function(){
+		$this = $(this);
+		$('body').append('<div id="modal-dialog"></div>');
+		$('#modal-dialog')
+			.load($this.attr('href'), function(){
+				console.log('Data loaded');
+				$('#modal-dialog').dialog({
+					modal: true,
+					title: $this.text(),
+					close: function(){
+						$('#modal-dialog').remove()
+					},
+					width: 380
+				});
+			});
+		return false;			
 	});
 });
 

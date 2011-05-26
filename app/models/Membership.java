@@ -204,7 +204,7 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 		return new Link( 
 				Messages.get("project.addMember"),
 				Router.getFullUrl("Memberships.create", args),
-				"icon-link-add"
+				"icon-link-add modal"
 		);
 	}
 
