@@ -15,4 +15,15 @@ public enum DoneStatus {
 	public String getName(){
 		return name;
 	}
+	
+	public static DoneStatus parse(String name){
+		DoneStatus d = null;
+		for( DoneStatus r : DoneStatus.values() ){
+			if( r.getName().equals(name) ){
+				d = r;
+				break;
+			}
+		}
+		return d;
+	}
 }

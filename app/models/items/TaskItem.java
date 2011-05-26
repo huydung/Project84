@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Embedded;
 
+import models.BasicItem;
 import models.fields.DateField;
 import net.sf.oval.constraint.Min;
 import play.data.validation.InFuture;

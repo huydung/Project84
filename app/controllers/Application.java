@@ -5,6 +5,8 @@ import play.i18n.Lang;
 import play.i18n.Messages;
 import play.libs.WS;
 import play.libs.XPath;
+import play.modules.router.Get;
+import play.modules.router.Post;
 import play.mvc.*;
 
 import java.util.*;
@@ -22,6 +24,11 @@ public class Application extends Controller {
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {
             User user = User.findById(Long.parseLong(Security.getConnectedUserId()));
+            //If the cookie exist but user has been deleted from database
+            if(user == null){
+            	Security.logout();
+            	homepage();
+            }
             renderArgs.put("loggedin", user);
         }else{
         	Logger.debug("User is connected");
@@ -29,6 +36,7 @@ public class Application extends Controller {
         }
     }
 	
+	//@Get("/home")
     public static void homepage() {
     	if( Security.isLoggedIn() ){
     		Application.app();
@@ -36,6 +44,7 @@ public class Application extends Controller {
         render();
     }
     
+    //@Get("/languages")
     public static void switchLanguage(String code, String destination){
     	if( code.equals("en") || code.equals("vi") ){
     		Lang.change(code);
@@ -43,16 +52,20 @@ public class Application extends Controller {
     	redirect(destination);
     }
     
+    //@Get("/")
     public static void app(){
     	List<Membership> memberships = Membership.findByUser(
     		renderArgs.get("loggedin", User.class)
     	);
     	if( memberships == null || memberships.size() == 0 ){
     		Projects.create();
+    	}else{
+    		Projects.overview();
     	}
-    	render();
+    	//render();
     }
     
+    //@Post("/rpx")
     public static void rpx(){    	
     	try{
     		String token = params.get("token");
@@ -68,7 +81,7 @@ public class Application extends Controller {
 		    		Users.profile(user.id);	    			
 	    		}
 	    	}else{
-	    		flash.put("error", Messages.get("errors.oauth"));
+	    		flash.put("error", Messages.get("error.oauth"));
 	    		flash.keep();
 	    		Application.homepage();
 	    	}

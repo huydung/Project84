@@ -13,8 +13,11 @@ import play.libs.XPath;
 
 import javax.persistence.*;
 
+import models.templates.ProjectTemplate;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
 
 import java.util.*;
 
@@ -22,7 +25,6 @@ import java.util.*;
 public class User extends Model {
 	
 	/** Attributes **/
-	
 	@Required	
     public String fullName; 
 	
@@ -37,7 +39,6 @@ public class User extends Model {
     @Email
     public String email;
     
-    @InPast
     public Date lastLoggedIn = new Date();
     
     @Required
@@ -58,11 +59,7 @@ public class User extends Model {
     public Boolean hasProfile = true;
     
     /** Relationships **/
-    @OneToMany(mappedBy = "user")
-    public List<Membership> memberships;
-  
-    @OneToMany(mappedBy = "user")
-    public List<ProjectTemplate> templates;
+
     
     public String toString(){
     	return fullName;

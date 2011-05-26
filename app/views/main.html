@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" type="image/png" href="@{'/public/assets/images/favicon.png'}" />
@@ -50,7 +50,7 @@
 <div class="grid_16" id="header">
 <!-- MENU START -->
 <div id="menu">
- 
+#{include 'nav.html' /}
 </div>
 <!-- MENU END -->
 </div>
@@ -106,6 +106,12 @@
 <div class="container_16" id="footer">
 &{'interface.copyrighted'}
 </div>
+#{ifErrors} 
+   <h1>Oops...</h1> 
+   #{errors}
+       <li>${error.key + ' : ' + error.message}</li>
+   #{/errors} 
+#{/ifErrors}
 <!-- FOOTER END -->
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>

@@ -41,9 +41,9 @@ titles.home = Trang chủ
 titles.profile = Thông tin tài khoản
 
 ## ERRORS ##
-errors.oauth = Có lỗi xảy ra khi đăng nhập. Xin bạn vui lòng thử lại sau hoặc sử dụng nhà cung cấp khác.
-errors.invalidParam = Tham số %s không hợp lệ
-errors.notFound = Không thể tìm thấy <em>%s</em> với mã số <em>%d</em>
+error.oauth = Có lỗi xảy ra khi đăng nhập. Xin bạn vui lòng thử lại sau hoặc sử dụng nhà cung cấp khác.
+error.invalidParam = Tham số %s không hợp lệ
+error.notFound = Không thể tìm thấy <em>%s</em> với mã số <em>%d</em>
 error.validation = Thông tin bạn vừa cung cấp không hợp lệ. Xin hãy kiểm tra và sửa lại.
 
 
@@ -51,11 +51,18 @@ error.validation = Thông tin bạn vừa cung cấp không hợp lệ. Xin hãy
 success.oauth = Bạn vừa đăng nhập thành công bằng tài khoản của <strong>%s</strong>! Xin hãy cung cấp thêm một số thông tin để chúng tôi có thể tạo tài khoản của bạn và tùy biến ứng dụng cho tốt nhất với bạn.
 success.profileSaved = Thông tin cá nhân của bạn (%s) đã được lưu thành công!
 
+## WARNING ##
+warning.activity.save = Thao tác của bạn đã không được ghi vào nhật ký. 
+
 ## ACTIONS ##
 actions.changeImage = thay ảnh khác?
+actions.contactWarning = Điều này không ảnh hưởng tới dữ liệu chính, nhưng xin hãy vẫn <a href="/contact?action=%s">báo cho chúng tôi biết</a> để sửa nó. Cảm ơn bạn!
+actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s">báo cho chúng tôi biết</a> để sửa nó. Cảm ơn bạn!
+
 
 ## LABELS ##
 labels.email = Email
+labels.emailAddress = Địa chỉ email
 labels.fullName = Họ và tên
 labels.nickName = Tên tắt
 labels.mobile = Điện thoại
@@ -65,6 +72,14 @@ labels.saveProfile = Lưu hồ sơ
 labels.nowIs = Bây giờ là
 labels.projectName = Tên dự án
 labels.fromTemplate = Sử dụng mẫu sẵn
+labels.viewAll = Xem tất cả
+labels.as = như là
+labels.doit = Tiến hành
+labels.add = Thêm
+labels.edit = Sửa
+labels.membership = Nhân sự
+labels.delete = Xóa
+labels.invitation = Lời mời
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -74,7 +89,17 @@ membership.alreadyInvited = %s đã từng được mời và chưa trả lời.
 membership.invited = Chưa có người dùng nào có email %s, một thư mời tham gia sử dụng Project84 đã được gửi đến email đó.
 
 ## PROJECT ##
-project.create = Tạo một dự án mới
+project.create = Tạo dự án mới
+project.member = Thành viên
+project.manager = Quản lý
+project.list = Các dự án bạn đang tham gia
+project.active_projects = Dự án đang chạy
+project.inactive_projects = Các dự án cũ
+project.dashboard = Tổng quan
+project.people = Nhân sự
+project.manage_list = Cấu hình
+project.addMember = Thêm thành viên
+
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án
 labels.project.deadline = Hạn chót
@@ -84,3 +109,16 @@ labels.project.needTrackTime = Thống kê thời gian?
 labels.project.needClients = Làm việc với khách hàng?
 labels.project.needMembers = Làm việc theo nhóm?
 labels.project.needFiles = Cần quản lý Files?
+
+since.seconds = %d giây trước
+since.minutes = %d phút trước
+since.hours = %d giờ trước
+since.days = %d ngày trước
+since.months = %d tháng trước
+
+# USER #
+user.lastLoggedIn = đăng nhập lần cuối
+
+members.teamLong = Những thành viên của nhóm
+members.clientLong = Những khách hàng mà ta cần lắng nghe
+members.title = Chức danh

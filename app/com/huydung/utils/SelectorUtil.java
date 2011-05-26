@@ -47,20 +47,14 @@ public class SelectorUtil {
 	
 	public static ArrayList<DateFormatOption> getDateFormats(){
 		ArrayList<DateFormatOption> formats = new ArrayList<DateFormatOption>();
-		formats.add(new DateFormatOption("dd/MM/YYYY", "14/06/2011"));
-		formats.add(new DateFormatOption("MM/dd/YYYY", "06/14/2011"));
-		formats.add(new DateFormatOption("dd MMM, YYYY", "14 Jun, 2011"));
-		formats.add(new DateFormatOption("MMMMM dd, YYYY", "June 14, 2011"));
-		formats.add(new DateFormatOption("dd-MM-YYYY", "14-06-2011"));
-		formats.add(new DateFormatOption("MM-dd-YYYY", "06-14-2011"));
-		formats.add(new DateFormatOption("dd.MM.YYYY", "14.06.2011"));
-		formats.add(new DateFormatOption("MM.dd.YYYY", "06.14.2011"));
-		formats.add(new DateFormatOption("dd/MM", "14/06"));
-		formats.add(new DateFormatOption("MM/dd", "06/14"));		
-		formats.add(new DateFormatOption("dd-MM", "14-06"));
-		formats.add(new DateFormatOption("MM-dd", "06-14"));		
-		formats.add(new DateFormatOption("dd.MM", "14.06"));
-		formats.add(new DateFormatOption("MM.dd", "06.14"));
+		formats.add(new DateFormatOption("dd/MM/yyyy", "14/06/2011"));
+		formats.add(new DateFormatOption("MM/dd/yyyy", "06/14/2011"));
+		//formats.add(new DateFormatOption("dd MMM, yyyy", "14 Jun, 2011"));
+		//formats.add(new DateFormatOption("MMMMM dd, yyyy", "June 14, 2011"));
+		formats.add(new DateFormatOption("dd-MM-yyyy", "14-06-2011"));
+		formats.add(new DateFormatOption("MM-dd-yyyy", "06-14-2011"));
+		formats.add(new DateFormatOption("dd.MM.yyyy", "14.06.2011"));
+		formats.add(new DateFormatOption("MM.dd.yyyy", "06.14.2011"));
 		return formats;
 	}
 }

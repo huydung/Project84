@@ -12,20 +12,26 @@ titles.home = Home
 titles.profile = Your Profile
 
 ## ERRORS ##
-errors.oauth = Could not log in using OAuth. Please try again later or try another provider.
-errors.invalidParam = The parameter %s is invalid
-errors.notFound = Could not found the <em>%s</em> with id of <em>%d</em>
+error.oauth = Could not log in using OAuth. Please try again later or try another provider.
+error.invalidParam = The parameter %s is invalid
+error.notFound = Could not found the <em>%s</em> with id of <em>%d</em>
 error.validation = Your provided information is invalid. Please recheck and correct the error(s).
 
 ## SUCCESS ##
 success.oauth = Congrats, You've successfully signed in with <strong>%s</strong>! Please provide a little more details so we can create and adjust your account to your best preferences.
 success.profileSaved = Your profile (%s) has been saved!
 
+## WARNING ##
+warning.activity.save = Your activity can not be logged. 
+
 ## ACTIONS ##
 actions.changeImage = change image?
+actions.contactWarning = This is not critical, but please <a href="/contact?action=%s">Contact Us</a> so we can fix it. Thank you!
+actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us</a> so we can fix it for you. Thank you!
 
 ## LABELS ##
 labels.email = Email
+labels.emailAddress = Email Address
 labels.fullName = Full Name
 labels.nickName = Nick Name
 labels.mobile = Mobile
@@ -35,6 +41,14 @@ labels.saveProfile = Save Profile
 labels.nowIs = Current time
 labels.projectName = Project name
 labels.fromTemplate = From Template
+labels.viewAll = View All
+labels.as = as
+labels.doit = Do it
+labels.add = Add
+labels.edit = Edit
+labels.membership = Membership
+labels.delete = Delete
+labels.invitation = Invitation
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -44,7 +58,16 @@ membership.alreadyInvited = %s has been invited and has not answered. If you wan
 membership.invited = No account using the email %s yet, so an invitation to join Project84 has been sent to %s.
 
 ## PROJECT ##
-project.create = Create a Project
+project.create = Create new Project
+project.member = Member
+project.manager = Manager
+project.list = Projects you involve
+project.active_projects = Active Projects
+project.inactive_projects = Inactive Projects
+project.dashboard = Dashboard
+project.people = People
+project.manage_list = Configure
+project.addMember = Add Member/Client
 labels.project.create.short = Create Project
 labels.project.name = Project Name
 labels.project.deadline = Deadline
@@ -54,3 +77,9 @@ labels.project.needTrackTime = Need Track Time?
 labels.project.needClients = Has Client?
 labels.project.needMembers = Work with other mates?
 labels.project.needFiles = Need to manage Files?
+
+user.lastLoggedIn = Last Logged in
+
+members.teamLong = Members of the Team
+members.clientLong = Clients we need to listen to
+members.title = Chức danh

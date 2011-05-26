@@ -13,7 +13,7 @@ public class AccessPermission extends Model{
 	public String action;
 	
 	public static boolean check(Membership membership, String action){
-		String roles[] = membership.roles.split(",");
+		String roles[] = membership.roleNames.split(",");
 		for( String role : roles ){
 			if( AccessPermission.count("role = ? AND acton = ?", role, action) > 0 ){
 				return true;

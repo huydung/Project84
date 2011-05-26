@@ -10,23 +10,27 @@ import models.User;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.i18n.Messages;
+import play.modules.router.Get;
+import play.modules.router.Post;
 import play.mvc.*;
 
 public class Users extends AppController{
 	
+	//@Get("/users/profile")
 	public static void profile(Long uid){
 		User user = null;
 		user = User.findById(uid);
 		
 		if( user == null ){
-			flash.put("error", Messages.get("errors.notFound", "User", uid));
+			error(404, Messages.get("error.notFound", "User", uid));
 		}	
 		render(user);
 	}
 	
+	//@Post("/users/profile")
 	public static void saveProfile(@Valid User user){
 		if( Validation.hasErrors() ){			
-			flash.put("error", Messages.get("error.validation"));
+			validationMessage();
 			render("users/profile.html", user);
 		}else{
 			user.save();

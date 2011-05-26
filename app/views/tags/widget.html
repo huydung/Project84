@@ -1,0 +1,41 @@
+%{
+com.huydung.utils.Link firstLink = _widget.getFirstLink();
+com.huydung.utils.Link lastLink = _widget.getLastLink();
+
+}%
+<h3 class="widget-title">${_widget.getName()}</h3>
+<div class="${_widget.getHtmlClass()} portlet ui-widget ui-widget-content 
+            ui-helper-clearfix ui-corner-all">
+      
+      <div class="portlet-header ui-widget-header ui-corner-top clearfix">
+        <a href="${firstLink.href}" class="icon-link fleft first ${firstLink.className}">
+            ${firstLink.title}
+        </a>
+        <a href="${lastLink.href}" class="icon-link fright last ${lastLink.className}">
+            ${lastLink.title}
+        </a>
+      </div>
+      <div class="portlet-content" style="display: block; ">
+	      <div >
+	        #{if ( _widget.getHtml() == null )}
+	            <ul>
+	            #{list items:_widget.getItems(), as:'item'}
+	                <li class="clearfix">
+	                    <div class="main-info">
+	                    %{com.huydung.utils.Link link = item.getInfo(); }%
+	                       <a href="${link.href}">
+	                       ${link.title}
+	                       </a>
+	                    </div>
+	                    <div class="sub-info">${item.getSubInfo().raw()}</div>
+	                </li>
+	            #{/}
+	            </ul>
+	        #{/}  
+	        #{else}
+	            #{verbatim}${_widget.getHtml()}#{/}
+	        #{/}
+	      </div>
+      </div>
+        <em class="widget-subname">(${_widget.getSubName().raw()})</em>
+  </div>

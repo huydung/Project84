@@ -1,0 +1,16 @@
+<div class="project project_${_project.doneStatus}">
+    #{if _project.getStatus() != models.enums.DoneStatus.ONGOING}
+        <strong class="project_name name">
+            <a href="@{Projects.show(_project.id)}">${_project.name}</a>
+        </strong>        
+    #{/}
+    #{else}
+        <h4 class="project_name name">
+            <a href="@{Projects.dashboard(_project.id)}">${_project.name}</a>
+        </h4>
+        #{verbatim}
+        ${_project?.description != "" ? '<em class="description">'+ _project.description +'</em>' : ''}
+        ${_project.deadline != null ? '<strong class="date">'+ _project?.deadline?.format() +'</strong>' : ''}
+        #{/}
+    #{/}
+</div>

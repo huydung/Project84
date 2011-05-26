@@ -1,12 +1,32 @@
 /** General */
+.fleft{	float:left;}
+.fright{float:right;}
+.tleft{ text-align: left; }
+.tright{ text-align: right; }
+a.icon-link, button.icon-link{
+	padding-left: 18px;
+	text-decoration: underline;
+	border: none;
+	cursor: pointer;
+	font-weight:bold;
+	font-size: .8em;
+	color: #444;
+	font-family: "Palatino linotype", "Times New Roman", serif;
+	text-transform: uppercase;
+	height: 16px;
+	line-height: 16px;
+}
+a.icon-link:hover, button.icon-link:hover{
+	color: #000;
+}
+
 hr{margin: 1em 0; display: block; clear: both;}
 #page-title h1, form .button{
 	font-family: "Palatino linotype", "Times New Roman", serif;
 }
 .description{
 	display: block;
-	font-size: .8em;
-	
+	font-style: italic;
 }
 .tcenter{
 	text-align: center;
@@ -49,8 +69,7 @@ form .text, form select{
 	padding: 3px 10px;
 }
 .required label{color: #033E6B}
-.required .text, .required select{
-	
+.required .text, .required select{	
 	border-left: solid 4px #033E6B;
 	margin-left: -4px;
 }
@@ -67,4 +86,121 @@ form label:after{
 .form-field.error input.text, .form-field.error select{
 	background: #FFAFAF;
 	border: solid 2px #FF3F3F;
+}
+/* INLINE FORMS */
+form.inline{
+	margin-top: 17px;
+}
+form.inline label,
+form.inline input,
+form.inline span,
+form.inline button{
+    display: inline;
+    padding-right: 5px;
+    width: auto;
+    margin: 0;
+    float: none;
+}
+
+/** MENU **/
+#menu ul.group{
+	margin: 0;
+}
+#menu ul.group li a {
+	width: 116px;
+	height: 65px;
+}
+#menu ul.group li a span{
+    display: block; border-right: 1px solid #4985B2;
+    height: 15px;
+    padding-top: 45px; text-align: center;
+    text-transform: uppercase;
+    font: bold 11px "Palatino linotype", "Times New Roman", serif;
+    overflow: hidden;    
+}
+#menu ul.group li.last a span{
+	border-right:none;
+}
+
+#menu ul.group li a:hover, #menu ul.group li a.hover {
+    background-position: left -100px;
+    text-decoration: none;
+}
+#menu ul.group li.last a:hover, #menu ul.group li.last a.hover  {
+    background-position: right -100px;
+}
+#menu ul.group li a.current {
+    background-position: left -100px;
+    text-decoration: underline; 
+  
+}
+#menu ul.group li.last a.current  {
+    background-position: right -100px;
+}
+#menu ul.group li.first a.current  {
+    background-position: left -100px;
+}
+
+#menu .dashboard span{
+	background: url('../icons/__dashboard.png') no-repeat center 10px;
+}
+#menu .people span{
+    background: url('../icons/__people.png') no-repeat center 10px;
+}
+#menu .settings span{
+    background: url('../icons/__settings.png') no-repeat center 10px;
+}
+
+
+/* WIDGETS */
+.portlets{
+	padding: 0;	
+}
+h3.widget-title{
+	font: bold 18px "Palatino linotype", "Times New Roman", serif;
+	margin-bottom: 0;
+	color: #800;
+}
+.portlet{
+	width: 310px;
+	float: left;
+}
+
+.portlet-content > div > ul > li{
+	list-style: none;
+	padding-left: 0;
+	display: block;
+	margin-left: 0;
+	width: 100%;
+}
+.portlet-content li .main-info{
+	font-weight: bold;
+	float: left;
+	width: 65%;
+	clear:left;
+}
+.portlet-content li .main-info a{color: #000;}
+.portlet-content li .sub-info{
+    float: right;
+    width: 35%;
+    text-align: right;
+}
+.widget-subname{
+	text-align: right;
+	font-size: .8em;
+	display: block;
+}
+
+/* Icon Links */
+.icon-link-add {
+    background: url('../icons/plus.png') no-repeat left 0;
+}
+.icon-link-list{
+	background: url('../icons/tables_stacks.png') no-repeat left 0;
+}
+.icon-link-edit {
+    background: url('../icons/pencil.png') no-repeat 3px 1px;
+}
+.icon-link-delete{
+    background: url('../icons/cross.png') no-repeat left 0;
 }

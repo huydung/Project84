@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
-#{set title:messages.get('titles.profile') /}
-#{set pageTitle:messages.get('titles.profile') /}
+#{set title:messages.get('titles.profile') + ', ' + user.fullName /}
+#{set pageTitle:messages.get('titles.profile') + ', ' + user.fullName /}
 #{if user}
 
 <form id="form-profile" action="@{Users.saveProfile()}" method="POST"

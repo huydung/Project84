@@ -1,5 +1,6 @@
 package models.items;
 
+import models.BasicItem;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.data.validation.URL;

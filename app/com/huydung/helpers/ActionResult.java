@@ -5,10 +5,12 @@ public class ActionResult {
 	private boolean warning = false;
 	private String message;
 	
-	public ActionResult(boolean success, String message) {
-		super();
+	public ActionResult(boolean success) {
 		this.success = success;
-		this.message = message;
+	}
+	
+	public ActionResult(boolean success, String message) {
+		this(success);
 	}
 	
 	public ActionResult(boolean success, String message, boolean isWaning) {

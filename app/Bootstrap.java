@@ -1,20 +1,153 @@
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import net.sf.cglib.core.Local;
 
+import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
 import models.*;
+import models.enums.ApprovalStatus;
+import models.enums.DoneStatus;
+import models.templates.ListTemplate;
+import models.templates.ProjectListTemplate;
+import models.templates.ProjectTemplate;
 
 @OnApplicationStart
 public class Bootstrap extends Job {
 	public void doJob(){
 		TimeZone.setDefault(TimeZone.getTimeZone("GTM+7:00"));
 		Locale.setDefault(new Locale("vi"));
-		//if(User.count() == 0){
-		//	Fixtures.load("data.yml");
-		//}
+
+		//Delete all data
+		Activity.deleteAll();
+		Membership.deleteAll();
+		Project.deleteAll();
+		ProjectListTemplate.deleteAll();
+		ListTemplate.deleteAll();
+		ProjectTemplate.deleteAll();
+		
+		//Create Users
+		Calendar cal = new GregorianCalendar(2011, 4, 11, 22, 0);
+		cal.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+		
+		User huydung = new User();
+		huydung.fullName = "Dũng Huy Nguyễn";
+		huydung.email = "contact.huydung@gmail.com";
+		huydung.hasProfile = true;
+		huydung.dateFormat = "dd.MM.yyyy";
+		huydung.timeZone = "Asia/Ho_Chi_Minh";
+		huydung.identifier = "https://www.google.com/profiles/110714496619404851032";
+		huydung.lastLoggedIn = cal.getTime();
+		huydung.mobile = "0984903707";
+		huydung.nickName = "huydung";
+		huydung.save();
+		
+		User ngochien = new User();
+		ngochien.fullName = "Hiền Nguyễn Ngọc";
+		ngochien.email = "oakman.hd@gmail.com";
+		ngochien.hasProfile = true;
+		ngochien.dateFormat = "dd/MM/yyyy";
+		ngochien.timeZone = "Asia/Ho_Chi_Minh";
+		ngochien.identifier = "https://www.google.com/profiles/110714496619404851032";
+		cal.set(2011, 4, 12, 19, 30);
+		ngochien.lastLoggedIn = cal.getTime();
+		ngochien.mobile = "0985898137";
+		ngochien.nickName = "ngochien";
+		ngochien.save();
+						
+		//Create Project Template and List Template
+		ListTemplate tasks = new ListTemplate("Tasks", true, null, 
+				"Task:[date,assignedTo,category]", true);
+		tasks.save();
+		
+		ListTemplate files = new ListTemplate("Files", true, null,
+				"File:[filePath,mimeType,category]", true);
+		files.save();
+		
+		ListTemplate images = new ListTemplate("Images", true, null,
+				"Image:[filePath,mimeType,category]", true);
+		images.save();
+		
+		ListTemplate links = new ListTemplate("Links", true, null,
+				"Link:[url,category]", true);
+		links.save();
+		
+		ListTemplate discussions = new ListTemplate("Links", true, null,
+				"Discussion:[body,category]", true);
+		discussions.save();
+		
+		ListTemplate assets = new ListTemplate("Assets", true, null, 
+				"Asset:[price,amount,currency]", true);
+		assets.save();
+		
+		ListTemplate contacts = new ListTemplate("Contacts", true, null, 
+				"Contact:[email1,email2,phone1,phone2,address,lat,lan]", true);
+		contacts.save();
+		
+		ListTemplate events = new ListTemplate("Events", true, null, 
+				"Event:[date,address,lat,lan]", true);
+		events.save();
+		
+		ProjectTemplate software = new ProjectTemplate("Software Development", true, null, 
+				true, true);
+		software.save();
+		software.addList(tasks, "Todos");
+		software.addList(files, "Documents");
+		software.addList(assets, "Assets");
+		software.addList(discussions, "Discussions");
+		
+		ProjectTemplate wedding = new ProjectTemplate("Wedding", true, null, 
+				true, false);
+		wedding.save();
+		wedding.addList(tasks, "Todos");
+		wedding.addList(files, "Files");
+		wedding.addList(assets, "Money");
+		wedding.addList(contacts, "People");
+		wedding.addList(events, "Events");
+		wedding.addList(links, "Links");
+		
+		wedding.save();
+		
+		//Create 2 Projects
+		Project ol = new Project();
+		ol.fromTemplate = software;
+		ol.name = "OrangeLife";
+		ol.created = new Date(2011, 4, 10, 20, 22);
+		ol.creator = huydung;
+		
+		ol.deadline = new Date(2011, 4, 31);
+		ol.setStatus( DoneStatus.ONGOING );
+		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
+		ol.updated = ol.created;
+		ol.needClients = true;
+		ol.needMembers = true;
+		ol.save();		
+		ol.assignCreator(huydung, "Manager");
+		
+		Project wd = new Project();
+		wd.fromTemplate = wedding;
+		wd.name = "HD Wedding";
+		wd.created = new Date(2011, 2, 10, 20, 22);
+		wd.creator = huydung;
+		wd.deadline = new Date(2010, 11, 8);
+		wd.setStatus( DoneStatus.ONGOING );
+		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
+		wd.updated = ol.created;
+		wd.needMembers = true;
+		wd.save();		
+		wd.assignCreator(huydung, "Broom");
+		wd.addMember("oakman.hd@gmail.com", "Bride");
+		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
+		bride.status = ApprovalStatus.ACCEPTED;
+		bride.save();
+		wd.addMember("vannessars@yahoo.com", "Bridesmaid");
+		
+		System.out.println("Create data");
+
 	}	
 }

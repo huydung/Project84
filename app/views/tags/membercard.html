@@ -1,0 +1,36 @@
+
+<div class="grid_5 membercard">
+    <div class="actions">
+        #{if _member.isInvitation() }
+        <a class="icon-link icon-link-delete" 
+            href="@{Memberships.delete(_member.id)}">&{'labels.delete'} &{'labels.invitation'}</a>
+        #{/}
+        #{else}
+        <a class="icon-link icon-link-edit"
+            href="@{Memberships.edit(_member.id)}">&{'labels.edit'} &{'labels.membership'}</a>
+        <a class="icon-link icon-link-delete"
+            href="@{Memberships.delete(_member.id)}">&{'labels.delete'} &{'labels.membership'}</a>        
+        #{/}
+    </div>
+    #{gravatar email:_member.getEmail(), size:100 /}
+    
+    *{***** Is an membership ****}*
+    #{if _member.user }
+    <ul>
+        <li class="role-title">${_member.title}</li>
+        <li>
+            <strong class="name">${_member.user.fullName}</strong>&nbsp;
+            (${_member.user.nickName})
+        </li>
+        <li>#{link-mail _member.user.email /}</li>
+        <li>#{link-tel _member.user.mobile /}</li>
+        <li class="roles">${ _member.roles }</li>
+    </ul>
+    #{/}
+    
+    *{***** Is an invitation ****}*
+    
+    #{else}
+    #{/}
+    
+</div>

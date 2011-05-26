@@ -7,13 +7,16 @@
 <form id="form-project" action="@{Projects.save()}" method="POST"
     class="horizontal-form">
     <div class="grid_9 prefix_2">        
-        <input type="hidden" name="user.id" value="${project.id}" />
-        
+        <input type="hidden" name="project.id" value="${project.id}" />
+        <input type="hidden" name="project.creator.id" value="${loggedin.id}" />
         #{field name:'project.name', value:project.name, labelKey:'labels.project.name', hasBody: false /}
 
-        #{field name:'project.fromTemplate', labelKey:'labels.fromTemplate', hasBody:true}
-            
-            #{select 'project.fromTemplate', value:project.fromTemplate, 
+        #{field name:'project.fromTemplate.id', labelKey:'labels.fromTemplate', hasBody:true}
+            %{ 
+            Long tid = 0;
+            if(project.fromTemplate) { tid = project.fromTemplate.id };            
+            }%
+            #{select 'project.fromTemplate.id', value:project?.fromTemplate?.id ?: 0, 
                 items:templates, 
                 valueProperty:'id' /}
         #{/}       
@@ -21,8 +24,9 @@
         <hr />
         <div class="form-field">
             <label>&{'labels.project.deadline'}</label>
-            <input class="text date" data-format="yy-mm-dd" 
-                value="${project.deadline}" name="project.deadline"/>
+            <input class="text date" data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }" 
+                value="${project.deadline}" name="project.deadline"
+                />
         </div>
         
         <div class="form-field">
@@ -33,24 +37,17 @@
         <div class="form-field">
             <label>&{'labels.project.functions'}</label>
             <div class="grid_5">
-                <input type="checkbox" name="project.needTrackTime"
-                    ${project.needTrackTime ? 'checked="checked"' : ''} />
-                <span class="label">&{'labels.project.needTrackTime'}</span>
-                <br/>
                 
                 <input type="checkbox" name="project.needClients"
                     ${project.needClients ? 'checked="checked"' : ''} />
                 <span class="label">&{'labels.project.needClients'}</span>
                 <br/>
                 
-                <input type="checkbox" name="project.needMembers"
+                <input type="checkbox"  name="project.needMembers"
                     ${project.needMembers ? 'checked="checked"' : ''} />
                 <span class="label">&{'labels.project.needMembers'}</span>
                 <br/>
-                
-                <input type="checkbox" name="project.needFiles"
-                    ${project.needFiles ? 'checked="checked"' : ''} />
-                <span class="label">&{'labels.project.needFiles'}</span>
+
             </div>
         </div>
         

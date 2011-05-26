@@ -1,0 +1,35 @@
+#{extends 'main.html' /}
+#{set title:project.name + ' - ' + messages.get('project.people') /}
+#{set pageTitle:project.name + ' - ' + messages.get('project.people') /}
+
+
+#{if (project.needMembers && members != null) }
+<div class="grid_6">
+<h1>&{'members.teamLong'}</h1>
+</div>
+<div class="grid_9">
+    <form class="inline tright" action="@{Memberships.create}" method="POST">
+        
+        <input type="hidden" name="membership.roleNames" 
+            value="${models.enums.Role.MEMBER}" />
+        <input type="hidden" name="membership.project.id" 
+            value="${project.id}" size="20" />
+        <label>&{'labels.add'}</label>
+        <input type="email" required="required" placeholder="&{'labels.emailAddress'}" 
+            name="membership.userEmail"/>
+        <span>&{'labels.as'}</span>
+        <input type="text" size="10" placeholder="&{'members.title'}" />
+        <button class="icon-link icon-link-add" type="submit">&{'labels.doit'}</button>
+    </form>
+</div>
+<div class="memberships members">
+
+    #{list items:members, as:'member'}
+        #{membercard member:member /}    
+    #{/}
+</div>
+#{/}
+
+#{if (project.needClients && clients != null) }
+<h2>&{'members.clientLong'}</h2>
+#{/}
