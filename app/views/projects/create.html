@@ -9,9 +9,9 @@
     <div class="grid_9 prefix_2">        
         <input type="hidden" name="project.id" value="${project.id}" />
         <input type="hidden" name="project.creator.id" value="${loggedin.id}" />
-        #{field name:'project.name', value:project.name, labelKey:'labels.project.name', hasBody: false /}
+        #{hdfield name:'project.name', value:project.name, labelKey:'labels.project.name', hasBody: false /}
 
-        #{field name:'project.fromTemplate.id', labelKey:'labels.fromTemplate', hasBody:true}
+        #{hdfield name:'project.fromTemplate.id', labelKey:'labels.fromTemplate', hasBody:true}
             %{ 
             Long tid = 0;
             if(project.fromTemplate) { tid = project.fromTemplate.id };            

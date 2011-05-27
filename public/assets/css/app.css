@@ -3,6 +3,7 @@
 .fright{float:right;}
 .tleft{ text-align: left; }
 .tright{ text-align: right; }
+.tcenter{text-align: center;}
 a.icon-link, button.icon-link{
 	padding-left: 18px;
 	text-decoration: underline;

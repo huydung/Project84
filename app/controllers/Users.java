@@ -15,12 +15,12 @@ import play.mvc.*;
 public class Users extends AppController{
 	
 	//@Get("/users/profile")
-	public static void profile(Long uid){
+	public static void profile(Long id){
 		User user = null;
-		user = User.findById(uid);
+		user = User.findById(id);
 		
 		if( user == null ){
-			error(404, Messages.get("error.notFound", "User", uid));
+			error(404, Messages.get("error.notFound", "User", id));
 		}	
 		render(user);
 	}

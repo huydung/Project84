@@ -1,0 +1,26 @@
+<form id="form-membership" action="@{Memberships.doEdit}" method="POST"
+    class="horizontal-form membership">
+        <input type="hidden" name="id" value="${membership.id}" />
+        <input type="hidden" name="project_id" value="${membership.project.id}" />
+        <p class="tcenter">
+            <strong>${membership.user.fullName}</strong> | 
+            <em>#{link-mail membership.user.email /} | #{link-tel membership.user.mobile /} | ${membership.roleNames}</li>
+            </em>
+        </p>
+        
+        #{hdfield name:'membership.title', value:membership.title, labelKey:'members.title', hasBody:false /}
+        
+        <div class="form-field required #{ifError 'roles'} error #{/}">
+	       <label>&{'labels.roles'}</label>
+	       %{ models.enums.Role[] roles = models.enums.Role.values() }%
+	       #{list items:roles, as:'role'}
+	           <input type="checkbox" name="roles[]"
+                    ${ membership.roleNames.contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' } />
+               <span>${role}</span> 
+	       #{/}
+	    <span class="error">#{error 'roles' /}</span> 
+	    </div>
+        <button type="submit" class="button button_grey">
+            <span>&{'labels.save'}</span>
+        </button>  
+</form>

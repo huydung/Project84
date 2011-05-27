@@ -11,6 +11,7 @@ import com.huydung.helpers.ActionResult;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.i18n.Messages;
 
 import models.Membership;
 import models.Project;
@@ -44,7 +45,7 @@ public class Memberships extends AppController {
 		render("memberships/form_add.html", project);
 	}
 	
-	public static void save(
+	public static void doCreate(
 			@Required String email, @Required String member_title,
 			@Required Long project_id){		
 		if( Validation.hasErrors() ){
@@ -67,7 +68,18 @@ public class Memberships extends AppController {
 	}
 	
 	public static void edit(@Required Long id, @Required Long project_id){
-		
+		Membership membership = Membership.findById(id);
+		if( membership != null ){
+			render("memberships/form_edit.html", membership);
+		}else{
+			error(404, Messages.get("error.notFound", "Membership", id));
+		}
+	}
+	
+	public static void doEdit(
+		@Required Long id, @Required Long project_id, Role[] roles, @Required String title
+	){
+		render();
 	}
 	
 	public static void delete(@Required Long id, @Required Long project_id){

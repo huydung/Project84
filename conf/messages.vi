@@ -61,6 +61,7 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 
 
 ## LABELS ##
+labels.save = Lưu
 labels.email = Email
 labels.emailAddress = Địa chỉ email
 labels.fullName = Họ và tên
@@ -80,6 +81,7 @@ labels.edit = Sửa
 labels.membership = Nhân sự
 labels.delete = Xóa
 labels.invitation = Lời mời
+labels.roles = Vai trò
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.

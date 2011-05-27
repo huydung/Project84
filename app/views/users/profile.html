@@ -10,24 +10,24 @@
         <input type="hidden" name="user.id" value="${user.id}" />
         <input type="hidden" name="user.email" value="${user.email}" />
         
-        #{field name:'user.email', value:user.email, labelKey:'labels.email', hasBody: true}
+        #{hdfield name:'user.email', value:user.email, labelKey:'labels.email', hasBody: true}
             <input class="text" value="${user.email}" disabled="disabled" />
         #{/}
         
-        #{field name:'user.fullName', value:user.fullName, labelKey:'labels.fullName', hasBody:false /}
+        #{hdfield name:'user.fullName', value:user.fullName, labelKey:'labels.fullName', hasBody:false /}
         
-        #{field name:'user.nickName', value:user.nickName, labelKey:'labels.nickName', hasBody:false /}
+        #{hdfield name:'user.nickName', value:user.nickName, labelKey:'labels.nickName', hasBody:false /}
         
-        #{field name:'user.mobile', value:user.mobile, labelKey:'labels.mobile', hasBody:false /}
+        #{hdfield name:'user.mobile', value:user.mobile, labelKey:'labels.mobile', hasBody:false /}
         
-        #{field name:'user.timeZone', labelKey:'labels.nowIs', hasBody:true}
+        #{hdfield name:'user.timeZone', labelKey:'labels.nowIs', hasBody:true}
             
 	        #{select 'user.timeZone', value:user.timeZone, 
 	            items:com.huydung.utils.SelectorUtil.getTimezones(), 
 	            valueProperty:'id' /}
         #{/}
         
-        #{field name:'user.dateFormat', labelKey:'labels.dateFormat', hasBody:true}
+        #{hdfield name:'user.dateFormat', labelKey:'labels.dateFormat', hasBody:true}
             
             #{select 'user.dateFormat', value:user.dateFormat, 
             items:com.huydung.utils.SelectorUtil.getDateFormats(), 

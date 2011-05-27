@@ -11,7 +11,7 @@
         <strong>${_member.user.nickName}</strong>
         <a class="fright icon-link icon-link-delete"
             href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>        
-        <a class="fright icon-link icon-link-edit"
+        <a class="fright icon-link icon-link-edit modal"
             href="@{Memberships.edit(_member.id, _member.project.id)}">&{'labels.edit'}</a>
          #{/}
       </div>

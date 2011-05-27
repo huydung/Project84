@@ -1,10 +1,7 @@
-
 <div class="form-field required #{ifError _name} error #{/}">
     <label>&{_labelKey}</label>
     #{if !_hasBody}
-        <input class="text" required="required" 
-        ${_placeholder != null ? 'placeholder="'+ _placeholder + '"' : ''} 
-        name="${_name}" value="${_value}" />
+        <input class="text" name="${_name}" value="${_value}" />
     #{/if}
     #{else}
         #{doBody /}
