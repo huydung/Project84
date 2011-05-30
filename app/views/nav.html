@@ -7,11 +7,14 @@
     </li>
     #{if project.needMembers || project.needClients}
     <li class="item people">
-        <a href="@{Memberships.dashboard(project.id)}"><span>&{'project.people'}</span></a>
+        <a href="@{Memberships.dashboard(project.id)}" class="${active == 'people' ? 'current' : ''}">
+        <span>&{'project.people'}</span></a>
     </li>
     #{/}
     <li class="item settings last">
-        <a href="@{Projects.structure(project.id)}"><span>&{'project.manage_list'}</span></a>
+        <a href="@{Projects.structure(project.id)}" class="${active == 'settings' ? 'current' : ''}">
+            <span>&{'project.manage_list'}</span>
+        </a>
     </span></li>    
 </ul>
 #{/}

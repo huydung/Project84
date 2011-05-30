@@ -180,7 +180,7 @@ $(document).ready(function(){
 					close: function(){
 						$('#modal-dialog').remove()
 					},
-					width: 650
+					width: 600
 				});
 			});
 		return false;			

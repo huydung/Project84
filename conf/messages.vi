@@ -82,6 +82,11 @@ labels.membership = Nhân sự
 labels.delete = Xóa
 labels.invitation = Lời mời
 labels.roles = Vai trò
+labels.resendEmail = Gửi lại email
+labels.emailSent = Email đã được gửi tới %s
+labels.createdOn = Khởi tạo ngày
+labels.acceptInvite = Nhận lời tham gia
+labels.deny = Từ chối
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -128,5 +133,11 @@ since.months = %d tháng trước
 user.lastLoggedIn = đăng nhập lần cuối
 
 members.teamLong = Những thành viên của nhóm
-members.clientLong = Những khách hàng mà ta cần lắng nghe
+members.clientLong = Khách hàng của dự án
 members.title = Chức danh
+members.invite.subject = Lời mời tham gia dự án [%s] từ [%s]
+
+message.invitation = Xin chào %s,<br/><br/><strong>%s</strong> (%s) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
+message.asMember = với tư cách là một Thành viên của dự án
+message.asClient = với tư cách là Khách hàng của dự án
+message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:

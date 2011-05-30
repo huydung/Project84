@@ -2,13 +2,13 @@
 #{set title:project.name + ' - ' + messages.get('project.people') /}
 #{set pageTitle:project.name + ' - ' + messages.get('project.people') /}
 
-
 #{if (project.needMembers && members != null) }
 <div class="grid_6">
 <h1>&{'members.teamLong'}</h1>
 </div>
 <div class="grid_9">
-    #{include "memberships/form_add.html" /}
+    #{set client:false/}
+    #{include 'memberships/form_add.html' /}
 </div>
 <hr/>
 <div class="memberships members grid_15">
@@ -19,6 +19,22 @@
 </div>
 #{/}
 
-#{if (project.needClients && clients != null) }
-<h2>&{'members.clientLong'}</h2>
+#{if (project.needClients) }
+<div class="grid_6">
+<h1>&{'members.clientLong'}</h1>
+</div>
+<div class="grid_9">
+    #{set client:true/}
+    #{include 'memberships/form_add.html' /}
+</div>
+<hr/>
+#{if clients != null}
+
+<div class="memberships members grid_15">
+
+    #{list items:clients, as:'client'}
+        #{membercard member:client /}    
+    #{/}
+</div>
+#{/}
 #{/}

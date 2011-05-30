@@ -1,0 +1,63 @@
+#{extends 'Emails/template.html' /}
+<h2 style="font-family: Helvetica, Arial, sans-serif; font-size: 18px; margin: 0px; padding: 0px; text-shadow: 1px 1px 1px #333333; color: #62b6ee">
+&{'members.invite.subject', project.name, from.fullName} </h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr><td height="10"></td></tr>
+</table>
+<p style="font-family: Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0px; margin-bottom: 0px; padding: 0px; color: #EEEEEE">
+&{'message.invitation', email, from.fullName, from.email, project.name } <a style="color:#62B6EE"  href="@{Application.app()}">Project84</a> 
+&{isClient? 'message.asClient':'message.asMember'}. 
+
+</p>
+
+
+<!--line-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="middle" height="40"> <img src="@{'/public/assets/images/mails/line.jpg'}" width="533" height="11"></td>
+    </tr>
+</table>
+<!--/line-->
+<p style="font-style:italic;font-family: Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0px; margin-bottom: 0px; padding: 0px; color: #e7eff6">
+<ul>
+    <li style="list-style:none;color:#EEEEEE;"><img src="@@{'/public/assets/images/mails/li.png'}" />&{'labels.projectName'}: ${project.name}
+    #{if project.description != null && project.description.length() > 0}
+    <br/>&nbsp;&nbsp;&nbsp;&nbsp;<em>${project.description}</em>
+    #{/}
+    </li>
+    <li style="list-style:none;color:#EEEEEE;"><img src="@@{'/public/assets/images/mails/li.png'}" />&{'labels.createdOn'} ${project.created.format('dd MMMMM yyyy')}</li>
+    #{if project.deadline != null }
+    <li style="list-style:none;color:#EEEEEE;"><img src="@@{'/public/assets/images/mails/li.png'}" />&{'labels.project.deadline'} ${project.deadline.format('dd MMMMM yyyy')}</li>
+    #{/}
+</ul>
+
+</p>
+
+<!--line-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="middle" height="40"> <img src="@{'/public/assets/images/mails/line.jpg'}" width="533" height="11"></td>
+    </tr>
+</table>
+<!--/line-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+    <td height="30" valign="top">
+    <p style="font-family: Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0px; margin-bottom: 0px; padding: 0px; color: #7499A6">
+        <em>&{'message.pleaseAnswer', from.fullName}</em><br/><br/>
+    
+    <a href="#" style="margin-top:10px;color:#FFFFFF;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:uppercase;font-weight:bold">
+    <img  style="float:left;margin-top:5px;" src="@@{'/public/assets/icons/tick.png'}"/>
+    &nbsp;&{'labels.acceptInvite'}
+    </a> <span>&nbsp;&nbsp;&nbsp;hoặc&nbsp;&nbsp;&nbsp;</span>
+
+    <a href="#" style="margin-top:10px;color:#7499A6;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:lowercase;font-weight:bold;line-height:20px;">
+	    &{'labels.deny'}
+	</a>
+	</p>
+    </td>
+</tr>
+</table>
+<tr>
+
+

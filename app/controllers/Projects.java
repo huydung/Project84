@@ -29,6 +29,10 @@ import play.data.binding.*;
 import play.data.binding.types.DateBinder;
 
 public class Projects extends AppController { 
+	@Before
+	static void setActive(){
+		renderArgs.put("active", "dashboard");
+	}
 	
 	//@Get("/projects")
 	public static void overview(){
@@ -57,8 +61,7 @@ public class Projects extends AppController {
 			Application.homepage();
 		}else{
 			Project project = Project.findById(id);
-			String active = "dashboard";
-			render(project, active);
+			render(project);
 		}		
 	}
 		

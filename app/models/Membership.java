@@ -39,7 +39,7 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	public Project project;
 	
 	@Required
-    public String roleNames = Role.MEMBER.getName();
+    public String roleNames = Role.MEMBER.toString();
 	
 	public Boolean deleted = false; 
     
@@ -91,12 +91,13 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     }
     
     public boolean hasRole(Role role){
-    	if( roleNames.startsWith(role.getName()) ){
+    	String r = role.toString();
+    	if( roleNames.startsWith(r) ){
     		return true;
-    	}else if( roleNames.endsWith(role.getName()) ){
+    	}else if( roleNames.endsWith(r) ){
     		return true;
     	}else{
-    		return roleNames.contains("," + role.getName() + ",");
+    		return roleNames.contains("," + r + ",");
     	}
     }
     
@@ -104,11 +105,15 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 
     	this.roleNames = "";
     	for(Role role : roles){
-    		this.roleNames += role.getName() + ",";
+    		this.roleNames += role.toString() + ",";
     	}
     	if(this.roleNames.length() > 0){
     		this.roleNames.substring(this.roleNames.length() - 1);
     	} 
+    }
+    
+    public void setRole(Role role){
+    	this.roleNames = role.toString();    	
     }
     
     public String getEmail(){
@@ -124,6 +129,10 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     		return false;
     	}
     	return true;
+    }
+    
+    public boolean isClient(){
+    	return hasRole(Role.CLIENT);
     }
     
     public String getInvitationStatus(){
@@ -144,7 +153,11 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     
     public void addRole(Role role){
     	if( !hasRole(role) ){
-    		roleNames += "," + role.getName();
+    		if(roleNames != null && roleNames.length() > 0){
+    			roleNames += "," + role.toString();
+    		}else{
+    			roleNames = role.toString();
+    		}
     	}
     }
     

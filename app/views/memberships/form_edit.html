@@ -1,3 +1,10 @@
+#{if !ajax}
+
+#{extends 'main.html' /}
+#{set title:messages.get('labels.edit') + ' ' + messages.get('labels.membership') /}
+#{set pageTitle:messages.get('labels.edit') + ' ' + messages.get('labels.membership') /}
+
+#{/}
 <form id="form-membership" action="@{Memberships.doEdit}" method="POST"
     class="horizontal-form membership">
         <input type="hidden" name="id" value="${membership.id}" />
@@ -8,13 +15,13 @@
             </em>
         </p>
         
-        #{hdfield name:'membership.title', value:membership.title, labelKey:'members.title', hasBody:false /}
+        #{hdfield name:'title', value:membership.title, labelKey:'members.title', hasBody:false /}
         
         <div class="form-field required #{ifError 'roles'} error #{/}">
 	       <label>&{'labels.roles'}</label>
 	       %{ models.enums.Role[] roles = models.enums.Role.values() }%
 	       #{list items:roles, as:'role'}
-	           <input type="checkbox" name="roles[]"
+	           <input type="checkbox" name="roles" value="${role.toString()}"
                     ${ membership.roleNames.contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' } />
                <span>${role}</span> 
 	       #{/}

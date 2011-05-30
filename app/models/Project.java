@@ -88,19 +88,25 @@ public class Project extends BasicItem {
     	}
     }
     
-    public ActionResult addMember(String userEmail, String title){
+    public ActionResult addMember(String userEmail, String title, boolean isClient){
     	User user = User.findByEmail(userEmail);
     	Membership m = null;
     	//If an account existed with the provided email, Create a Membership for her 
     	if( user != null ){
     		m = Membership.findByProjectAndUser(this, user);
-    		//Only add new Membership
+    		
     		if( m == null ){
     			m = new Membership(this, user, title);
-    			m.status = ApprovalStatus.UNREAD;
+    			if( isClient ){ m.setRole(Role.CLIENT); }
+    			m.status = ApprovalStatus.WAITING_INVITE;
     			boolean saved = m.validateAndSave();
-    			return new ActionResult(true, 
-    					Messages.get("membership.created", user.nickName, user.email));
+    			if(saved){
+	    			return new ActionResult(true, 
+	    					Messages.get("membership.created", user.nickName, user.email),
+	    					m);
+    			}else{
+    				return new ActionResult(false, "Fatal Error In Project.addmember");
+    			}
     		}else{
     			if( m.status == ApprovalStatus.ACCEPTED ){
     				return new ActionResult(false, 
@@ -125,10 +131,12 @@ public class Project extends BasicItem {
     					Messages.get("membership.alreadyInvited", userEmail), true);
     		}else{
     			m = new Membership(this, userEmail);
+    			if( isClient ){ m.setRole(Role.CLIENT); }
         		m.status = ApprovalStatus.WAITING_INVITE;
         		if( m.validateAndSave() ){
         			return new ActionResult(true, 
-        				Messages.get("membership.invited", userEmail, userEmail));
+        				Messages.get("membership.invited", userEmail, userEmail),
+        				m);
         		}else{
         			return new ActionResult(false, "Fatal Error In Project.addmember");
         		}
@@ -141,8 +149,8 @@ public class Project extends BasicItem {
     		return Membership.count("user = ? AND status = ?", 
     				user, status);
     	}else{
-    		return Membership.count("user = ? AND status = ? AND role = ?", 
-    				user, status, role.getName());
+    		return Membership.count("user = ? AND status = ? AND roleNames LIKE '%?%'", 
+    				user, status, role.toString());
     	}
     }
     

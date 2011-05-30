@@ -6,18 +6,28 @@ import java.util.List;
 
 import javax.mail.internet.PreencodedMimeBodyPart;
 
+import notifiers.Emails;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.huydung.helpers.ActionResult;
 
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.i18n.Messages;
+import play.mvc.Before;
 
 import models.Membership;
 import models.Project;
+import models.User;
 import models.enums.Role;
 
 public class Memberships extends AppController {
+	@Before
+	static void setActive(){
+		renderArgs.put("active", "people");
+	}
 	
 	public static void dashboard(Long project_id){
 		Project project = Project.findById(project_id);
@@ -28,7 +38,7 @@ public class Memberships extends AppController {
 				if(members != null){
 					for(Iterator<Membership> ite = members.iterator(); ite.hasNext();){
 						Membership m = ite.next();
-						if( m.hasRole(Role.CLIENT) ){
+						if( m.isClient() ){
 							clients.add(m);
 							ite.remove();
 						}
@@ -47,7 +57,7 @@ public class Memberships extends AppController {
 	
 	public static void doCreate(
 			@Required String email, @Required String member_title,
-			@Required Long project_id){		
+			@Required Long project_id, @Required Boolean isClient){		
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 			params.flash();
@@ -59,11 +69,15 @@ public class Memberships extends AppController {
 			params.flash();
 			dashboard(project_id);
 		}
-		ActionResult r = p.addMember(email, member_title);
+		ActionResult r = p.addMember(email, member_title, isClient);
 		if( !r.isSuccess() ){
 			params.flash();
 			displayError(r.getMessage(), "add-member");
 		}
+		Membership m = (Membership)r.getData();
+		//send email
+		Emails.invitationToMember(email, getLoggedin().id, project_id, m.isClient());
+		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
 	}
 	
@@ -79,7 +93,17 @@ public class Memberships extends AppController {
 	public static void doEdit(
 		@Required Long id, @Required Long project_id, Role[] roles, @Required String title
 	){
-		render();
+		if( Validation.hasErrors() ){
+			displayValidationMessage();
+			dashboard(project_id);
+		}
+		Membership m = Membership.findById(id);
+		if(m != null){
+			m.title = title;
+			m.roleNames = StringUtils.join(roles, ",").toLowerCase();
+			m.save();
+			dashboard(project_id);
+		}
 	}
 	
 	public static void delete(@Required Long id, @Required Long project_id){
@@ -96,4 +120,9 @@ public class Memberships extends AppController {
 		dashboard(project_id);
 	}
 	
+	public static void sendInvite(@Required Long project_id, @Required String email, Boolean isClient){
+		Emails.invitationToMember(email, getLoggedin().id, project_id, isClient);
+		flash.put("success", Messages.get("labels.emailSent", email));
+		dashboard(project_id);
+	}
 }

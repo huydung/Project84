@@ -43,6 +43,11 @@ public class AppController extends Controller {
 			.setParameter("deleted", false);
 	}
 	
+	@Before
+	static void checkAjax(){
+		renderArgs.put("ajax", request.isAjax());
+	}
+	
 	protected static User getLoggedin(){
 		return renderArgs.get("loggedin", User.class);
 	}

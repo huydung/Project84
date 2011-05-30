@@ -75,6 +75,9 @@ form .text, form select{
 	margin: 10px 0 0;
 	padding: 3px 10px;
 }
+form input[type="checkbox"]{
+	margin: 17px 0 0 20px;
+}
 .required label{color: #033E6B}
 .required .text, .required select{	
 	border-left: solid 4px #033E6B;
@@ -211,7 +214,9 @@ h3.widget-title{
 .icon-link-delete{
     background: url('../icons/cross.png') no-repeat left 0;
 }
-
+.icon-link-email{
+	background: url('../icons/mail_small.png') no-repeat left 0;
+}
 
 /** Membership **/
 .membercard{

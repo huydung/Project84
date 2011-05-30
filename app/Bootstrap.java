@@ -117,10 +117,11 @@ public class Bootstrap extends Job {
 		Project ol = new Project();
 		ol.fromTemplate = software;
 		ol.name = "OrangeLife";
-		ol.created = new Date(2011, 4, 10, 20, 22);
+		cal.set(2011, 4, 10, 20, 22);
+		ol.created = cal.getTime();
 		ol.creator = huydung;
-		
-		ol.deadline = new Date(2011, 4, 31);
+		cal.set(2011, 4, 31);
+		ol.deadline = cal.getTime();
 		ol.setStatus( DoneStatus.ONGOING );
 		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
 		ol.updated = ol.created;
@@ -128,24 +129,28 @@ public class Bootstrap extends Job {
 		ol.needMembers = true;
 		ol.save();		
 		ol.assignCreator(huydung, "Manager");
+		ol.addMember("havu.hrc@gmail.com", "Client", true);
 		
 		Project wd = new Project();
 		wd.fromTemplate = wedding;
 		wd.name = "HD Wedding";
-		wd.created = new Date(2011, 2, 10, 20, 22);
+		cal.set(2011, 2, 10, 20, 22);
+		wd.created = cal.getTime();
 		wd.creator = huydung;
-		wd.deadline = new Date(2010, 11, 8);
+		cal.set(2012, 11, 8);
+		wd.deadline = cal.getTime();
 		wd.setStatus( DoneStatus.ONGOING );
 		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
 		wd.updated = ol.created;
 		wd.needMembers = true;
 		wd.save();		
 		wd.assignCreator(huydung, "Broom");
-		wd.addMember("oakman.hd@gmail.com", "Bride");
+		wd.addMember("oakman.hd@gmail.com", "Bride", false);
 		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
 		bride.status = ApprovalStatus.ACCEPTED;
 		bride.save();
-		wd.addMember("vannessars@yahoo.com", "Bridesmaid");
+		wd.addMember("vannessars@yahoo.com", "Bridesmaid", false);
+		
 		
 		System.out.println("Create data");
 
