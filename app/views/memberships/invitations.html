@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:messages.get('labels.yourInvitations') /}
+#{set pageTitle:title /}
+
+<h3>&{'labels.replyYourInvitation'}</h3>
+<form action="#" method="post">
+	<ul>
+	    #{list items:invitations, as:'invite'}
+	    <div class="form-field">
+	    <label class="grid_6">${invite.project.name}</label>
+	    <div class="fleft">
+		    <input type="radio" name="${invite.id}-accept" value="true" checked="checked" />	    
+		    <span>&{'labels.acceptInvite'}</span>
+		    <input type="radio" name="${invite.id}-accept" value="false" />     
+	        <span>&{'labels.deny'}</span>
+        </div>
+	    </div>	   
+	    #{/}
+	</ul>
+	<hr />
+	<button class="button nomargin" type="submit"><span>&{'labels.confirm'}</span></button>
+</form>

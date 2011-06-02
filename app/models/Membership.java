@@ -6,6 +6,7 @@ import play.data.validation.CheckWith;
 import play.data.validation.Required;
 import play.db.jpa.*;
 import play.i18n.Messages;
+import play.libs.Crypto;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
 
@@ -40,6 +41,8 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	
 	@Required
     public String roleNames = Role.MEMBER.toString();
+	
+	public String inviteKey;
 	
 	public Boolean deleted = false; 
     
@@ -141,6 +144,12 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	}else{    		
     		return Messages.get("members.invite." + status.toString());
     	}
+    }
+    
+    public String generateInvitationKey(){
+    	String d = new Date().toString();
+    	String email = getEmail();
+    	return Crypto.encryptAES(email + "d");    	
     }
     
     public String getInvitationDescription(){

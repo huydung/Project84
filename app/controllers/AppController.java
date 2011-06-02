@@ -48,18 +48,18 @@ public class AppController extends Controller {
 		renderArgs.put("ajax", request.isAjax());
 	}
 	
-	protected static User getLoggedin(){
+	static User getLoggedin(){
 		return renderArgs.get("loggedin", User.class);
 	}
 
-	protected static void displayWarning(String message, String action){
+	static void displayWarning(String message, String action){
 		flash.put("warning", 
 				message + "<br/>" 
 				//+	Messages.get("actions.contactWarning", action)
 				);	
 	}
 	
-	protected static void displayError(String message, String action){
+	static void displayError(String message, String action){
 		flash.put("error", 
 				message + "<br/>" 
 				//+ Messages.get("actions.contactError", action)
@@ -67,7 +67,11 @@ public class AppController extends Controller {
 		
 	}
 	
-	protected static void displayValidationMessage(){
+	static void displayValidationMessage(){
 		flash.put("error", Messages.get("error.validation") );
+	}
+	
+	static void notFound(String object, Long id){
+		error(404, Messages.get("error.notFound", object, id));		
 	}
 }

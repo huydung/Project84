@@ -1,12 +1,15 @@
 package controllers;
 
 import play.*;
+import play.data.validation.Required;
+import play.data.validation.Validation;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.libs.WS;
 import play.libs.XPath;
 import play.mvc.*;
 
+import java.text.Collator;
 import java.util.*;
 
 import org.w3c.dom.*;
@@ -15,10 +18,11 @@ import com.google.gson.JsonElement;
 import com.sun.org.apache.xpath.internal.res.XPATHErrorResources;
 
 import models.*;
+import models.enums.ApprovalStatus;
 
 public class Application extends Controller {
 	
-	@Before(unless={"homepage","rpx","switchLanguage"})
+	@Before(unless={"homepage","rpx","switchLanguage","inviteResponseFromEmail"})
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {
             User user = User.findById(Long.parseLong(Security.getConnectedUserId()));
@@ -52,15 +56,35 @@ public class Application extends Controller {
     
     //@Get("/")
     public static void app(){
-    	List<Membership> memberships = Membership.findByUser(
-    		renderArgs.get("loggedin", User.class)
-    	);
-    	if( memberships == null || memberships.size() == 0 ){
-    		Projects.create();
-    	}else{
-    		Projects.overview();
+    	User user = renderArgs.get("loggedin", User.class);
+    	
+    	//Check if there're invitations for this user
+    	List<Membership> invitations = Membership.findByUserEmailAndStatus(
+    			user.email, ApprovalStatus.WAITING_INVITE);
+    	Long accept_id = -1L;
+    	if( session.contains("invitationId") ){
+    		accept_id = Long.parseLong(session.get("invitationId"));
+    		boolean existed = false;
+    		for( Membership m : invitations ){
+    			if( m.id == accept_id ){
+    				existed = true; break;
+    			}
+    		}
+    		if(!existed){
+    			invitations.add((Membership)Membership.findById(accept_id));
+    		}
     	}
-    	//render();
+    	
+    	if(!invitations.isEmpty()){
+    		render("memberships/invitations.html", invitations, accept_id);
+    	}else{
+    		List<Membership> memberships = Membership.findByUser(user);
+        	if( memberships == null || memberships.size() == 0 ){
+        		Projects.create();
+        	}else{
+        		Projects.overview();
+        	}
+    	}
     }
     
     //@Post("/rpx")
@@ -88,4 +112,35 @@ public class Application extends Controller {
     	}
     }
     
+    public static void inviteResponseFromEmail(
+			@Required Long id, @Required String reply,
+			@Required String inviteKey		
+		){
+    	if(Validation.hasErrors()){
+    		AppController.displayValidationMessage();
+    	}else{
+			Membership m = Membership.findById(id);
+			if( m == null ){ 
+				AppController.notFound("Membership", id); 
+			}else {
+				
+				if( !m.inviteKey.equals(inviteKey)){
+					flash.put("error", Messages.get("invitation.wrongKey"));
+				} else {
+					if( reply.equals("accept") ){
+						session.put("invitationId", id);
+						flash.put("info", Messages.get("invitation.pleaseLogin"));
+					} else {
+						//user has denied to join
+						m.status = ApprovalStatus.DENIED;
+						m.save();
+						flash.put("success", Messages.get("invitation.denied", 
+								m.project.creator.fullName,
+								m.project.name));						
+					}
+				}							
+			}
+			Application.homepage();
+    	}
+	}
 }

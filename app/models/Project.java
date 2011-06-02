@@ -133,6 +133,7 @@ public class Project extends BasicItem {
     			m = new Membership(this, userEmail);
     			if( isClient ){ m.setRole(Role.CLIENT); }
         		m.status = ApprovalStatus.WAITING_INVITE;
+        		m.inviteKey = m.generateInvitationKey();
         		if( m.validateAndSave() ){
         			return new ActionResult(true, 
         				Messages.get("membership.invited", userEmail, userEmail),

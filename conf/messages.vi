@@ -87,6 +87,7 @@ labels.emailSent = Email đã được gửi tới %s
 labels.createdOn = Khởi tạo ngày
 labels.acceptInvite = Nhận lời tham gia
 labels.deny = Từ chối
+labels.confirm = Xác nhận
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -122,6 +123,8 @@ labels.project.needTrackTime = Thống kê thời gian?
 labels.project.needClients = Làm việc với khách hàng?
 labels.project.needMembers = Làm việc theo nhóm?
 labels.project.needFiles = Cần quản lý Files?
+labels.yourInvitations = Các lời mời dành cho bạn
+labels.replyYourInvitation = Dưới đây là các lời mời dành cho bạn. <br/>Xin hãy xác nhận sự đồng ý/không đồng ý của bạn để người mời được biết..
 
 since.seconds = %d giây trước
 since.minutes = %d phút trước
@@ -137,7 +140,7 @@ members.clientLong = Khách hàng của dự án
 members.title = Chức danh
 members.invite.subject = Lời mời tham gia dự án [%s] từ [%s]
 
-message.invitation = Xin chào %s,<br/><br/><strong>%s</strong> (%s) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
+message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s<span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:

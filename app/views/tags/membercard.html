@@ -7,7 +7,7 @@
         <a class="fright icon-link icon-link-delete" 
             href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
         <a class="fright icon-link icon-link-email" 
-            href="@{Memberships.sendInvite(_member.project.id, _member.getEmail(), , _member.isClient())}">&{'labels.resendEmail'}</a>
+            href="@{Memberships.sendInvite( _member.id, _member.project.id, _member.getEmail(), _member.isClient())}">&{'labels.resendEmail'}</a>
         
         #{/}
         #{else}

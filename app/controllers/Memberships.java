@@ -21,6 +21,7 @@ import play.mvc.Before;
 import models.Membership;
 import models.Project;
 import models.User;
+import models.enums.ApprovalStatus;
 import models.enums.Role;
 
 public class Memberships extends AppController {
@@ -72,11 +73,15 @@ public class Memberships extends AppController {
 		ActionResult r = p.addMember(email, member_title, isClient);
 		if( !r.isSuccess() ){
 			params.flash();
-			displayError(r.getMessage(), "add-member");
+			displayError(r.getMessage(), "add-member");			
+		}else{
+			Membership m = (Membership)r.getData();
+			//send email
+			if(m != null){
+				Emails.sendInvitationToMember(email, getLoggedin().id, project_id, m.id, m.isClient());
+			}
 		}
-		Membership m = (Membership)r.getData();
-		//send email
-		Emails.invitationToMember(email, getLoggedin().id, project_id, m.isClient());
+		
 		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
 	}
@@ -86,7 +91,7 @@ public class Memberships extends AppController {
 		if( membership != null ){
 			render("memberships/form_edit.html", membership);
 		}else{
-			error(404, Messages.get("error.notFound", "Membership", id));
+			notFound("Membership", id);
 		}
 	}
 	
@@ -120,8 +125,8 @@ public class Memberships extends AppController {
 		dashboard(project_id);
 	}
 	
-	public static void sendInvite(@Required Long project_id, @Required String email, Boolean isClient){
-		Emails.invitationToMember(email, getLoggedin().id, project_id, isClient);
+	public static void sendInvite(@Required Long m_id, @Required Long project_id, @Required String email, Boolean isClient){
+		Emails.sendInvitationToMember(email, getLoggedin().id, project_id, m_id, isClient);
 		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
 	}

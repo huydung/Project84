@@ -56,6 +56,7 @@ labels.emailSent = Email sent to %s
 labels.createdOn = Created on
 labels.acceptInvite = Accept Invitation
 labels.deny = Deny
+labels.confirm = Confirm
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -73,6 +74,9 @@ members.teamLong = Members of the Team
 members.clientLong = Clients of the Project
 members.title = Chức danh
 members.invite.subject = Invitation to join project [%s] from [%s]
+invitation.wrongKey = Your invitation key is wrong. Please check and click the Accept or Deny link form the latest email.
+invitation.pleaseLogin = You're almost there! Please login with either of your existing accounts below to confirm your acception.
+invitation.denied = You've successfully notify %s that you'll not join in the %s project
 
 ## PROJECT ##
 project.create = Create new Project
@@ -94,10 +98,12 @@ labels.project.needTrackTime = Need Track Time?
 labels.project.needClients = Has Client?
 labels.project.needMembers = Work with other mates?
 labels.project.needFiles = Need to manage Files?
+labels.yourInvitations = Your current invitations
+labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
 
 user.lastLoggedIn = Last Logged in
 
-message.invitation = Xin chào %s,<br/><br/><strong>%s</strong> (%s) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
+message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s</span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Please response to this invitation from %s:

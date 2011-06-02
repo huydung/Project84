@@ -19,6 +19,7 @@ GET     /project/{id}/settings                              Projects.structure
 GET     /project/{project_id}/memberships/{id}/delete       Memberships.delete
 GET     /project/{project_id}/memberships/{id}/edit         Memberships.edit
 POST    /project/{project_id}/memberships/{id}/edit         Memberships.edit
+GET     /invitation/{reply}/{id}/{inviteKey}                      Application.inviteResponseFromEmail                     
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

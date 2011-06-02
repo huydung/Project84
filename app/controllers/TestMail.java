@@ -10,6 +10,6 @@ public class TestMail extends Controller {
 	){
 		User from = User.findById(user_id); 
 		Project project = Project.findById(project_id);		
-		render("Mails/invitationToMember.html", email, from, project, isClient);
+		render("Mails/sendInvitationToMember.html", email, from, project, isClient);
 	}
 }

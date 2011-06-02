@@ -117,7 +117,7 @@ public class Projects extends AppController {
 		if(project != null){
 			
 		}else{
-			error(404, Messages.get("error.notFound", "Project", id));
+			notFound("Project", id);
 		}
 	}
 

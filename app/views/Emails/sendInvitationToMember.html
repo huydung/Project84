@@ -46,12 +46,12 @@
     <p style="font-family: Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0px; margin-bottom: 0px; padding: 0px; color: #7499A6">
         <em>&{'message.pleaseAnswer', from.fullName}</em><br/><br/>
     
-    <a href="#" style="margin-top:10px;color:#FFFFFF;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:uppercase;font-weight:bold">
+    <a href="@@{Application.inviteResponseFromEmail(m.id, 'accept', m.inviteKey)}" style="margin-top:10px;color:#FFFFFF;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:uppercase;font-weight:bold">
     <img  style="float:left;margin-top:5px;" src="@@{'/public/assets/icons/tick.png'}"/>
     &nbsp;&{'labels.acceptInvite'}
     </a> <span>&nbsp;&nbsp;&nbsp;hoặc&nbsp;&nbsp;&nbsp;</span>
 
-    <a href="#" style="margin-top:10px;color:#7499A6;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:lowercase;font-weight:bold;line-height:20px;">
+    <a href="@@{Application.inviteResponseFromEmail(m.id, 'deny', m.inviteKey)}" style="margin-top:10px;color:#7499A6;font-size:16px;font-family:'Palatino linotype', 'Times New Roman', serif;text-transform:lowercase;font-weight:bold;line-height:20px;">
 	    &{'labels.deny'}
 	</a>
 	</p>

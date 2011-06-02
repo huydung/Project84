@@ -20,7 +20,7 @@ public class Users extends AppController{
 		user = User.findById(id);
 		
 		if( user == null ){
-			error(404, Messages.get("error.notFound", "User", id));
+			notFound("Profile", id);
 		}	
 		render(user);
 	}

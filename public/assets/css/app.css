@@ -4,6 +4,7 @@
 .tleft{ text-align: left; }
 .tright{ text-align: right; }
 .tcenter{text-align: center;}
+.nomargin{margin:0 !important;}
 a.icon-link, button.icon-link{
 	padding-left: 18px;
 	text-decoration: underline;
@@ -75,7 +76,8 @@ form .text, form select{
 	margin: 10px 0 0;
 	padding: 3px 10px;
 }
-form input[type="checkbox"]{
+form input[type="checkbox"],
+form input[type="radio"]{
 	margin: 17px 0 0 20px;
 }
 .required label{color: #033E6B}
