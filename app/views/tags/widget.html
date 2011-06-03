@@ -3,17 +3,22 @@ com.huydung.utils.Link firstLink = _widget.getFirstLink();
 com.huydung.utils.Link lastLink = _widget.getLastLink();
 
 }%
+<div class="widget-container">
 <h3 class="widget-title">${_widget.getName()}</h3>
-<div class="${_widget.getHtmlClass()} portlet ui-widget ui-widget-content 
+<div class="${_widget.getHtmlClass()} widget-column-${_widget.getColSpan()} portlet ui-widget ui-widget-content 
             ui-helper-clearfix ui-corner-all">
       
       <div class="portlet-header ui-widget-header ui-corner-top clearfix">
+        #{if firstLink}
         <a href="${firstLink.href}" class="icon-link fleft first ${firstLink.className}">
             ${firstLink.title}
         </a>
+        #{/}
+        #{if lastLink}
         <a href="${lastLink.href}" class="icon-link fright last ${lastLink.className}">
             ${lastLink.title}
         </a>
+        #{/}
       </div>
       <div class="portlet-content" style="display: block; ">
 	      <div >
@@ -22,12 +27,17 @@ com.huydung.utils.Link lastLink = _widget.getLastLink();
 	            #{list items:_widget.getItems(), as:'item'}
 	                <li class="clearfix">
 	                    <div class="main-info">
-	                    %{com.huydung.utils.Link link = item.getInfo(); }%
+	                    %{
+	                    com.huydung.utils.Link link = item.getInfo(); 
+	                    String subInfo = item.getSubInfo(); 
+	                    }%
 	                       <a href="${link.href}">
 	                       ${link.title}
 	                       </a>
 	                    </div>
-	                    <div class="sub-info">${item.getSubInfo().raw()}</div>
+	                    #{if subInfo}
+	                    <div class="sub-info">${subInfo.raw()}</div>
+	                    #{/}
 	                </li>
 	            #{/}
 	            </ul>
@@ -37,5 +47,9 @@ com.huydung.utils.Link lastLink = _widget.getLastLink();
 	        #{/}
 	      </div>
       </div>
-        <em class="widget-subname">(${_widget.getSubName().raw()})</em>
+        %{String subName = _widget.getSubName() }%
+        #{if subName}
+        <em class="widget-subname">(${subName.raw()})</em>
+        #{/}
   </div>
+</div>

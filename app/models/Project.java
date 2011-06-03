@@ -12,6 +12,7 @@ import javax.persistence.*;
 
 import com.huydung.helpers.ActionResult;
 
+import models.enums.ActivityType;
 import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.Role;
@@ -79,8 +80,9 @@ public class Project extends BasicItem {
     }
     
 
-    public ActionResult saveAndGetResult(){
+    public ActionResult saveAndGetResult(User actor){
     	if( this.validateAndSave() && this.id > 0 ){
+    		Activity.track(Messages.get("projects.created", actor.fullName), this, ActivityType.CHANGE, actor);
     		return new ActionResult(true);
     	}else{
     		return new ActionResult(false, 
@@ -88,7 +90,7 @@ public class Project extends BasicItem {
     	}
     }
     
-    public ActionResult addMember(String userEmail, String title, boolean isClient){
+    public ActionResult addMember(String userEmail, String title, boolean isClient, User actor){
     	User user = User.findByEmail(userEmail);
     	Membership m = null;
     	//If an account existed with the provided email, Create a Membership for her 
@@ -99,8 +101,13 @@ public class Project extends BasicItem {
     			m = new Membership(this, user, title);
     			if( isClient ){ m.setRole(Role.CLIENT); }
     			m.status = ApprovalStatus.WAITING_INVITE;
+    			m.inviteKey = m.generateInvitationKey();
+    			m.userEmail = userEmail;
     			boolean saved = m.validateAndSave();
     			if(saved){
+    				Activity.track(Messages.get(
+    					"membership.created.log", actor.fullName, userEmail), this, ActivityType.ITEM, actor);
+    				
 	    			return new ActionResult(true, 
 	    					Messages.get("membership.created", user.nickName, user.email),
 	    					m);
@@ -135,6 +142,10 @@ public class Project extends BasicItem {
         		m.status = ApprovalStatus.WAITING_INVITE;
         		m.inviteKey = m.generateInvitationKey();
         		if( m.validateAndSave() ){
+        			
+        			Activity.track(Messages.get(
+        					"membership.created.log", actor.fullName, userEmail), this, ActivityType.ITEM, actor);
+        				
         			return new ActionResult(true, 
         				Messages.get("membership.invited", userEmail, userEmail),
         				m);
@@ -156,7 +167,7 @@ public class Project extends BasicItem {
     }
     
     public static List<Project> findByUser(User user){    	
-    	return Project.find("SELECT DISTINCT p FROM Project p LEFT JOIN p.memberships m WHERE m.user = ? ", user).fetch();
+    	return Project.find("SELECT DISTINCT p FROM Project p LEFT JOIN p.memberships m WHERE m.user = ? AND m.deleted = 0", user).fetch();
     }
     
     public List<IWidget> getWidgets(User user){
@@ -165,6 +176,7 @@ public class Project extends BasicItem {
     		if( this.needMembers || this.needClients ){
     			widgets.add(new Membership(this, user));
     		}
+    		widgets.add(new Activity(this));
     	}
     	return widgets;
     }

@@ -1,7 +1,7 @@
 <form class="inline tright" action="@{Memberships.doCreate}" method="POST">
     <input type="hidden" name="project_id" 
         value="${project.id}" size="20" />
-    <input type="hidden" name="isClient" value="${client}" />
+    <input type="hidden" name="isClient" value="${client ? client : 'false'}" />
     <label>&{'labels.add'}</label>
     <input type="email" required="required" placeholder="&{'labels.emailAddress'}" 
         name="email" value="&{flash.get('email') ?: ''}"/>

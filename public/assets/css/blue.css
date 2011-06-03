@@ -247,7 +247,7 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 #portlets { padding:0px 10px; }
 .column { width: 450px; float: left; padding-bottom: 0px; }
 .column#left { margin-right:17px; }
-.portlet { margin: 0 0em 1em 0; }
+.portlet { margin: 0 1em 1em 0; }
 .portlet-header { margin: 0em; padding-bottom: 5px; padding-left: 6px; padding-top:4px; padding-right:6px; font-size:12px; border: none !important; color: #333 !important; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; cursor:move; }
 .portlet-header .ui-icon { float: right; cursor:pointer; }
 .portlet-header img { float:left; margin-right:5px; }
@@ -363,41 +363,6 @@ form .wide { width:890px; }
   margin: 0px;
   padding: 0px !important;
   border: 0px;
-  background: transparent url('../images/but_right_blue.gif') no-repeat scroll top right;
-  color: #1b486a;
-  display: block;
-  float: left;
-  height: 29px;
-  margin-right: 6px;
-  margin-top:10px;
-  padding-right: 12px !important;
-  text-decoration: none;
-  overflow: hidden;
-  font-size: 12px;
-  outline: none !important;
-  cursor: pointer;
-  font-weight: bold;
-}
-.button span {
-  background: url('../images/but_left_blue.gif') no-repeat left top;
-  display: block;
-  line-height: 29px;
-  padding: 0px 0px 0px 12px;
-  outline: none !important;
-  float:left;
-}
-.button:hover {
-  background-position: right bottom;
-  text-decoration:none !important
-}
-.button:hover span {
-  background-position: left bottom;
-  color: #1b486a;
-}
-.button_grey {
-  margin: 0px;
-  padding: 0px !important;
-  border: 0px;
   background: transparent url('../images/but_right_grey.gif') no-repeat scroll top right;
   color: #033E6B;
   display: block;
@@ -413,7 +378,7 @@ form .wide { width:890px; }
   cursor: pointer;
   font-weight: bold;	
 }
-.button_grey span {
+.button span {
   background: url('../images/but_left_grey.gif') no-repeat left top;
   display: block;
   line-height: 30px;
@@ -421,11 +386,11 @@ form .wide { width:890px; }
   outline: none !important;
   float:left;
 }
-.button_grey:hover {
+.button:hover {
   background-position: right bottom;
   text-decoration:none !important
 }
-.button_grey:hover span {
+.button:hover span {
   background-position: left bottom;
   color: #333;
 }

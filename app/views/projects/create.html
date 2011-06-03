@@ -4,7 +4,7 @@
 
 #{if project}
 
-<form id="form-project" action="@{Projects.save()}" method="POST"
+<form id="form-project" action="@{Projects.doCreate()}" method="POST"
     class="horizontal-form">
     <div class="grid_9 prefix_2">        
         <input type="hidden" name="project.id" value="${project.id}" />
@@ -52,7 +52,7 @@
         </div>
         
         
-        <button type="submit" class="button button_grey">
+        <button type="submit" class="button">
             <span>&{'labels.project.create.short'}</span>
         </button>  
    

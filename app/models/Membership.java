@@ -17,6 +17,7 @@ import org.joda.time.JodaTimePermission;
 
 import com.huydung.utils.Link;
 
+import models.enums.ActivityType;
 import models.enums.ApprovalStatus;
 import models.enums.Role;
 
@@ -170,6 +171,32 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	}
     }
     
+    public void accept(User user){
+    	boolean emailChanged = !this.userEmail.equals(user.email);
+    	String message = emailChanged ? 
+			Messages.get(
+				"members.invite.description.ACCEPTED.emailChanged",
+				userEmail, user.email) :
+			Messages.get(
+				"members.invite.description.ACCEPTED",
+				userEmail);	
+			
+    	this.status = ApprovalStatus.ACCEPTED;
+    	this.userEmail = "";
+    	this.user = user;
+    	this.save();
+    	
+    	Activity.track(message,this.project, ActivityType.ITEM, user);
+    }
+    
+    public void deny(){
+    	this.status = ApprovalStatus.DENIED;
+    	this.save();
+    	Activity.track(
+    		Messages.get("members.invite.description.DENIED.log", this.userEmail),
+    		this.project, ActivityType.ITEM, user);
+    }
+    
     public static Membership findByProjectAndUser(Project project, User user){
     	return Membership.find("project = ? AND user = ?", project, user).first();
     }
@@ -266,5 +293,9 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 			Router.getFullUrl("Membership.show", args)
 		);		
 	}
-
+	
+	@Override
+	public int getColSpan(){
+		return 1;
+	}
 }

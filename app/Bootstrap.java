@@ -127,9 +127,9 @@ public class Bootstrap extends Job {
 		ol.updated = ol.created;
 		ol.needClients = true;
 		ol.needMembers = true;
-		ol.save();		
+		ol.saveAndGetResult(huydung);		
 		ol.assignCreator(huydung, "Manager");
-		ol.addMember("havu.hrc@gmail.com", "Client", true);
+		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
 		
 		Project wd = new Project();
 		wd.fromTemplate = wedding;
@@ -143,13 +143,13 @@ public class Bootstrap extends Job {
 		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
 		wd.updated = ol.created;
 		wd.needMembers = true;
-		wd.save();		
+		wd.saveAndGetResult(huydung);		
 		wd.assignCreator(huydung, "Broom");
-		wd.addMember("oakman.hd@gmail.com", "Bride", false);
+		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
 		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
 		bride.status = ApprovalStatus.ACCEPTED;
 		bride.save();
-		wd.addMember("vannessars@yahoo.com", "Bridesmaid", false);
+		wd.addMember("vannessars@yahoo.com", "Bridesmaid", false, huydung);
 		
 		
 		System.out.println("Create data");

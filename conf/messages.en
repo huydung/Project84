@@ -64,12 +64,16 @@ membership.alreadyAccepted = %s (%s) is already a member of the project.
 membership.alreadyDenied = %s has been invited and has already denied. Please delete the current invitation manually before trying to invite again.
 membership.alreadyInvited = %s has been invited and has not answered.
 membership.invited = No account using the email %s yet, so an invitation to join Project84 has been sent to %s.
+members.invite.INVITED = %s has invite %s to join the project.
 members.invite.DENIED = Invitation Denied
+members.invite.description.ACCEPTED = Invitation Accepted
 members.invite.WAITING_INVITE = Waiting for answer
 members.invite.UNREAD = Sending invitation
-members.invite.description.DENIED = Your invitation to has been denied. This invitation card will be automatically deleted in the next few days.
+members.invite.description.DENIED = Your invitation has been denied. It will be automatically deleted in the next few days.
 members.invite.description.WAITING_INVITE = Your invitation has been sent but your partner has not yet confirm it.
-members.invite.description.UNREAD = 
+members.invite.description.ACCEPTED = %s joined to work on the project!
+members.invite.description.ACCEPTED.emailChanged = <em>%s</em> joined the project but with a different email which is<em>%s</em>.
+members.invite.description.DENIED.log = %s refused to co-working on the project.
 members.teamLong = Members of the Team
 members.clientLong = Clients of the Project
 members.title = Chức danh
@@ -100,10 +104,13 @@ labels.project.needMembers = Work with other mates?
 labels.project.needFiles = Need to manage Files?
 labels.yourInvitations = Your current invitations
 labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
-
+projects.created = %s has created the project
 user.lastLoggedIn = Last Logged in
 
 message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s</span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Please response to this invitation from %s:
+
+## ACTIVITIES ##
+labels.activity.recent = Recent activities in the project

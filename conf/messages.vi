@@ -101,7 +101,10 @@ members.invite.UNREAD = Đang gửi lời mời
 members.invite.description.DENIED = Lời mời của bạn đã bị từ chối. Lời mời này sẽ tự động được xóa trong vòng vài ngày tới.
 members.invite.description.WAITING_INVITE = Thư mời này đã được gửi đi nhưng chưa nhận được phản hồi.
 members.invite.description.UNREAD = 
-
+members.invite.description.ACCEPTED = %s đã bắt đầu tham gia vào dự án
+members.invite.description.ACCEPTED.emailChanged = <em>%s</em> đã tham gia vào dự án nhưng với 1 email khác là <em>%s</em>.
+members.invite.description.DENIED.log = %s đã từ chối tham gia vào dự án.
+membership.created.log = %s đã mời %s tham gia dự án. 
 ## PROJECT ##
 project.create = Tạo dự án mới
 project.member = Thành viên
@@ -113,6 +116,7 @@ project.dashboard = Tổng quan
 project.people = Nhân sự
 project.manage_list = Cấu hình
 project.addMember = Thêm thành viên
+projects.created = %s đã khởi tạo dự án.
 
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án
@@ -144,3 +148,6 @@ message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:
+
+## ACTIVITY ##
+labels.activity.recent = Những thay đổi gần đây nhất

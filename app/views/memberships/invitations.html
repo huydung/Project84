@@ -3,15 +3,15 @@
 #{set pageTitle:title /}
 
 <h3>&{'labels.replyYourInvitation'}</h3>
-<form action="#" method="post">
+<form action="@{Memberships.saveInvitationResponse()}" method="post">
 	<ul>
 	    #{list items:invitations, as:'invite'}
 	    <div class="form-field">
 	    <label class="grid_6">${invite.project.name}</label>
 	    <div class="fleft">
-		    <input type="radio" name="${invite.id}-accept" value="true" checked="checked" />	    
+		    <input type="radio" name="responses[]" value="${invite.id}-true" checked="checked" />	    
 		    <span>&{'labels.acceptInvite'}</span>
-		    <input type="radio" name="${invite.id}-accept" value="false" />     
+		    <input type="radio" name="responses[]" value="${invite.id}-false" />     
 	        <span>&{'labels.deny'}</span>
         </div>
 	    </div>	   

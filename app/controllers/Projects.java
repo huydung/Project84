@@ -73,7 +73,7 @@ public class Projects extends AppController {
     }
 	
 	//@Post("/projects/create")
-    public static void save(Project project){
+    public static void doCreate(Project project){
     	User user = getLoggedin();
     	if( params.get("project.deadline") == "" ){
     		project.deadline = null;
@@ -87,7 +87,7 @@ public class Projects extends AppController {
     	}
     	  
     	ActionResult res;
-    	res = project.saveAndGetResult();    	
+    	res = project.saveAndGetResult(user);    	
     	if( !res.isSuccess() ){
     		displayError(res.getMessage(), "save-project");
     		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
@@ -99,9 +99,8 @@ public class Projects extends AppController {
     		displayError(res.getMessage(), "set-creator-when-save-project");
     		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
     		render("projects/create.html", project, templates);
-    	}
+    	}    	
     	
-    	res = Activity.track("projects.created", project, ActivityType.CHANGE, user);
     	if( !res.isSuccess() ){
     		displayWarning(res.getMessage(), "save-activity-when-create-project");
     	}

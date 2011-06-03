@@ -132,8 +132,7 @@ public class Application extends Controller {
 						flash.put("info", Messages.get("invitation.pleaseLogin"));
 					} else {
 						//user has denied to join
-						m.status = ApprovalStatus.DENIED;
-						m.save();
+						m.deny();
 						flash.put("success", Messages.get("invitation.denied", 
 								m.project.creator.fullName,
 								m.project.name));						

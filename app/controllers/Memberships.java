@@ -70,7 +70,7 @@ public class Memberships extends AppController {
 			params.flash();
 			dashboard(project_id);
 		}
-		ActionResult r = p.addMember(email, member_title, isClient);
+		ActionResult r = p.addMember(email, member_title, isClient, getLoggedin());
 		if( !r.isSuccess() ){
 			params.flash();
 			displayError(r.getMessage(), "add-member");			
@@ -129,5 +129,23 @@ public class Memberships extends AppController {
 		Emails.sendInvitationToMember(email, getLoggedin().id, project_id, m_id, isClient);
 		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
+	}
+	
+	public static void saveInvitationResponse(String[] responses ){
+		if( responses != null && responses.length > 0 ){
+			for(String s : responses){
+				String[] results = s.split("-");
+				Long id = Long.parseLong(results[0], 10);
+				Membership m = Membership.findById(id);
+				if( m != null){
+					if( results[1].equals("true") ){
+						m.accept(getLoggedin());
+					}else{
+						m.deny();
+					}
+				}
+			}
+		}
+		Application.app();
 	}
 }
