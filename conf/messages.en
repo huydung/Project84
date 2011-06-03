@@ -81,7 +81,7 @@ members.invite.subject = Invitation to join project [%s] from [%s]
 invitation.wrongKey = Your invitation key is wrong. Please check and click the Accept or Deny link form the latest email.
 invitation.pleaseLogin = You're almost there! Please login with either of your existing accounts below to confirm your acception.
 invitation.denied = You've successfully notify %s that you'll not join in the %s project
-
+membership.created.log = %s has invited %s to join the project. 
 ## PROJECT ##
 project.create = Create new Project
 project.member = Member

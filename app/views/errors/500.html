@@ -1,21 +1,11 @@
-<!DOCTYPE html>
+#{extends 'main.html' /}
+#{set title:'Fatal System Error' /}
+#{set pageTitle:title /}
 
-<html>
-    <head>
-        <title>Application error</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>	
-    </head>
-    <body>
-        #{if play.mode.name() == 'DEV'}
-            #{500 exception /}
-        #{/if}
-        #{else}
-            <h1>Oops, an error occured</h1>
-            #{if exception instanceof play.exceptions.PlayException}
-                <p>
-                    This exception has been logged with id <strong>${exception.id}</strong>.
-                </p>
-            #{/if}
-        #{/else}
-    </body>
-</html>
+<h3>Sorry, an unexpected error occurred.</h3>
+<em>This is certainly our fault. We've logged it and will fix it as soon as possible. 
+But we'll appreciate very much if you take your time to
+ <a href="mailto:project84@huydung.com">email us</a> 
+ and tell us in-details exactly what you're trying to do before this error.</em>
+ <br/>
+<strong>Thank you for your interested in Project84 and wish you a productive day :)</strong>

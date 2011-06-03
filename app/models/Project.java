@@ -15,6 +15,7 @@ import com.huydung.helpers.ActionResult;
 import models.enums.ActivityType;
 import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
+import models.enums.PermissionKey;
 import models.enums.Role;
 import models.templates.ProjectTemplate;
 
@@ -45,6 +46,9 @@ public class Project extends BasicItem {
     
     @OneToMany(mappedBy = "project")
     public List<Membership> memberships;
+    
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    public List<RolePermission> rolePermissions;
     /*
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     public List<ItemList> itemLists;   
@@ -64,6 +68,16 @@ public class Project extends BasicItem {
     	doneStatus = d.getName();
     }
     
+    /**
+     * This method MUST be called AFTER save() the project
+     */
+    public void buildRolePermissions(){
+    	for(Role role : Role.values()){
+    		RolePermission rp = new RolePermission(this, role, PermissionKey.getDefaultPermissions(role));
+	    	rp.save();
+    	}    	
+    }
+    
     public ActionResult assignCreator(User user, String title){
     	Membership m = Membership.findByProjectAndUser(this, user);
     	if( m == null ){
@@ -79,6 +93,21 @@ public class Project extends BasicItem {
     	}
     }
     
+    public boolean allow(Membership m, PermissionKey key){
+    	if( m == null ){ return false; }
+    	if( key == null ){ return false; }
+    	
+    	System.out.println("Checking if user "+m.getEmail()+" can "+key.toString()+" with Project "+ this.name);
+    	List<Role> roles = m.getRoles();
+		for(Role role : roles){
+			for(RolePermission rp : rolePermissions){
+    			if( rp.check(role, key) ){
+    				return true;
+	    		}
+	    	}
+		}    	
+		return false;
+    }
 
     public ActionResult saveAndGetResult(User actor){
     	if( this.validateAndSave() && this.id > 0 ){

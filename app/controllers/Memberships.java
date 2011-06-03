@@ -22,6 +22,7 @@ import models.Membership;
 import models.Project;
 import models.User;
 import models.enums.ApprovalStatus;
+import models.enums.PermissionKey;
 import models.enums.Role;
 
 public class Memberships extends AppController {
@@ -31,10 +32,15 @@ public class Memberships extends AppController {
 	}
 	
 	public static void dashboard(Long project_id){
-		Project project = Project.findById(project_id);
-		if( project != null && (project.needMembers || project.needClients)){
-			List<Membership> members = Membership.findByProject(project, 0);
-			if( project.needClients ){
+		Membership _m = getActiveMembership();		
+		Project _project = getActiveProject();
+		if( _m == null ){
+			error(403, "Access Denied");
+		}
+		
+		if( _project != null && (_project.needMembers || _project.needClients)){
+			List<Membership> members = Membership.findByProject(_project, 0);
+			if( _project.needClients ){
 				List<Membership> clients = new ArrayList<Membership>();
 				if(members != null){
 					for(Iterator<Membership> ite = members.iterator(); ite.hasNext();){
@@ -45,26 +51,42 @@ public class Memberships extends AppController {
 						}
 					}
 				}
-				render(members, clients, project);
+				render(members, clients);
 			}
-			render(members, project);
+			render(members);
 		}
 	}
 	
+	@Before(only="create,doCreate")
+	public static void checkAccessCreated(){
+		if( !getActiveProject().allow(getActiveMembership(), 
+			PermissionKey.CREATE_INVITATIONS) 
+		){  error(403, "Access Denied");	};		
+	}
+	
 	public static void create(Long project_id){
-		Project project = Project.findById(project_id);		
-		render("memberships/form_add.html", project);
+		//Check access
+		if( !getActiveProject().allow(getActiveMembership(), 
+			PermissionKey.CREATE_INVITATIONS) 
+		){  error(403, "Access Denied");	};
+		
+		render("memberships/form_add.html");
 	}
 	
 	public static void doCreate(
 			@Required String email, @Required String member_title,
-			@Required Long project_id, @Required Boolean isClient){		
+			@Required Long project_id, @Required Boolean isClient){	
+		//Check access
+		if( !getActiveProject().allow(getActiveMembership(), 
+				PermissionKey.CREATE_INVITATIONS) 
+		){	error(403, "Access Denied");}
+				
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 			params.flash();
 			dashboard(project_id);
 		}
-		Project p = Project.findById(project_id);
+		Project p = getActiveProject();
 		if( p == null ){
 			displayValidationMessage();
 			params.flash();
@@ -86,6 +108,21 @@ public class Memberships extends AppController {
 		dashboard(project_id);
 	}
 	
+	@Before(only="edit,doEdit")
+	public static void checkAccessEdit(){
+		Membership m = getActiveMembership();
+		Project p = getActiveProject();
+		if( !p.allow(m, PermissionKey.EDIT_MEMBERSHIPS) ){
+			if( params.get("id", Long.class) == m.id ){
+				if( !p.allow(m, PermissionKey.EDIT_OWN_MEMBERSHIPS) ){
+					error(403, "Access Denied");
+				}
+			}else{
+				error(403, "Access Denied");
+			}
+		};
+	}
+	
 	public static void edit(@Required Long id, @Required Long project_id){
 		Membership membership = Membership.findById(id);
 		if( membership != null ){
@@ -105,7 +142,7 @@ public class Memberships extends AppController {
 		Membership m = Membership.findById(id);
 		if(m != null){
 			m.title = title;
-			m.roleNames = StringUtils.join(roles, ",").toLowerCase();
+			m.roleNames = StringUtils.join(roles, ",");
 			m.save();
 			dashboard(project_id);
 		}

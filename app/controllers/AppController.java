@@ -5,6 +5,8 @@ import java.util.TimeZone;
 import org.hibernate.Session;
 
 
+import models.Membership;
+import models.Project;
 import models.User;
 import play.Logger;
 import play.Play;
@@ -31,6 +33,19 @@ public class AppController extends Controller {
             Play.configuration.setProperty("date.format", user.dateFormat);
             TimeZone.setDefault(TimeZone.getTimeZone(user.timeZone));
             renderArgs.put("loggedin", user);
+            
+            //get active project, if having it
+            String project_id = params.get("project_id");
+    		if( project_id != null ){
+    			Project project = Project.findById(Long.parseLong(project_id));
+    			
+    			if( project != null ){
+    				renderArgs.put("_project", project);
+    				System.out.println(request.url + ": Saved project to renderArgs (" + project.name + ")");
+    				Membership m = Membership.findByProjectAndUser(project, user);
+    				renderArgs.put("_membership", m);
+    			}
+    		}
         }else{
         	Application.homepage();
         }
@@ -47,9 +62,22 @@ public class AppController extends Controller {
 	static void checkAjax(){
 		renderArgs.put("ajax", request.isAjax());
 	}
+
 	
 	static User getLoggedin(){
 		return renderArgs.get("loggedin", User.class);
+	}
+	
+	static Project getActiveProject(){
+		return renderArgs.get("_project", Project.class);
+	}
+	
+	static Membership getActiveMembership(){
+		try{
+			return renderArgs.get("_membership", Membership.class);
+		} catch(Exception e){
+			return null;
+		}
 	}
 
 	static void displayWarning(String message, String action){

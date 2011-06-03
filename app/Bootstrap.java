@@ -23,14 +23,11 @@ public class Bootstrap extends Job {
 		TimeZone.setDefault(TimeZone.getTimeZone("GTM+7:00"));
 		Locale.setDefault(new Locale("vi"));
 
-		//Delete all data
-		Activity.deleteAll();
-		Membership.deleteAll();
-		Project.deleteAll();
-		ProjectListTemplate.deleteAll();
-		ListTemplate.deleteAll();
-		ProjectTemplate.deleteAll();
+		createUserAndProjectData();
 		
+	}	
+	
+	protected void createUserAndProjectData(){
 		//Create Users
 		Calendar cal = new GregorianCalendar(2011, 4, 11, 22, 0);
 		cal.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
@@ -53,7 +50,7 @@ public class Bootstrap extends Job {
 		ngochien.hasProfile = true;
 		ngochien.dateFormat = "dd/MM/yyyy";
 		ngochien.timeZone = "Asia/Ho_Chi_Minh";
-		ngochien.identifier = "https://www.google.com/profiles/110714496619404851032";
+		ngochien.identifier = "https://www.google.com/profiles/110870856863940855723";
 		cal.set(2011, 4, 12, 19, 30);
 		ngochien.lastLoggedIn = cal.getTime();
 		ngochien.mobile = "0985898137";
@@ -126,8 +123,9 @@ public class Bootstrap extends Job {
 		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
 		ol.updated = ol.created;
 		ol.needClients = true;
-		ol.needMembers = true;
+		ol.needMembers = true;		
 		ol.saveAndGetResult(huydung);		
+		ol.buildRolePermissions();
 		ol.assignCreator(huydung, "Manager");
 		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
 		
@@ -142,8 +140,9 @@ public class Bootstrap extends Job {
 		wd.setStatus( DoneStatus.ONGOING );
 		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
 		wd.updated = ol.created;
-		wd.needMembers = true;
-		wd.saveAndGetResult(huydung);		
+		wd.needMembers = true;		
+		wd.saveAndGetResult(huydung);	
+		wd.buildRolePermissions();
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
 		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
@@ -151,8 +150,5 @@ public class Bootstrap extends Job {
 		bride.save();
 		wd.addMember("vannessars@yahoo.com", "Bridesmaid", false, huydung);
 		
-		
-		System.out.println("Create data");
-
-	}	
+	}
 }

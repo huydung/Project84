@@ -1,13 +1,12 @@
 #{extends 'main.html' /}
-#{set title:'Resource Not Found' /}
+#{set title:'Access Denied' /}
 #{set pageTitle:title /}
 
-<h3>Sorry, seems like we got nothing for you at this URL.</h3>
+<h3>Sorry, seems like you do not have permission to access this resource</h3>
 <em>Please try the following actions to resolve this error:</em>
 <ul>
-    <li>Check if you have mistyped the URL or follow a malform link.</li>
-    <li>Contact your project manager and tell him/her to check the URL for you.</li>
+    <li>Check if you're logged in or not. You can try log in <a href="@{Application.homepage}">here.</a></li>
+    <li>Contact your project manager and tell him/her to give you the permission to access this resource.</li>
     <li>Finally, <a href="mailto:project84@huydung.com">email us</a> if you believe this is a system error.</li>
 </ul>
-
 <strong>Thank you for your interested in Project84 and wish you a productive day :)</strong>

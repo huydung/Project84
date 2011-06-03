@@ -1,8 +1,8 @@
 #{extends 'main.html' /}
-#{set title:project.name + ' - ' + messages.get('project.people') /}
-#{set pageTitle:project.name + ' - ' + messages.get('project.people') /}
+#{set title:_project.name + ' - ' + messages.get('project.people') /}
+#{set pageTitle:title /}
 
-#{if (project.needMembers && members != null) }
+#{if (_project.needMembers && members != null) }
 <div class="grid_6">
 <h1>&{'members.teamLong'}</h1>
 </div>
@@ -19,7 +19,7 @@
 </div>
 #{/}
 
-#{if (project.needClients) }
+#{if (_project.needClients) }
 <div class="grid_6">
 <h1>&{'members.clientLong'}</h1>
 </div>

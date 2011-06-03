@@ -12,10 +12,10 @@ POST    /users/                                             Users.saveProfile
 GET     /projects                                           Projects.overview
 GET     /project/create                                     Projects.create
 POST    /project/create                                     Projects.doCreate
-GET     /project/{id}                                       Projects.dashboard
+GET     /project/{project_id}                               Projects.dashboard
 GET     /project/{project_id}/memberships                   Memberships.dashboard
 POST    /project/{project_id}/memberships                   Memberships.doCreate
-GET     /project/{id}/settings                              Projects.structure
+GET     /project/{project_id}/settings                      Projects.structure
 GET     /project/{project_id}/memberships/{id}/delete       Memberships.delete
 GET     /project/{project_id}/memberships/{id}/edit         Memberships.edit
 POST    /project/{project_id}/memberships/{id}/edit         Memberships.edit

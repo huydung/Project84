@@ -1,10 +1,10 @@
 #{extends 'main.html' /}
-#{set title: project.name + ' - ' + messages.get('project.dashboard')/}
-#{set pageTitle: project.name + ' - ' + messages.get('project.dashboard') /}
+#{set title: _project.name + ' - ' + messages.get('project.dashboard')/}
+#{set pageTitle: _project.name + ' - ' + messages.get('project.dashboard') /}
 
-#{if project}
+#{if _project}
 <div id="portlets clearfix">
-	#{list items:project.getWidgets(), as:'widget'}
+	#{list items:_project.getWidgets(), as:'widget'}
 	   #{widget widget:widget /}
 	#{/}
 </div>

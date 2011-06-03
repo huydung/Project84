@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.varia.DenyAllFilter;
+
 import com.huydung.helpers.ActionResult;
 
 import models.Activity;
@@ -34,7 +36,6 @@ public class Projects extends AppController {
 		renderArgs.put("active", "dashboard");
 	}
 	
-	//@Get("/projects")
 	public static void overview(){
 		User user = getLoggedin();
 		List<Project> active_projects = Project.findByUser(user);
@@ -55,17 +56,17 @@ public class Projects extends AppController {
 		render(active_projects, inactive_projects);
 	}
 	
-	//@Get("/projects/{id}")
-	public static void dashboard(@Required Long id){
+	public static void dashboard(@Required Long project_id){
+		if( getActiveMembership() == null ){
+			error(403, "Access Denied");
+		}
 		if(Validation.hasErrors()){
 			Application.homepage();
 		}else{
-			Project project = Project.findById(id);
-			render(project);
+			render();
 		}		
 	}
 		
-	//@Get("/projects/create")
     public static void create(){
     	Project project = new Project();
     	List<ProjectTemplate> templates = ProjectTemplate.getTemplates(getLoggedin());
@@ -86,12 +87,16 @@ public class Projects extends AppController {
     		render("projects/create.html", project, templates);
     	}
     	  
+    	
     	ActionResult res;
-    	res = project.saveAndGetResult(user);    	
+    	res = project.saveAndGetResult(user);
+    	
     	if( !res.isSuccess() ){
     		displayError(res.getMessage(), "save-project");
     		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
     		render("projects/create.html", project, templates);
+    	}else{
+    		project.buildRolePermissions();
     	}
     	
     	res = project.assignCreator(user, null);
@@ -110,13 +115,11 @@ public class Projects extends AppController {
     	dashboard(project.id);
     }
 	
-	//@Get("/projects/{id}/structure")
-	public static void structure(Long id){
-		Project project = Project.findById(id);
-		if(project != null){
+	public static void structure(Long project_id){
+		if(getActiveProject() != null){
 			
 		}else{
-			notFound("Project", id);
+			notFound("Project", project_id);
 		}
 	}
 

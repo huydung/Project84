@@ -22,7 +22,7 @@
 	       %{ models.enums.Role[] roles = models.enums.Role.values() }%
 	       #{list items:roles, as:'role'}
 	           <input type="checkbox" name="roles" value="${role.toString()}"
-                    ${ membership.roleNames.contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' } />
+                    ${ membership.roleNames.toLowerCase().contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' } />
                <span>${role}</span> 
 	       #{/}
 	    <span class="error">#{error 'roles' /}</span> 
