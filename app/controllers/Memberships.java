@@ -17,6 +17,7 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.i18n.Messages;
 import play.mvc.Before;
+import play.mvc.With;
 
 import models.Membership;
 import models.Project;
@@ -25,6 +26,7 @@ import models.enums.ApprovalStatus;
 import models.enums.PermissionKey;
 import models.enums.Role;
 
+@With(Authorization.class)
 public class Memberships extends AppController {
 	@Before
 	static void setActive(){
@@ -57,15 +59,7 @@ public class Memberships extends AppController {
 		}
 	}
 	
-	@Before(only="create,doCreate")
-	public static void checkAccessCreated(){
-		if( !getActiveProject().allow(getActiveMembership(), 
-			PermissionKey.CREATE_INVITATIONS) 
-		){  error(403, "Access Denied");	};		
-	}
-	
 	public static void create(Long project_id){
-		//Check access
 		if( !getActiveProject().allow(getActiveMembership(), 
 			PermissionKey.CREATE_INVITATIONS) 
 		){  error(403, "Access Denied");	};
@@ -76,7 +70,6 @@ public class Memberships extends AppController {
 	public static void doCreate(
 			@Required String email, @Required String member_title,
 			@Required Long project_id, @Required Boolean isClient){	
-		//Check access
 		if( !getActiveProject().allow(getActiveMembership(), 
 				PermissionKey.CREATE_INVITATIONS) 
 		){	error(403, "Access Denied");}
@@ -106,21 +99,6 @@ public class Memberships extends AppController {
 		
 		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
-	}
-	
-	@Before(only="edit,doEdit")
-	public static void checkAccessEdit(){
-		Membership m = getActiveMembership();
-		Project p = getActiveProject();
-		if( !p.allow(m, PermissionKey.EDIT_MEMBERSHIPS) ){
-			if( params.get("id", Long.class) == m.id ){
-				if( !p.allow(m, PermissionKey.EDIT_OWN_MEMBERSHIPS) ){
-					error(403, "Access Denied");
-				}
-			}else{
-				error(403, "Access Denied");
-			}
-		};
 	}
 	
 	public static void edit(@Required Long id, @Required Long project_id){

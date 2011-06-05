@@ -21,11 +21,15 @@ import play.mvc.With;
 
 public class AppController extends Controller {
 	
-	@Before
-    static void setConnectedUser() {
+	@Before(priority=1)
+    static void prepare() {
+		//Check if user has been login. If she hasn't, redirect to homepage, 
         if(Security.isLoggedIn()) {
+        	
+        	//Fetch the user information from db and set up some configuration
+        	//accroding to her choices
             User user = User.findById(Long.parseLong(Security.getConnectedUserId()));
-           //If the cookie exist but user has been deleted from database
+            //If the cookie exist but user has been deleted from database
             if(user == null){
             	Security.logout();
             	Application.homepage();
@@ -34,7 +38,7 @@ public class AppController extends Controller {
             TimeZone.setDefault(TimeZone.getTimeZone(user.timeZone));
             renderArgs.put("loggedin", user);
             
-            //get active project, if having it
+            //get active projects of the logged in user, if she having it
             String project_id = params.get("project_id");
     		if( project_id != null ){
     			Project project = Project.findById(Long.parseLong(project_id));
@@ -46,23 +50,19 @@ public class AppController extends Controller {
     				renderArgs.put("_membership", m);
     			}
     		}
+    		
+    		//set up paramater to tell is the current request is sent by AJAX
+    		renderArgs.put("ajax", request.isAjax());
+    		
+    		//set up Hibernate filter for soft-delete mechanism
+    		//@see: models.package-info.java
+    		((Session)JPA.em().getDelegate())
+			.enableFilter("deleted")
+			.setParameter("deleted", false);
         }else{
         	Application.homepage();
         }
     }
-	
-	@Before
-	static void setFilters(){
-		((Session)JPA.em().getDelegate())
-			.enableFilter("deleted")
-			.setParameter("deleted", false);
-	}
-	
-	@Before
-	static void checkAjax(){
-		renderArgs.put("ajax", request.isAjax());
-	}
-
 	
 	static User getLoggedin(){
 		return renderArgs.get("loggedin", User.class);

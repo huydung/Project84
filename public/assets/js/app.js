@@ -136,6 +136,12 @@ jQuery.fn.confirm = function(options) {
 };
 
 $(document).ready(function(){
+	/** Default gritter options **/
+	$.gritter.options = {		
+		position: 'bottom-right',
+		time: 15000
+	};
+	
 	/** Date Picker **/
 	$('input.date').each(function(e){
 		var format = $(this).attr("data-format");
@@ -172,16 +178,24 @@ $(document).ready(function(){
 		$this = $(this);
 		$('body').append('<div id="modal-dialog"></div>');
 		$('#modal-dialog')
-			.load($this.attr('href'), function(){
-				console.log('Data loaded');
-				$('#modal-dialog').dialog({
-					modal: true,
-					title: $this.text(),
-					close: function(){
-						$('#modal-dialog').remove()
-					},
-					width: 600
-				});
+			.load($this.attr('href'), function(response, status, xhr){
+				if(status != "error"){			
+					$('#modal-dialog').dialog({
+						modal: true,
+						title: $this.text(),
+						close: function(){
+							$('#modal-dialog').remove()
+						},
+						width: 600
+					});
+				}else{
+					//See documentation: http://boedesign.com/blog/2009/07/11/growl-for-jquery-gritter/
+					$.gritter.add({
+						title: 'Oops',
+						text: response,
+						class_name: 'error',						
+					});
+				}	
 			});
 		return false;			
 	});

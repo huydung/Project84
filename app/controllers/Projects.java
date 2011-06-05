@@ -30,6 +30,7 @@ import play.mvc.*;
 import play.data.binding.*;
 import play.data.binding.types.DateBinder;
 
+@With(Authorization.class)
 public class Projects extends AppController { 
 	@Before
 	static void setActive(){
@@ -57,9 +58,6 @@ public class Projects extends AppController {
 	}
 	
 	public static void dashboard(@Required Long project_id){
-		if( getActiveMembership() == null ){
-			error(403, "Access Denied");
-		}
 		if(Validation.hasErrors()){
 			Application.homepage();
 		}else{
