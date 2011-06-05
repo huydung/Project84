@@ -1,18 +1,18 @@
-#{if project && project.id > 0}
+#{if _project != null && _project.id > 0}
 <ul class="group" id="menu_group_main">
     <li class="item first dashboard">
-        <a href="@{Projects.dashboard(project.id)}" class="${active == 'dashboard' ? 'current' : ''}">
+        <a href="@{Projects.dashboard(_project.id)}" class="${active == 'dashboard' ? 'current' : ''}">
             <span>&{'project.dashboard'}</span>
         </a>
     </li>
-    #{if project.needMembers || project.needClients}
+    #{if _project.needMembers || _project.needClients}
     <li class="item people">
-        <a href="@{Memberships.dashboard(project.id)}" class="${active == 'people' ? 'current' : ''}">
+        <a href="@{Memberships.dashboard(_project.id)}" class="${active == 'people' ? 'current' : ''}">
         <span>&{'project.people'}</span></a>
     </li>
     #{/}
     <li class="item settings last">
-        <a href="@{Projects.structure(project.id)}" class="${active == 'settings' ? 'current' : ''}">
+        <a href="@{Projects.structure(_project.id)}" class="${active == 'settings' ? 'current' : ''}">
             <span>&{'project.manage_list'}</span>
         </a>
     </span></li>    
