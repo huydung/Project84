@@ -14,7 +14,7 @@
 <div class="memberships members grid_15">
 
     #{list items:members, as:'member'}
-        #{membercard member:member /}    
+        #{membercard member:member, u:loggedin /}    
     #{/}
 </div>
 #{/}
@@ -33,7 +33,7 @@
 <div class="memberships members grid_15">
 
     #{list items:clients, as:'client'}
-        #{membercard member:client /}    
+        #{membercard member:client, u:loggedin /}    
     #{/}
 </div>
 #{/}

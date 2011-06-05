@@ -1,22 +1,42 @@
+%{
+boolean canDelete = controllers.Authorization.check( _member.project.id, _u.id, 
+            models.enums.PermissionKey.DELETE_MEMBERSHIPS);            
+boolean canDeleteOwn = controllers.Authorization.check( _member.project.id, _u.id, 
+            models.enums.PermissionKey.DELETE_OWN_MEMBERSHIPS);            
+boolean canEdit = controllers.Authorization.check( _member.project.id, _u.id, 
+            models.enums.PermissionKey.EDIT_MEMBERSHIPS);
+boolean canEditOwn = controllers.Authorization.check( _member.project.id, _u.id, 
+            models.enums.PermissionKey.EDIT_OWN_MEMBERSHIPS);
+boolean isOwn = ((_member.user != null) ? (_member.user.id == _u.id) : false) ;
+
+}%
+
 <div class="grid_6 membercard portlet ui-widget ui-widget-content 
             ui-helper-clearfix ui-corner-all">
       
       <div class="portlet-header ui-widget-header ui-corner-top clearfix">
         
         #{if _member.isInvitation() }
-        <a class="fright icon-link icon-link-delete" 
-            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
-        <a class="fright icon-link icon-link-email" 
-            href="@{Memberships.sendInvite( _member.id, _member.project.id, _member.getEmail(), _member.isClient())}">&{'labels.resendEmail'}</a>
-        
+            #{if canDelete || (isOwn && canDeleteOwn)}
+	        <a class="fright icon-link icon-link-delete" 
+	            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
+	        #{/}
+	        <a class="fright icon-link icon-link-email" 
+	            href="@{Memberships.sendInvite( _member.id, _member.project.id, _member.getEmail(), _member.isClient())}">&{'labels.resendEmail'}</a>
+	        
         #{/}
         #{else}
         <strong>${_member.user.nickName}</strong>
-        <a class="fright icon-link icon-link-delete"
-            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>        
-        <a class="fright icon-link icon-link-edit modal"
-            href="@{Memberships.edit(_member.id, _member.project.id)}">&{'labels.edit'}</a>
-         #{/}
+            #{if canDelete || (isOwn && canDeleteOwn)}
+	        <a class="fright icon-link icon-link-delete"
+	            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
+	        #{/}
+	        #{if canEdit || (isOwn && canEditOwn)}
+	        <a class="fright icon-link icon-link-edit modal"
+	            href="@{Memberships.edit(_member.id, _member.project.id)}">&{'labels.edit'}</a>
+	        #{/}
+        #{/}
+         
       </div>
       <div class="portlet-content" style="display: block; ">
 	      #{gravatar email:_member.getEmail(), size:80, noDescription:true /}

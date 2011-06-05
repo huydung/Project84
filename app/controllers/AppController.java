@@ -4,6 +4,8 @@ import java.util.TimeZone;
 
 import org.hibernate.Session;
 
+import com.huydung.utils.MiscUtil;
+
 
 import models.Membership;
 import models.Project;
@@ -45,7 +47,7 @@ public class AppController extends Controller {
     			
     			if( project != null ){
     				renderArgs.put("_project", project);
-    				System.out.println(request.url + ": Saved project to renderArgs (" + project.name + ")");
+    				MiscUtil.ConsoleLog(request.url + ": Saved project to renderArgs (" + project.name + ")");
     				Membership m = Membership.findByProjectAndUser(project, user);
     				renderArgs.put("_membership", m);
     			}

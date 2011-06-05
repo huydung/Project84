@@ -6,12 +6,15 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 public enum PermissionKey {
-
+	/** MEMBERSHIPS **/
 	EDIT_MEMBERSHIPS,
 	EDIT_OWN_MEMBERSHIPS,
+	EDIT_USERS_PERMISSIONS,
 	CREATE_INVITATIONS,
 	DELETE_MEMBERSHIPS,
 	DELETE_OWN_MEMBERSHIPS,
+	
+	/** PROJECT **/
 	EDIT_PROJECT_INFO,
 	CHANGE_PROJECT_STATUS,
 	CHANGE_PROJECT_LISTS,
@@ -26,6 +29,7 @@ public enum PermissionKey {
 			case POWER_MEMBER:{		
 				keys.add(CREATE_INVITATIONS);
 				keys.add(EDIT_OWN_MEMBERSHIPS);
+				keys.add(DELETE_OWN_MEMBERSHIPS);
 				return StringUtils.join(keys, ",");						
 			}
 			case MEMBER:{

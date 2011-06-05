@@ -120,7 +120,10 @@ public class Memberships extends AppController {
 		Membership m = Membership.findById(id);
 		if(m != null){
 			m.title = title;
-			m.roleNames = StringUtils.join(roles, ",");
+			if( getActiveProject().allow(
+					getActiveMembership(), PermissionKey.EDIT_USERS_PERMISSIONS) ){
+				m.roleNames = StringUtils.join(roles, ",");
+			}			
 			m.save();
 			dashboard(project_id);
 		}
@@ -136,7 +139,7 @@ public class Memberships extends AppController {
 				m.save();
 				flash.put("success", "Membership deleted");			
 			}
-		}
+		}		
 		dashboard(project_id);
 	}
 	

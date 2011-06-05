@@ -5,6 +5,12 @@
 #{set pageTitle:messages.get('labels.edit') + ' ' + messages.get('labels.membership') /}
 
 #{/}
+
+%{
+boolean canChangePermissions = controllers.Authorization.check( 
+           membership.project.id, loggedin.id, 
+           models.enums.PermissionKey.EDIT_USERS_PERMISSIONS);  
+}%
 <form id="form-membership" action="@{Memberships.doEdit}" method="POST"
     class="horizontal-form membership">
         <input type="hidden" name="id" value="${membership.id}" />
@@ -22,7 +28,9 @@
 	       %{ models.enums.Role[] roles = models.enums.Role.values() }%
 	       #{list items:roles, as:'role'}
 	           <input type="checkbox" name="roles" value="${role.toString()}"
-                    ${ membership.roleNames.toLowerCase().contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' } />
+                    ${ membership.roleNames.toLowerCase().contains(role.toString().toLowerCase()) ? 'checked="checked"' : '' }  
+                    ${ canChangePermissions ? '' : 'disabled="disabled"' }
+                    />
                <span>${role}</span> 
 	       #{/}
 	    <span class="error">#{error 'roles' /}</span> 

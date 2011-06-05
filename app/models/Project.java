@@ -11,6 +11,7 @@ import groovy.swing.factory.WidgetFactory;
 import javax.persistence.*;
 
 import com.huydung.helpers.ActionResult;
+import com.huydung.utils.MiscUtil;
 
 import models.enums.ActivityType;
 import models.enums.ApprovalStatus;
@@ -97,7 +98,7 @@ public class Project extends BasicItem {
     	if( m == null ){ return false; }
     	if( key == null ){ return false; }
     	
-    	System.out.println("Checking if user "+m.getEmail()+" can "+key.toString()+" with Project "+ this.name);
+    	MiscUtil.ConsoleLog("Checking if user "+m.getEmail()+" can "+key.toString()+" with Project "+ this.name);
     	List<Role> roles = m.getRoles();
 		for(Role role : roles){
 			for(RolePermission rp : rolePermissions){
