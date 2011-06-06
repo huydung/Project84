@@ -40,22 +40,20 @@ public class Memberships extends AppController {
 			error(403, "Access Denied");
 		}
 		
-		if( _project != null && (_project.needMembers || _project.needClients)){
+		if( _project != null && (_project.needMembers )){
 			List<Membership> members = Membership.findByProject(_project, 0);
-			if( _project.needClients ){
-				List<Membership> clients = new ArrayList<Membership>();
-				if(members != null){
-					for(Iterator<Membership> ite = members.iterator(); ite.hasNext();){
-						Membership m = ite.next();
-						if( m.isClient() ){
-							clients.add(m);
-							ite.remove();
-						}
+
+			List<Membership> clients = new ArrayList<Membership>();
+			if(members != null){
+				for(Iterator<Membership> ite = members.iterator(); ite.hasNext();){
+					Membership m = ite.next();
+					if( m.isClient() ){
+						clients.add(m);
+						ite.remove();
 					}
 				}
-				render(members, clients);
 			}
-			render(members);
+			render(members, clients);			
 		}
 	}
 	

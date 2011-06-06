@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import com.huydung.utils.MiscUtil;
 import models.Membership;
 import models.Project;
 import models.User;
+import models.enums.ApprovalStatus;
 import play.Logger;
 import play.Play;
 import play.data.binding.types.DateBinder;
@@ -39,6 +41,30 @@ public class AppController extends Controller {
             Play.configuration.setProperty("date.format", user.dateFormat);
             TimeZone.setDefault(TimeZone.getTimeZone(user.timeZone));
             renderArgs.put("loggedin", user);
+            
+            //Check invitations
+            if( !request.isAjax() && request.method.toLowerCase().equals("get") ){
+            	List<Membership> invitations = Membership.findByUserEmailAndStatus(
+            			user.email, ApprovalStatus.WAITING_INVITE);
+            	Long accept_id = -1L;
+            	if( session.contains("invitationId") ){
+            		accept_id = Long.parseLong(session.get("invitationId"));
+            		boolean existed = false;
+            		for( Membership m : invitations ){
+            			if( m.id == accept_id ){
+            				existed = true; break;
+            			}
+            		}
+            		if(!existed){
+            			invitations.add((Membership)Membership.findById(accept_id));
+            		}
+            	}
+            	
+            	if(!invitations.isEmpty()){
+            		flash.put("info", Messages.get("messages.invitations"));
+            		render("memberships/invitations.html", invitations, accept_id);
+            	}
+            }
             
             //get active projects of the logged in user, if she having it
             String project_id = params.get("project_id");

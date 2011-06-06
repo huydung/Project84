@@ -154,13 +154,13 @@ form.inline button{
 }
 
 #menu .dashboard span{
-	background: url('../icons/__dashboard.png') no-repeat center 10px;
+	background: url('../../appicons/__dashboard.png') no-repeat center 10px;
 }
 #menu .people span{
-    background: url('../icons/__people.png') no-repeat center 10px;
+    background: url('../../appicons/__people.png') no-repeat center 10px;
 }
 #menu .settings span{
-    background: url('../icons/__settings.png') no-repeat center 10px;
+    background: url('../../appicons/__settings.png') no-repeat center 10px;
 }
 
 

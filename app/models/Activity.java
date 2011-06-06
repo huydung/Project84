@@ -108,7 +108,7 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 
 	@Override
 	public List getItems(Long project_id) {		
-		return Activity.find("project", project).fetch(20);
+		return Activity.find("project = ? ORDER BY created DESC", project).fetch(20);
 	}
 
 	@Override

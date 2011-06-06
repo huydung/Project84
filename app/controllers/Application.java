@@ -57,34 +57,14 @@ public class Application extends Controller {
     //@Get("/")
     public static void app(){
     	User user = renderArgs.get("loggedin", User.class);
-    	
-    	//Check if there're invitations for this user
-    	List<Membership> invitations = Membership.findByUserEmailAndStatus(
-    			user.email, ApprovalStatus.WAITING_INVITE);
-    	Long accept_id = -1L;
-    	if( session.contains("invitationId") ){
-    		accept_id = Long.parseLong(session.get("invitationId"));
-    		boolean existed = false;
-    		for( Membership m : invitations ){
-    			if( m.id == accept_id ){
-    				existed = true; break;
-    			}
-    		}
-    		if(!existed){
-    			invitations.add((Membership)Membership.findById(accept_id));
-    		}
-    	}
-    	
-    	if(!invitations.isEmpty()){
-    		render("memberships/invitations.html", invitations, accept_id);
+
+		List<Membership> memberships = Membership.findByUser(user);
+    	if( memberships == null || memberships.size() == 0 ){
+    		Projects.create();
     	}else{
-    		List<Membership> memberships = Membership.findByUser(user);
-        	if( memberships == null || memberships.size() == 0 ){
-        		Projects.create();
-        	}else{
-        		Projects.overview();
-        	}
+    		Projects.overview();
     	}
+    	
     }
     
     //@Post("/rpx")

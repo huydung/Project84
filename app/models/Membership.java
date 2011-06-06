@@ -173,17 +173,16 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     
     public void accept(User user){
     	boolean emailChanged = !this.userEmail.equals(user.email);
+    	this.status = ApprovalStatus.ACCEPTED;
+    	this.user = user;
     	String message = emailChanged ? 
 			Messages.get(
 				"members.invite.description.ACCEPTED.emailChanged",
 				userEmail, user.email) :
 			Messages.get(
 				"members.invite.description.ACCEPTED",
-				userEmail);	
-			
-    	this.status = ApprovalStatus.ACCEPTED;
+				user.email);
     	this.userEmail = "";
-    	this.user = user;
     	this.save();
     	
     	Activity.track(message,this.project, ActivityType.ITEM, user);

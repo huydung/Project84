@@ -20,22 +20,15 @@ import java.util.*;
 public class ProjectTemplate extends BaseTemplate {	
 	
 	public ProjectTemplate(String name, Boolean isSystem, User user,
-			Boolean needMembers, Boolean needClients) {
+			Boolean needMembers) {
 		super(name, isSystem, user);
 		this.needMembers = needMembers;
-		this.needClients = needClients;
 	}
-
-	@Required
-	@MaxSize(20000)
-	@Lob
-	public String content;
 	
 	@OneToMany(mappedBy = "projectTemplate")
 	public List<ProjectListTemplate> projectList;
 	
 	public Boolean needMembers;
-    public Boolean needClients;
 	
 	@Override
 	public String toString(){
@@ -55,5 +48,17 @@ public class ProjectTemplate extends BaseTemplate {
 			plt = new ProjectListTemplate(this, lt, name);
 		}
 		plt.save();
+	}
+	
+	public List<ListTemplate> getListTemplates(){
+		ArrayList<ListTemplate> lts = new ArrayList<ListTemplate>();
+		if( this.projectList != null ){
+			for( ProjectListTemplate plt : this.projectList ){
+				if( !lts.contains(plt.listTemplate) ){
+					lts.add(plt.listTemplate);
+				}
+			}
+		}
+		return lts;
 	}
 }

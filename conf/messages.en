@@ -23,7 +23,7 @@ success.profileSaved = Your profile (%s) has been saved!
 
 ## WARNING ##
 warning.activity.save = Your activity can not be logged. 
-
+messages.invitations = <strong>Hold on a little!</strong> You've got new invitations!
 ## ACTIONS ##
 actions.changeImage = change image?
 actions.contactWarning = This is not critical, but please <a href="/contact?action=%s">Contact Us</a> so we can fix it. Thank you!
@@ -99,8 +99,7 @@ labels.project.deadline = Deadline
 labels.project.description = Description
 labels.project.functions = Functions
 labels.project.needTrackTime = Need Track Time?
-labels.project.needClients = Has Client?
-labels.project.needMembers = Work with other mates?
+labels.project.needMembers = Work with other mates or has clients?
 labels.project.needFiles = Need to manage Files?
 labels.yourInvitations = Your current invitations
 labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
@@ -114,3 +113,40 @@ message.pleaseAnswer = Please response to this invitation from %s:
 
 ## ACTIVITIES ##
 labels.activity.recent = Recent activities in the project
+
+
+## ITEM FIELDS ##
+f.name = Title
+f.description = Description
+f.body = Content
+f.date = Date/Time
+f.number = Number
+f.user = User
+f.check = Checkbox
+f.category = Category
+f.url = Link
+f.phone1 = Phone (1)
+f.phone2 = Phone (2)
+f.email1 = Email (1)
+f.email2 = Email (2)
+f.address = Address
+f.file = File
+f.cost = Cost/Price
+
+
+f.name.des = A short name to identify the item, for example: "Write sales report" 
+f.description.des = Some text (maximum 500 characters), without formatting (bold, italic, color...), to describe more about the item
+f.body.des = A long text with full formatting such as bold text, italic text, images, tables, embed YouTube video...
+f.date.des = Date and time, for example 24 December 2011 or 14:00 25/12/2011
+f.number.ds = A simple number, useful for prioritize items, or item counts...
+f.checkbox.des = A toggle between 2 states, can be Complete/Not Complete, or Plan/Bought....
+f.user.des = Relate/Assign this item to one member/client or the project
+f.category.des = Group items into categories for better management
+f.url.des = A link to a resource on the internet, for example http://huydung.com/ or http://somehost.com/music.mp3
+f.phone1.des = A phone number, only accepts number and these characters: ' ', '+', '(', ')', '.'; ví dụ: (+84)984.903.707
+f.phone2.des = Second phone number, in case you need more than one 
+f.email1.des = A valid email address, for example contact@huydung.com
+f.email2.des = Second email address, in case you need more than one
+f.address.des = Street address, can also holds a Google Map
+f.file.des = Allow to attach files to the items, such as documents, music, videos...
+f.cost.des = Keep track of cost / price with amount and currency

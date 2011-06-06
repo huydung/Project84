@@ -18,6 +18,7 @@ import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.PermissionKey;
 import models.enums.Role;
+import models.templates.ListTemplate;
 import models.templates.ProjectTemplate;
 
 import java.util.*;
@@ -30,7 +31,7 @@ public class Project extends BasicItem {
     public Date deadline;
     
     public Boolean needMembers = false;
-    public Boolean needClients = false;
+    //public Boolean needClients = false;
     
     public String doneStatus = DoneStatus.ONGOING.getName();
     
@@ -50,10 +51,10 @@ public class Project extends BasicItem {
     
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     public List<RolePermission> rolePermissions;
-    /*
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    public List<ItemList> itemLists;   
-    */ 
+    
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    public List<Listing> listings;   
+     
     
     @Transient
     private List<IWidget> widgets = null;
@@ -203,12 +204,23 @@ public class Project extends BasicItem {
     public List<IWidget> getWidgets(User user){
     	if( widgets == null ){
     		widgets = new ArrayList<IWidget>();
-    		if( this.needMembers || this.needClients ){
+    		if( this.needMembers ){
     			widgets.add(new Membership(this, user));
     		}
     		widgets.add(new Activity(this));
     	}
     	return widgets;
+    }
+    
+    public void copyFromTemplate(ProjectTemplate pt){
+    	this.fromTemplate = pt;
+    	this.needMembers = pt.needMembers;
+    	this.save();
+    	for( ListTemplate lt : pt.getListTemplates() ){    		
+    		Listing l = Listing.createFromTemplate(lt, this);
+    		l.save();
+    	}  	
+    	
     }
 
 }

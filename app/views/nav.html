@@ -11,6 +11,14 @@
         <span>&{'project.people'}</span></a>
     </li>
     #{/}
+    #{if _project.listings != null}
+	    #{list items:_project.listings, as:'l'}
+	    <li class="item ${l.listingName.slugify()}">
+	        <a href="#" class="${active == l.listingName.slugify() ? 'current' : ''}">
+	        <span style="background:url(${l.iconPath})  no-repeat center 10px">${l.listingName}</span></a>
+	    </li>
+	    #{/}
+    #{/}
     <li class="item settings last">
         <a href="@{Projects.structure(_project.id)}" class="${active == 'settings' ? 'current' : ''}">
             <span>&{'project.manage_list'}</span>

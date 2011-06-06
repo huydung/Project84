@@ -67,7 +67,7 @@ public class Authorization extends Controller {
 		Project p = AppController.getActiveProject();
 		//Projects Controller
 		if( request.controllerClass == Projects.class ){			
-			if( "create,doCreate,dashboard".contains(method) ){				
+			if( "dashboard".contains(method) ){				
 				if(m == null){	
 					error(403, "Access Denied");
 				}

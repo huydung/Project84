@@ -7,6 +7,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.Project;
 import models.User;
 import models.validators.MustHaveUserIfNotSystem;
 
@@ -20,16 +21,29 @@ import play.data.validation.Required;
 @Entity
 public class ListTemplate extends BaseTemplate {
 
-	public ListTemplate(String name, Boolean isSystem, User user, String fields, Boolean hasTab) {
+	public ListTemplate(String name, Boolean isSystem, User user) {
 		super(name, isSystem, user);
-		this.fields = fields;
-		this.hasTab = hasTab;
 	}
-	@Required
-	public String fields;
 	
 	@Required
-	public Boolean hasTab;	
+	public String iconPath;
+	
+	@Required
+	public String fields = "";
+	
+	@Required
+	public Boolean hasTab = true;
+	
+	@Required
+	public Boolean hasPermissions = false;
+	
+	public String mainField;
+
+	public String subField;
+
+	public Integer numItems = 5;
+	
+	public String sort = "created DESC";
 	
 	@OneToMany(mappedBy = "listTemplate")
 	public List<ProjectListTemplate> projectList;

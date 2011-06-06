@@ -124,8 +124,7 @@ labels.project.deadline = Hạn chót
 labels.project.description = Ghi chú
 labels.project.functions = Các chức năng
 labels.project.needTrackTime = Thống kê thời gian?
-labels.project.needClients = Làm việc với khách hàng?
-labels.project.needMembers = Làm việc theo nhóm?
+labels.project.needMembers = Làm việc theo nhóm hoặc với khách hàng?
 labels.project.needFiles = Cần quản lý Files?
 labels.yourInvitations = Các lời mời dành cho bạn
 labels.replyYourInvitation = Dưới đây là các lời mời dành cho bạn. <br/>Xin hãy xác nhận sự đồng ý/không đồng ý của bạn để người mời được biết..
@@ -148,6 +147,42 @@ message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:
+messages.invitations = <strong>Wow, chờ chút!</strong> Bạn vừa nhận được lời mời tham gia dự án mới!
 
 ## ACTIVITY ##
 labels.activity.recent = Những thay đổi gần đây nhất
+
+## ITEM FIELDS ##
+f.name = Tiêu đề
+f.description = Ghi chú
+f.body = Nội dung
+f.date = Ngày tháng
+f.number = Số lượng
+f.user = Người chịu trách nhiệm
+f.category = Phân mục
+f.url = Liên kết
+f.phone1 = Điện thoại (1)
+f.phone2 = Điện thoại (2)
+f.email1 = Email (1)
+f.email2 = Email (2)
+f.address = Địa chỉ
+f.file = File
+f.cost = Giá tiền
+f.check = Đánh dấu
+
+f.name.des = Một tên gọi ngắn để phân biệt, nhận diện. Ví dụ: "Viết email cho Hiền về báo cáo doanh số bán hàng quý 1" 
+f.description.des = Một chuỗi không quá 500 kí tự, không có định dạng (nghiêng, đậm, màu sắc...) chú giải rõ hơn về đối tượng
+f.body.des = Một bài viết dài với đầy đủ các định dạng nghiêng, đậm, to nhỏ, màu sắc, bảng biểu....
+f.date.des = Ngày tháng, ví dụ: 14/06/2011 hoặc 20h00 14/06/2011
+f.number.des = Một con số, có thể dùng để sắp xếp, chỉ mức độ quan trọng, đếm số lượng... 
+f.user.des = Người chịu trách nhiệm chính cho đối tượng này
+f.category.des = Sử dụng để nhóm các đối tượng lại thành các nhóm khác nhau
+f.url.des = Một đường dẫn đến 1 tài nguyên internet, ví dụ http://huydung.com/ hoặc http://somehost.com/music.mp3
+f.check.des = Một checkbox để đánh dấu giữa 2 trạng thái, VD đã/chưa làm xong, đã/chưa mua hàng...
+f.phone1.des = Trường số điện thoại, chỉ chấp nhận các kí tự số và các kí tự ' ', '+', '(', ')', '.'; ví dụ: (+84)984.903.707
+f.phone2.des = Trường số điện thoại thứ hai, sử dụng khi cần lưu trữ nhiều hơn 1 số điện thoại cho đối tượng 
+f.email1.des = Một địa chỉ email hợp lệ, ví dụ contact@huydung.com
+f.email2.des = Địa chỉ email thứ hai, sử dụng khi cần lưu trữ nhiều hơn 1 email cho đối tượng
+f.address.des = Địa chỉ đường phố, có thể đính kèm bản đồ (Google Map)
+f.file.des = Cho phép upload lên các file, ví dụ file ảnh, nhạc, video...
+f.cost.des = Lưu giá tiền, số đơn vị sản phẩm và đơn vị tiền tệ tương ứng

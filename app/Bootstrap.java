@@ -26,6 +26,7 @@ public class Bootstrap extends Job {
 		createUserAndProjectData();
 		
 	}	
+
 	
 	protected void createUserAndProjectData(){
 		//Create Users
@@ -58,14 +59,31 @@ public class Bootstrap extends Job {
 		ngochien.save();
 						
 		//Create Project Template and List Template
-		ListTemplate tasks = new ListTemplate("Tasks", true, null, 
-				"Task:[date,assignedTo,category]", true);
-		tasks.save();
+		ListTemplate tasks = new ListTemplate("Task", true, null);
+		tasks.hasPermissions = true;
+		tasks.iconPath = "/public/appicons/note-2.png";
+		tasks.mainField = "name";
+		tasks.subField = "date";		
+		tasks.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,check:Completed?";		
+		tasks.save();		
 		
-		ListTemplate files = new ListTemplate("Files", true, null,
-				"File:[filePath,mimeType,category]", true);
+		ListTemplate files = new ListTemplate("File", true, null);
+		files.hasPermissions = true;
+		files.iconPath = "/public/appicons/finder.png";
+		files.mainField = "name";
+		files.subField = "file_size";		
+		files.fields = "name:Name,file:File,user:Author,category:Category";		
 		files.save();
 		
+		ListTemplate discussions = new ListTemplate("Discussions", true, null);
+		discussions.hasPermissions = true;
+		discussions.iconPath = "/public/appicons/__discussions.png";
+		discussions.mainField = "name";
+		discussions.subField = "user";		
+		discussions.fields = "name:Title,body:Content,user:Author,category:Category";		
+		discussions.save();
+		
+		/*
 		ListTemplate images = new ListTemplate("Images", true, null,
 				"Image:[filePath,mimeType,category]", true);
 		images.save();
@@ -74,9 +92,7 @@ public class Bootstrap extends Job {
 				"Link:[url,category]", true);
 		links.save();
 		
-		ListTemplate discussions = new ListTemplate("Links", true, null,
-				"Discussion:[body,category]", true);
-		discussions.save();
+		
 		
 		ListTemplate assets = new ListTemplate("Assets", true, null, 
 				"Asset:[price,amount,currency]", true);
@@ -89,30 +105,30 @@ public class Bootstrap extends Job {
 		ListTemplate events = new ListTemplate("Events", true, null, 
 				"Event:[date,address,lat,lan]", true);
 		events.save();
+		*/
 		
-		ProjectTemplate software = new ProjectTemplate("Software Development", true, null, 
-				true, true);
+		ProjectTemplate software = new ProjectTemplate(
+				"Software Development", true, null, true);
 		software.save();
 		software.addList(tasks, "Todos");
 		software.addList(files, "Documents");
-		software.addList(assets, "Assets");
-		software.addList(discussions, "Discussions");
+		software.addList(discussions, "Discussions");	
+		software.refresh();
 		
-		ProjectTemplate wedding = new ProjectTemplate("Wedding", true, null, 
-				true, false);
+		ProjectTemplate wedding = new ProjectTemplate(
+				"Wedding", true, null, true);
 		wedding.save();
 		wedding.addList(tasks, "Todos");
 		wedding.addList(files, "Files");
-		wedding.addList(assets, "Money");
-		wedding.addList(contacts, "People");
-		wedding.addList(events, "Events");
-		wedding.addList(links, "Links");
-		
-		wedding.save();
+		wedding.addList(discussions, "Discussions");
+		wedding.refresh();
+		//wedding.addList(contacts, "People");
+		//wedding.addList(events, "Events");
+		//wedding.addList(links, "Links");
 		
 		//Create 2 Projects
 		Project ol = new Project();
-		ol.fromTemplate = software;
+		
 		ol.name = "OrangeLife";
 		cal.set(2011, 4, 10, 20, 22);
 		ol.created = cal.getTime();
@@ -122,15 +138,13 @@ public class Bootstrap extends Job {
 		ol.setStatus( DoneStatus.ONGOING );
 		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
 		ol.updated = ol.created;
-		ol.needClients = true;
-		ol.needMembers = true;		
-		ol.saveAndGetResult(huydung);		
+		ol.saveAndGetResult(huydung);
+		ol.copyFromTemplate(software);
 		ol.buildRolePermissions();
 		ol.assignCreator(huydung, "Manager");
 		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
 		
 		Project wd = new Project();
-		wd.fromTemplate = wedding;
 		wd.name = "HD Wedding";
 		cal.set(2011, 2, 10, 20, 22);
 		wd.created = cal.getTime();
@@ -140,11 +154,12 @@ public class Bootstrap extends Job {
 		wd.setStatus( DoneStatus.ONGOING );
 		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
 		wd.updated = ol.created;
-		wd.needMembers = true;		
 		wd.saveAndGetResult(huydung);	
+		wd.copyFromTemplate(wedding);
 		wd.buildRolePermissions();
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
+		
 		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
 		bride.status = ApprovalStatus.ACCEPTED;
 		bride.save();
