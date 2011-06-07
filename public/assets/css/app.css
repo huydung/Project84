@@ -5,6 +5,7 @@
 .tright{ text-align: right; }
 .tcenter{text-align: center;}
 .nomargin{margin:0 !important;}
+.einline{display:inline !important;}
 a.icon-link, button.icon-link{
 	padding-left: 18px;
 	text-decoration: underline;
@@ -22,16 +23,37 @@ a.icon-link, button.icon-link{
 a.icon-link:hover, button.icon-link:hover{
 	color: #000;
 }
+fieldset legend{
+	font-weight:bold;padding:0 10px;
+}
 .grid_6 h1, .grid_6 h2, .grid_6 h3{
 	margin-bottom: 0;
 }
 hr{margin: 0 0 1em; display: block; clear: both;}
+form hr{margin: 1em 0 1em}
 #page-title h1, form .button{
 	font-family: "Palatino linotype", "Times New Roman", serif;
+}
+h3.ui-accordion-header{
+	padding: 5px 5px 5px 24px;
+}
+.highlight{
+	padding: 5px;
+	background-color: #FFFFAA;
+	border: solid 1px #AAAA66;
+}
+.box-table tr.used td{
+	background-color: #FFFFAA;
+}
+.box-table tr.used:hover td{
+    background-color: #FFFF66;
 }
 .description{
 	display: block;
 	font-style: italic;
+}
+.description small{
+	font-size: 0.9em;
 }
 .tcenter{
 	text-align: center;
@@ -51,17 +73,23 @@ hr{margin: 0 0 1em; display: block; clear: both;}
 .clearleft{
 	clear: left;
 }
+.clearright{
+    clear: right;
+}
 
 /** Horizontal Form */
 
 form label{
-	width: 180px;
+	
 	clear: left;
 	float: left;
 	margin: 10px 10px 0 0;
 	text-align: right;
 	padding-top: 4px;
 	font-weight: bold;
+}
+.horizontal-form label{
+	width: 180px;
 }
 form button.button{
 	clear:left;
@@ -106,12 +134,18 @@ form.inline{
 form.inline label,
 form.inline input,
 form.inline span,
-form.inline button{
+form.inline button,
+form.inline select,
+form.inline .form-field{
     display: inline;
     padding-right: 5px;
     width: auto;
     margin: 0;
     float: none;
+    max-width:150px;
+}
+form.inline select{
+	padding: 1px;
 }
 
 /** MENU **/
@@ -259,4 +293,34 @@ h3.widget-title{
 }
 .portlet-header > strong{
 	font-size: 1.2em; margin-left: 5px; line-height: 1em;
+}
+
+
+/** LISTINGS **/
+ul.grid-items{
+	margin: 10px;	
+}
+ul.grid-items li{
+	list-style: none;
+	padding: 2px;
+	margin: 10px;
+	float:left;
+	border: solid 1px #DDD;
+	background-color: #EEE;
+}
+ul.grid-items li:hover{
+	border: solid 2px #0073EA;
+	padding: 1px;
+	background-color: #1083FA;
+	cursor: pointer;
+}
+.grid_7 select, .grid_7 .text,
+.grid_8 select, .grid_8 .text,
+.grid_6 select, .grid_6 .text{
+	width: 200px;
+}
+.grid_7 label,
+.grid_8 label,
+.grid_6 label{
+    width: 150px;
 }

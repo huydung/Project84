@@ -22,7 +22,7 @@ public class Bootstrap extends Job {
 	public void doJob(){
 		TimeZone.setDefault(TimeZone.getTimeZone("GTM+7:00"));
 		Locale.setDefault(new Locale("vi"));
-
+		
 		createUserAndProjectData();
 		
 	}	
@@ -59,7 +59,15 @@ public class Bootstrap extends Job {
 		ngochien.save();
 						
 		//Create Project Template and List Template
-		ListTemplate tasks = new ListTemplate("Task", true, null);
+		ListTemplate blanks = new ListTemplate("Blank List", true, null);
+		blanks.hasPermissions = true;
+		blanks.iconPath = "/public/appicons/text2.png";
+		blanks.mainField = "name";
+		blanks.subField = "created";		
+		blanks.fields = "name:Name";		
+		blanks.save();	
+		
+		ListTemplate tasks = new ListTemplate("Tasks", true, null);
 		tasks.hasPermissions = true;
 		tasks.iconPath = "/public/appicons/note-2.png";
 		tasks.mainField = "name";
@@ -67,11 +75,11 @@ public class Bootstrap extends Job {
 		tasks.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,check:Completed?";		
 		tasks.save();		
 		
-		ListTemplate files = new ListTemplate("File", true, null);
+		ListTemplate files = new ListTemplate("Files", true, null);
 		files.hasPermissions = true;
 		files.iconPath = "/public/appicons/finder.png";
 		files.mainField = "name";
-		files.subField = "file_size";		
+		files.subField = "created";		
 		files.fields = "name:Name,file:File,user:Author,category:Category";		
 		files.save();
 		
@@ -106,6 +114,10 @@ public class Bootstrap extends Job {
 				"Event:[date,address,lat,lan]", true);
 		events.save();
 		*/
+		
+		ProjectTemplate blank = new ProjectTemplate(
+				"Blank Project", true, null, true);
+		blank.save();
 		
 		ProjectTemplate software = new ProjectTemplate(
 				"Software Development", true, null, true);

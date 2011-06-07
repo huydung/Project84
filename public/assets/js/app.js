@@ -154,6 +154,13 @@ $(document).ready(function(){
 		})
 	})
 	
+	/** Accordion & Tabs **/
+	$('#accordions').accordion();
+	$('#tabs').tabs();
+	
+	/** Hide elements that will be enhanced by Javascript **/
+	$('.enhanced').hide();
+	
 	
 	/** Allow to click on label to select **/
 	$('label,.label').css({cursor:'pointer'}).click(function(){
@@ -198,6 +205,54 @@ $(document).ready(function(){
 				}	
 			});
 		return false;			
+	});
+	
+	/** Icon Chooser Components **/
+	//Fills Icons in the modal-dialog
+	var $modal = $('#modal-dialog');
+	if($modal.length <= 0){
+		$('body').append('<div id="modal-dialog"></div>');
+		$modal = $('#modal-dialog');
+	}
+	var $iconChoosers = $('.iconChooser select');
+	if( $iconChoosers.length > 0 ){
+		var str = '<ul class="grid-items">';
+		$iconChoosers.eq(0).find('option').each(function(){
+			str += '<li><img src="'+ $(this).val() +'" width="32" height="32" /></li>';
+			
+		});
+		str +='</div>';
+		$modal.html(str);
+		$modal.dialog({
+			autoOpen: false,
+			title: "Icon Chooser",
+			width: 600,
+			height: 420,
+			modal: true
+		});
+		$iconChoosers.parents('a').click(function(){
+			$modal.data('caller_id', $(this).attr('id')).dialog('open');
+			return false;
+		});
+		$modal.find('li').click(function(){
+			var id = $modal.data('caller_id');
+			var src = $(this).find('img').attr('src');
+			$('#'+id)
+				.find('select').val( src )
+				.end()
+				.find('img').attr('src', src);
+			$modal.dialog('close');
+		});
+	};
+	
+	/** Checkbox interactivity in Project Configuration page **/
+	$('.listing-fields-configuration input[type=checkbox]').click(function(){
+		var $this = $(this);
+		if( $this.is(':checked') ){
+			$this.parents('tr').addClass('used');
+		}else{
+			$this.parents('tr').removeClass('used');
+		}
 	});
 });
 

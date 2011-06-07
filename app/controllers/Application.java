@@ -3,6 +3,7 @@ package controllers;
 import play.*;
 import play.data.validation.Required;
 import play.data.validation.Validation;
+import play.db.jpa.JPA;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.libs.WS;
@@ -12,6 +13,7 @@ import play.mvc.*;
 import java.text.Collator;
 import java.util.*;
 
+import org.hibernate.Session;
 import org.w3c.dom.*;
 
 import com.google.gson.JsonElement;
@@ -22,7 +24,7 @@ import models.enums.ApprovalStatus;
 
 public class Application extends Controller {
 	
-	@Before(unless={"homepage","rpx","switchLanguage","inviteResponseFromEmail"})
+	@Before(unless={"homepage","rpx","switchLanguage","inviteResponseFromEmail","devLogin"})
     static void setConnectedUser() {
         if(Security.isLoggedIn()) {
             User user = User.findById(Long.parseLong(Security.getConnectedUserId()));
@@ -57,11 +59,13 @@ public class Application extends Controller {
     //@Get("/")
     public static void app(){
     	User user = renderArgs.get("loggedin", User.class);
-
-		List<Membership> memberships = Membership.findByUser(user);
+    
+		List<Membership> memberships = Membership.find("user = ? AND deleted = FALSE", user).fetch();
     	if( memberships == null || memberships.size() == 0 ){
+    		flash.keep();
     		Projects.create();
     	}else{
+    		flash.keep();
     		Projects.overview();
     	}
     	
@@ -90,6 +94,18 @@ public class Application extends Controller {
     	}catch(Exception e){
     		renderText("Error get JSON response: "+ e.getMessage());
     	}
+    }
+    
+    public static void devLogin(Long id){
+    	User user = User.findById(id);
+    	Security.setConnectedUser(id);
+    	if( user.hasProfile ){
+			Application.app();
+		}else{
+			flash.put("success", Messages.get("success.oauth", user.provider));
+    		flash.keep();
+    		Users.profile(user.id);	    			
+		}
     }
     
     public static void inviteResponseFromEmail(

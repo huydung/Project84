@@ -64,23 +64,29 @@ public class Item extends BasicItem{
 	public Integer cost_amount;
 	public String cost_currency;
 	
-	public List<ItemField> getItemFields(){
+	public static String getRequiredFields(){
+		return  "created,creator,updated,type,name,id";
+	}
+	
+	public static List<ItemField> getItemFields(){
 		ArrayList<ItemField> iFields = new ArrayList<ItemField>();
 		Class itemClass = Item.class;
 		
-		Field[] fields = itemClass.getDeclaredFields();
+		Field[] fields = itemClass.getFields();
 		for( Field f : fields ){			
 			String fName = f.getName();
-			if( !fName.contains("_") ){
-				String localeTitle = "f."+fName;
-				String localeDes = "f."+fName+".des";
-				String localeInputHelper = "f."+fName+".iph";
-				iFields.add(new ItemField(fName,
-						Messages.get(localeTitle),
-						Messages.get(localeDes),
-						Messages.get(localeInputHelper)
-				));
-			}			
+			if(!"willBeSaved,type".contains(fName)){
+				if( !fName.contains("_") ){
+					String localeTitle = "f."+fName;
+					String localeDes = "f."+fName+".des";
+					String localeInputHelper = "f."+fName+".iph";
+					iFields.add(new ItemField(fName,
+							Messages.get(localeTitle),
+							Messages.get(localeDes),
+							Messages.get(localeInputHelper)
+					));
+				}
+			}
 		}
 		
 		return iFields;

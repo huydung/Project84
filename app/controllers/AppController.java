@@ -61,7 +61,8 @@ public class AppController extends Controller {
             	}
             	
             	if(!invitations.isEmpty()){
-            		flash.put("info", Messages.get("messages.invitations"));
+            		flash.put("info", Messages.get("messages.invitations"));  
+            		session.put("destination", request.url);
             		render("memberships/invitations.html", invitations, accept_id);
             	}
             }

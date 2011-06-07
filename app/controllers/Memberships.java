@@ -74,7 +74,7 @@ public class Memberships extends AppController {
 				
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
-			params.flash();
+			params.flash();			
 			dashboard(project_id);
 		}
 		Project p = getActiveProject();
@@ -92,10 +92,9 @@ public class Memberships extends AppController {
 			//send email
 			if(m != null){
 				Emails.sendInvitationToMember(email, getLoggedin().id, project_id, m.id, m.isClient());
+				flash.put("success", Messages.get("labels.emailSent", email));
 			}
 		}
-		
-		flash.put("success", Messages.get("labels.emailSent", email));
 		dashboard(project_id);
 	}
 	
@@ -162,6 +161,16 @@ public class Memberships extends AppController {
 				}
 			}
 		}
-		Application.app();
+		if( session.contains("destination") ){
+			String path = session.get("destination");
+			session.remove("destination");
+			redirect(path);
+		}else{
+			Application.app();
+		}
+	}
+	
+	public static void invitations(){
+		render();
 	}
 }

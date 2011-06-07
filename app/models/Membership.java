@@ -259,12 +259,6 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	@Override
 	public List getItems(Long project_id) {
 		List<Membership> memberships = Membership.findByProject(this.project, 7);
-		
-		for(Iterator<Membership> ite = memberships.iterator(); ite.hasNext(); ){
-			if( ite.next().isInvitation() ){
-				ite.remove();
-			};
-		}
 		return memberships;
 	}
 
@@ -286,11 +280,11 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	public Link getInfo() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("id", this.id);
+		String n = isInvitation() ? 
+				Messages.get("labels.invitation") + "|" + this.userEmail
+				: this.title + "|" + this.user.fullName;
 		
-		return new Link(
-			this.title + "|" + this.user.fullName,
-			Router.getFullUrl("Membership.show", args)
-		);		
+		return new Link( n, "#" );		
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
+import play.i18n.Messages;
 
 @Entity
 public class ListTemplate extends BaseTemplate {
@@ -47,4 +48,14 @@ public class ListTemplate extends BaseTemplate {
 	
 	@OneToMany(mappedBy = "listTemplate")
 	public List<ProjectListTemplate> projectList;
+	
+	public static List<ListTemplate> getTemplates(User user){
+		return ListTemplate.find(
+				"isSystem = ? OR (isSystem = ? AND user = ?)", true, false, user).fetch();
+	}
+	
+	@Override
+	public String toString(){
+		return (isSystem ? "[" +  Messages.get("labels.system") + "] " : "") + this.name;
+	}
 }

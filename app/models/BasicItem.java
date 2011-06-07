@@ -24,8 +24,6 @@ public class BasicItem extends Model {
 	public String type;
 	@Required
 	public String name;
-	
-	public String folder;
 
 	public BasicItem() {
 		super();

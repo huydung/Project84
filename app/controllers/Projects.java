@@ -10,8 +10,10 @@ import java.util.List;
 import org.apache.log4j.varia.DenyAllFilter;
 
 import com.huydung.helpers.ActionResult;
+import com.huydung.utils.ItemField;
 
 import models.Activity;
+import models.Listing;
 import models.Membership;
 import models.Project;
 import models.User;
@@ -108,14 +110,16 @@ public class Projects extends AppController {
     		displayWarning(res.getMessage(), "save-activity-when-create-project");
     	}
     	
-    	//Projects.structure( project.id );
-    	
+    	//Projects.structure( project.id );    	
     	dashboard(project.id);
     }
 	
 	public static void structure(Long project_id){
-		if(getActiveProject() != null){
-			
+		Project p = getActiveProject();
+		if(p != null){
+			List<Listing> listings = p.listings;
+			List<ItemField> item_fields = models.Item.getItemFields();
+			render(listings, item_fields);
 		}else{
 			notFound("Project", project_id);
 		}

@@ -4,19 +4,38 @@
 
 <h3>&{'labels.replyYourInvitation'}</h3>
 <form action="@{Memberships.saveInvitationResponse()}" method="post">
-	<ul>
 	    #{list items:invitations, as:'invite'}
-	    <div class="form-field">
-	    <label class="grid_6">${invite.project.name}</label>
-	    <div class="fleft">
-		    <input type="radio" name="responses[]" value="${invite.id}-true" checked="checked" />	    
-		    <span>&{'labels.acceptInvite'}</span>
-		    <input type="radio" name="responses[]" value="${invite.id}-false" />     
-	        <span>&{'labels.deny'}</span>
-        </div>
-	    </div>	   
+	    
+	    <fieldset>
+	       <legend>${invite.project.name}</legend>
+	       <ul>
+                <li>&{'labels.invitation'} &{'labels.from'} ${invite.user.fullName}</li>
+                #{if invite.project.description != null && invite.project.description.length() > 0}
+                <li><em>${invite.project.description}</em></li>
+                #{/}
+                <li >
+                &{'labels.createdOn'} ${invite.project.created.format('dd MMMMM yyyy')}
+                #{if invite.project.deadline != null }
+                , &{'labels.project.deadline'} ${invite.project.deadline.format('dd MMMMM yyyy')}
+                
+                #{/}
+                </li>
+            </ul>
+	       <div class="form-field highlight">
+	       
+	        <label class="grid_6">${invite.project.name}</label>
+	        <div class="fleft">
+	            <input type="radio" name="responses[]" value="${invite.id}-true" checked="checked" />       
+	            <span>&{'labels.acceptInvite'}</span>
+	            <input type="radio" name="responses[]" value="${invite.id}-false" />     
+	            <span>&{'labels.deny'}</span>
+	        </div>
+	        
+	        </div>    
+	    </fieldset>
+	     
 	    #{/}
-	</ul>
+
 	<hr />
 	<button class="button nomargin" type="submit"><span>&{'labels.confirm'}</span></button>
 </form>

@@ -32,7 +32,6 @@ public class Users extends AppController{
 			render("users/profile.html", user);
 		}else{
 			user.save();
-			flash.clear();
 			flash.put("success", Messages.get("success.profileSaved", user.nickName));
 			flash.keep();
 			Application.app();

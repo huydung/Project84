@@ -44,6 +44,10 @@ labels.projectName = Project name
 labels.fromTemplate = From Template
 labels.viewAll = View All
 labels.as = as
+labels.baseOn = base on
+labels.basicInfo = Basic Information
+labels.listing.fields = Fields of items of Listing
+labels.listing.widget = Widget Configuration
 labels.doit = Do it
 labels.add = Add
 labels.edit = Edit
@@ -57,6 +61,20 @@ labels.createdOn = Created on
 labels.acceptInvite = Accept Invitation
 labels.deny = Deny
 labels.confirm = Confirm
+labels.from = From
+labels.system = System
+labels.listing.add = Add new Listings
+labels.listing.name = Listing name
+labels.displayTab = Display as a Tab?
+labels.chooseIcon = Choose Icon
+labels.clickTo = Click to
+labels.desc = Sort descending?
+project.listings.current = Current Project Listings
+labels.field.name = Field Name
+labels.des = Description
+labels.include = Include?
+labels.asName = as Name
+
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -91,12 +109,12 @@ project.active_projects = Active Projects
 project.inactive_projects = Inactive Projects
 project.dashboard = Dashboard
 project.people = People
-project.manage_list = Configure
+project.configuration = Configure
+project.configuration.long = %s - Configuration and Permissions
 project.addMember = Add Member/Client
 labels.project.create.short = Create Project
 labels.project.name = Project Name
 labels.project.deadline = Deadline
-labels.project.description = Description
 labels.project.functions = Functions
 labels.project.needTrackTime = Need Track Time?
 labels.project.needMembers = Work with other mates or has clients?
@@ -132,7 +150,10 @@ f.email2 = Email (2)
 f.address = Address
 f.file = File
 f.cost = Cost/Price
-
+f.created = Created
+f.creator = Author
+f.updated = Updated
+f.id = System ID
 
 f.name.des = A short name to identify the item, for example: "Write sales report" 
 f.description.des = Some text (maximum 500 characters), without formatting (bold, italic, color...), to describe more about the item
@@ -150,3 +171,9 @@ f.email2.des = Second email address, in case you need more than one
 f.address.des = Street address, can also holds a Google Map
 f.file.des = Allow to attach files to the items, such as documents, music, videos...
 f.cost.des = Keep track of cost / price with amount and currency
+
+## LISTING ##
+listing.mainField  = Main Field
+listing.subField = Sub Field
+listing.numItems = Number of Items
+listing.sort = Sort Items on

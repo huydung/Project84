@@ -107,6 +107,13 @@
 <div class="container_16" id="footer">
 &{'interface.copyrighted'}
 </div>
+#{ifErrors}
+<ul>
+#{errors}
+    <li>${error}</li>
+#{/errors}
+</ul>
+#{/}
 <!-- FOOTER END -->
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>

@@ -1,3 +1,7 @@
+%{
+if( _labelKey == null ) String _labelKey = _name;
+if( _hasBody == null ) boolean _hasBody = false;
+}%
 <div class="form-field required #{ifError _name} error #{/}">
     <label>&{_labelKey}</label>
     #{if !_hasBody}

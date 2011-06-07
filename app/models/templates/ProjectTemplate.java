@@ -6,6 +6,7 @@ import play.data.validation.CheckWith;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.*;
+import play.i18n.Messages;
 
 import javax.persistence.*;
 
@@ -32,7 +33,7 @@ public class ProjectTemplate extends BaseTemplate {
 	
 	@Override
 	public String toString(){
-		return (isSystem ? "[System] " : "") + name;
+		return (isSystem ? "[" +  Messages.get("labels.system") + "] " : "") + name;
 	}
 	
 	public static List<ProjectTemplate> getTemplates(User user){

@@ -275,7 +275,7 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 }
 .info .info_inner {
   display: block;
-  padding: 6px 20px 10px 35px;
+  padding: 6px 20px 3px 20px;
   border-radius: 4px;
 }
 #success {	border-color: #00AA00;}
@@ -300,41 +300,42 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 }
 #info .info_inner {
 	color: #4985B2;
-	background: #99F;
+	background: #EEF;
 	border: 0px;
 }
 /*******************************************************************************
   TABLE DESIGN 
 *******************************************************************************/
-#box-table-a {
+.box-table {
 	font-size: 12px;
 	margin: 0px;
 	text-align: left;
 	border-collapse: separate;
+	border: 1px solid #CCC;
 	border-bottom:none;
 }
-#box-table-a th {
+.box-table th {
 	font-size: 13px;
 	font-weight: normal;
 	padding: 8px;
 	background: #EFEFEF;
 	border-top: 1px solid #FFF;
-	color: #333;
+	color: #111;
 	text-align: left;
 }
-#box-table-a td {
+.box-table td {
 	padding: 8px;
 	background: none; 
 	border-top: 1px solid #CCC;
-	color: #666;
+	color: #333;
 	border-bottom: none !important;
 }
-#box-table-a tr:hover td {
+.box-table tr:hover td {
 	background: #FBFBFB;
-	color: #333;
+	color: #111;
 }
-#box-table-a tr.footer { background: none !important; }
-#box-table-a tr.footer:hover td { background: none !important;  }
+.box-table tr.footer { background: none !important; }
+.box-table tr.footer:hover td { background: none !important;  }
 
 
 /*******************************************************************************
