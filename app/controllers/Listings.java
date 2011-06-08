@@ -5,13 +5,28 @@ import java.util.ArrayList;
 import com.huydung.utils.ItemField;
 
 import models.Listing;
+import models.templates.ListTemplate;
 import play.data.validation.Required;
 import play.data.validation.Valid;
+import play.data.validation.Validation;
 import play.mvc.Controller;
 
 public class Listings extends AppController {
-	public static void doCreate(Long template_id, String name, Long project_id){
+	public static void doCreate(@Required Long template_id, @Required String name, @Required Long project_id){
+		if( Validation.hasErrors() ){
+			displayValidationMessage();			
+		}else{
+			ListTemplate lt = ListTemplate.findById(template_id);
+			if( lt == null ){
+				Validation.addError("template_id", "Template not found");
+				displayValidationMessage();
+			}			
+			Listing l = Listing.createFromTemplate(lt, getActiveProject() );
+			l.listingName = name;
+			l.save();
+		}
 		
+		Projects.structure(project_id);
 	}
 	
 	public static void doEdit(Listing listing,

@@ -61,7 +61,7 @@ public class Bootstrap extends Job {
 		//Create Project Template and List Template
 		ListTemplate blanks = new ListTemplate("Blank List", true, null);
 		blanks.hasPermissions = true;
-		blanks.iconPath = "/public/appicons/text2.png";
+		blanks.iconPath = "/public/appicons/text.png";
 		blanks.mainField = "name";
 		blanks.subField = "created";		
 		blanks.fields = "name:Name";		
