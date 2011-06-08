@@ -20,7 +20,7 @@
     </form>
 </div>
 <hr/>
-<div id="accordions">
+<div id="accordions" class="project_listings" data-id="${_project.id}">
     #{list items:listings, as:'l'}
         #{set l:l/}
         #{include "projects/listing_form.html" /}

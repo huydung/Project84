@@ -3,7 +3,7 @@ List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
 List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 String requiredFields = models.Item.getRequiredFields();
 }%
-<div class="accordion-panel">
+<div data-id="${l.id}" class="accordion-panel listing-panel">
 <h3 class="header">${l.listingName}</h3>
 <div>
     <form action="@{Listings.doEdit}" method="POST" class="ajaxify">

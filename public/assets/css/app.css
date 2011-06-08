@@ -338,7 +338,7 @@ li:hover .drag-handler{
 	background-color: #AFA;
 	visible: visible;
 	display: block;
-	height: 50px;
+	/*height: 50px;*/
 }
 .ui-accordion .ui-accordion-content{
 	overflow:hidden !important;

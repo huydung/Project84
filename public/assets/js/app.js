@@ -156,8 +156,31 @@ $(document).ready(function(){
 		})
 		
 		/** Accordion & Tabs **/
+		var stop = false;
+		$( "#accordions h3.header" ).click(function( event ) {
+			if ( stop ) {
+				event.stopImmediatePropagation();
+				event.preventDefault();
+				stop = false;
+			}
+		});
 		$('#accordions').accordion({
-			header: 'h3.header'
+			header: 'h3.header',
+			collapsible: true,
+			active: false
+		});
+		$('.project_listings').sortable({
+			axis: "y",
+			handle: "h3.header",
+			stop: function() {
+				stop = true;
+				var ids = [];
+				$('.project_listings .listing-panel').each(function(){
+					ids.push( $(this).attr('data-id') );
+				});
+				var project_id = $(this).attr('data-id');
+				$.post('/project/'+project_id+'/listings/orderings/'+ids.join(','));
+			}
 		});
 		$('#tabs').tabs();
 		

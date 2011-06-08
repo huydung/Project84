@@ -6,8 +6,6 @@ import play.data.validation.Required;
 import play.db.jpa.*;
 import play.i18n.Messages;
 
-import groovy.swing.factory.WidgetFactory;
-
 import javax.persistence.*;
 
 import com.huydung.helpers.ActionResult;
@@ -53,6 +51,7 @@ public class Project extends BasicItem {
     public List<RolePermission> rolePermissions;
     
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OrderBy("ordering ASC")
     public List<Listing> listings;   
      
     

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.huydung.utils.ItemField;
 
 import models.Listing;
+import models.Project;
 import models.templates.ListTemplate;
 import play.data.validation.Required;
 import play.data.validation.Valid;
@@ -12,6 +13,22 @@ import play.data.validation.Validation;
 import play.mvc.Controller;
 
 public class Listings extends AppController {
+	
+	public static void saveOrderings(@Required Long project_id, String listing_ids){
+		String[] ids = listing_ids.split(",");
+		int i = 1;
+		Project p = getActiveProject();
+		for(String id : ids){
+			Listing l = Listing.findById(Long.parseLong(id));
+			if( l!= null && l.project == p ){
+				l.ordering = i;
+				l.save();
+				i++;
+			}			
+		}
+		renderText("OK");
+	}
+	
 	public static void doCreate(@Required Long template_id, @Required String name, @Required Long project_id){
 		if( Validation.hasErrors() ){
 			displayValidationMessage();			
