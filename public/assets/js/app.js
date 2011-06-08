@@ -175,11 +175,25 @@ $(document).ready(function(){
 			stop: function() {
 				stop = true;
 				var ids = [];
+				var nav_els = [];
 				$('.project_listings .listing-panel').each(function(){
-					ids.push( $(this).attr('data-id') );
+					var id = $(this).attr('data-id');
+					ids.push( id );
+					var nav_el = $('.listing_nav[data-id='+ id +']').clone();
+					nav_els.push(nav_el);
 				});
 				var project_id = $(this).attr('data-id');
-				$.post('/project/'+project_id+'/listings/orderings/'+ids.join(','));
+				$.post(
+					'/project/'+project_id+'/listings/orderings/'+ids.join(','),
+					null,
+					function(){	
+						$('.listing_nav').remove();
+						$firstNav = $('#menu_group_main .first');
+						for( var i = nav_els.length - 1; i > -1; i-- ){
+							$firstNav.after(nav_els[i]);
+						};					
+					}
+				);
 			}
 		});
 		$('#tabs').tabs();
