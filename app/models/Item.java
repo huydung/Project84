@@ -77,14 +77,7 @@ public class Item extends BasicItem{
 			String fName = f.getName();
 			if(!"willBeSaved,type".contains(fName)){
 				if( !fName.contains("_") ){
-					String localeTitle = "f."+fName;
-					String localeDes = "f."+fName+".des";
-					String localeInputHelper = "f."+fName+".iph";
-					iFields.add(new ItemField(fName,
-							Messages.get(localeTitle),
-							Messages.get(localeDes),
-							Messages.get(localeInputHelper)
-					));
+					iFields.add(new ItemField(fName));
 				}
 			}
 		}

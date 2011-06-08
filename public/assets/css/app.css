@@ -94,7 +94,7 @@ form label{
 form button.button{
 	clear:left;
 	margin: 1em 0 0 190px;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	line-height: 2em;
 }
 form .text, form select{
@@ -323,4 +323,23 @@ ul.grid-items li:hover{
 .grid_8 label,
 .grid_6 label{
     width: 150px;
+}
+.drag-handler{
+	width: 20px; height:20px;
+	background: url('../images/draggable.png') no-repeat top center;
+	margin-top:15px;
+	cursor: pointer;
+}
+tr:hover .drag-handler,
+li:hover .drag-handler{
+	background-position: bottom center;
+}
+.ui-sortable-placeholder{
+	background-color: #AFA;
+	visible: visible;
+	display: block;
+	height: 50px;
+}
+.ui-accordion .ui-accordion-content{
+	overflow:hidden !important;
 }

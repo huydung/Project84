@@ -2,16 +2,13 @@
 #{set title:messages.get('project.configuration.long', _project.name) /}
 #{set pageTitle:title /}
 
-%{
-List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
-String requiredFields = models.Item.getRequiredFields();
-}%
+
 <div class="grid_6">
 <h1>&{'project.listings.current'}</h1>
 </div>
 <div class="grid_9">
     <form action="@{Listings.doCreate}" method="POST" class="inline tright">
-        <input name="project_id" type="hidden" value="{_project.id}" />
+        <input name="project_id" type="hidden" value="${_project.id}" />
         <label>&{'labels.listing.add'}</label>
         <input required="required" name="name" type="text" size="10" 
         placeholder="&{'labels.listing.name'}" value="&{flash.get('name') ?: '' }"/>      
@@ -25,104 +22,8 @@ String requiredFields = models.Item.getRequiredFields();
 <hr/>
 <div id="accordions">
     #{list items:listings, as:'l'}
-    <h3>${l.listingName}</h3>
-    <div>
-        <form action="@{Listings.doEdit}" method="POST" class="ajaxify">
-            <fieldset>
-                <legend>&{'labels.basicInfo'}</legend>
-	            <div class="grid_8 required">
-		            <label>&{'labels.listing.name'}</label>
-		            <input class="text" name="listing.listingName" value="${l.listingName}"/>
-	            </div>
-	            <div class="grid_4" style="padding:5px 0;">
-		            <a id="iconChooser-${l.id}" href="@{Listings.chooseIcon}" class="einline">
-		                <div class="iconChooser enhanced">
-		                  #{select 'listing.iconPath', value:l.iconPath,
-		                      items:models.Listing.getIcons() /}
-		                </div>  
-		                <img width="" height="" src="${l.iconPath}" title="&{'labels.clickTo'} &{'labels.chooseIcon'}" />	                
-		            </a>
-		            &nbsp;<input type="checkbox" value="true" name="listing.hasTab" 
-	                ${l.hasTab ? 'checked="checked"' : ''} class="einline nomargin"/>                
-	                <span class="label">&{'labels.displayTab'}</span>
-	            </div>
-            </fieldset>
-            <fieldset>
-                <legend>&{'labels.listing.fields'}</legend>
-                <table class="box-table listing-fields-configuration" width="100%">
-                <thead>
-                <tr>
-                    <th class="tright">&{'labels.include'}</th>  
-                    <th>&{'labels.field.name'}</th>                    
-                </tr>
-                </thead>
-                <tbody>
-                %{ boolean hasThisField }%
-                #{list items:fs, as:'f'}
-                #{if !requiredFields.contains(f.fieldName) }
-                %{ hasThisField = l.hasField(f) }%
-                <tr class="${hasThisField ? 'used' : ''}">
-                    <td class="tright"><input name="fields[]" type="checkbox" 
-                    style="margin:5px;" value="${f.fieldName}"
-                    ${ hasThisField ? 'checked="checked"' : '' } />                    
-                    </td>
-                    <td>
-                    <strong>${f.name}</strong>&nbsp;<em>&{'labels.asName'}</em>&nbsp;
-                    <input type="text" size="15" name="field_${f.fieldName}_name"
-                    value="${hasThisField ? l.getFieldName(f) : ''}" 
-                    placeholder="${ hasThisField ? '' : f.name }"
-                    />
-                    <br/>
-                    <em class="description"><small>${f.description}</small></em>
-                    </td>                    
-                </tr>
-                #{/}
-                #{/}
-                </tbody>
-                </table>
-                
-            </fieldset>
-            <fieldset>
-                <legend>&{'labels.listing.widget'}</legend>
-                <div class="grid_7 nomargin">                    
-                    <div class="form-field">
-	                    <label>&{'listing.mainField'}</label> 
-	                    #{select 'listing.mainField', value:l.mainField,
-	                        items:fs, valueProperty:'fieldName' /}
-                    </div>
-                    <div class="form-field">
-                        <label>&{'listing.subField'}</label> 
-                        #{select 'listing.subField', value:l.subField,
-                            items:fs, valueProperty:'fieldName' /}
-                    </div>
-                </div>
-                <div class="grid_7 nomargin">                    
-                    <div class="form-field">
-                        <label>&{'listing.numItems'}</label> 
-                        #{select 'listing.numItems', value:l.numItems,
-                            items:[3,5,10,15,20] /}
-                    </div>
-                    <div class="form-field">
-                        %{ 
-                        if( l.sort == null ){
-                            l.sort = 'created DESC';
-                        }
-                        String[] parts = l.sort.split(' ');                        
-                        }%
-                        <label>&{'listing.sort'}</label>                        
-                        #{select 'listing.sort', value:parts[0],
-                            items:fs, valueProperty:'fieldName' /} 
-                            <div class="clearleft" style="padding-left:140px">
-                            <input type="checkbox" name="isDesc" 
-                                ${parts[1] == 'DESC' ? 'checked="checked"' : ''}
-                            />
-                            <span class="label">&{'labels.desc'}</span>
-                            </div>                    
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+        #{set l:l/}
+        #{include "projects/listing_form.html" /}
     #{/}
 </div>
 

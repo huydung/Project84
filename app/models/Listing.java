@@ -20,6 +20,7 @@ import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.i18n.Messages;
 
 @Entity
 public class Listing extends Model {
@@ -68,7 +69,12 @@ public class Listing extends Model {
 	static class MustInFields extends Check {
 		public boolean isSatisfied(Object o, Object field) {
     	  Listing lt = (Listing)o;
-    	  return lt.fields.contains((String)field+":");
+    	  
+    	  if(lt.fields != null){
+    		  return lt.hasField((String)field);
+    	  }else{
+    		  return false;
+    	  }
 		}	
 	}	
 	
@@ -78,12 +84,12 @@ public class Listing extends Model {
 			this.fields += f.fieldName + ":" + f.name + ",";			
 		}
 		if( this.fields.length() > 0 ){
-			this.fields = this.fields.substring(this.fields.length() - 1 );
+			this.fields = this.fields.substring(0, this.fields.length() - 1 );
 		}
 	}
 	
 	public List<ItemField> getItemFields(){
-		ArrayList<ItemField> fs = new ArrayList<ItemField>(); 
+		ArrayList<ItemField> fs = new ArrayList<ItemField>(); 		
 		if( this.fields.length() > 0 ){
 			String[] fieldStr = this.fields.split(",");
 			for(String f : fieldStr){
@@ -94,8 +100,12 @@ public class Listing extends Model {
 		return fs;
 	}
 	
-	public boolean hasField(ItemField f){
-		return this.fields.contains(f.fieldName + ":");
+	public boolean hasField(String fName){
+		int index = fName.indexOf("_");
+		  if( index > 0 ){
+			fName = fName.substring(0, index);
+		  }
+		return this.fields.contains(fName + ":") || Item.getRequiredFields().contains(fName);
 	}
 	
 	public String getFieldName(ItemField f){

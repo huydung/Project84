@@ -1,0 +1,20 @@
+ <tr id="fieldRow_${_i}" class="${_used ? 'used' : ''}">
+    <td>
+        <div class="drag-handler"></div>
+    </td>
+    <td class="tright"><input name="fields[]" type="checkbox" 
+    style="margin:5px;" value="${_f.fieldName}"
+    ${ _used ? 'checked="checked"' : '' } />                    
+    </td>
+    <td>
+    #{if !_used}
+    <strong>${_f.name}</strong>&nbsp;<em>&{'labels.asName'}</em>&nbsp;
+    #{/}
+    <input type="text" size="15" name="field_${_f.fieldName}_name"
+    value="${_used ? _f.name : ''}" 
+    placeholder="${ _used ? '' : _f.name }"
+    />
+    <br/>
+    <em class="description"><small>${_f.description}</small></em>
+    </td>                    
+</tr>

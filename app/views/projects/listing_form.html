@@ -1,0 +1,106 @@
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+String requiredFields = models.Item.getRequiredFields();
+}%
+<div class="accordion-panel">
+<h3 class="header">${l.listingName}</h3>
+<div>
+    <form action="@{Listings.doEdit}" method="POST" class="ajaxify">
+        <input name="project_id" type="hidden" value="${_project.id}" />
+        <input name="listing.id" type="hidden" value="${l.id}" />
+        <fieldset>
+            <legend>&{'labels.basicInfo'}</legend>
+            <div class="grid_8 required">
+                <label>&{'labels.listing.name'}</label>
+                <input class="text" name="listing.listingName" value="${l.listingName}"/>
+            </div>
+            <div class="grid_4" style="padding:5px 0;">
+                <a id="iconChooser-${l.id}" href="#" class="einline">
+                    <div class="iconChooser enhanced">
+                      #{select 'listing.iconPath', value:l.iconPath,
+                          items:models.Listing.getIcons() /}
+                    </div>  
+                    <img width="" height="" src="${l.iconPath}" title="&{'labels.clickTo'} &{'labels.chooseIcon'}" />                   
+                </a>
+                &nbsp;<input type="checkbox" value="true" name="listing.hasTab" 
+                ${l.hasTab ? 'checked="checked"' : ''} class="einline nomargin"/>                
+                <span class="label">&{'labels.displayTab'}</span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>&{'labels.listing.fields'}</legend>
+            <table class="box-table listing-fields-configuration sortable" width="100%">
+            <thead>
+            <tr>
+                <th>&{'labels.ordering'}</th>
+                <th class="tright">&{'labels.include'}</th>  
+                <th>&{'labels.field.name'}</th>                    
+            </tr>
+            </thead>
+            <tbody>
+            %{ 
+            boolean hasThisField 
+            int i = 1;
+            }%
+            
+            *{**** Display the seleccted fields first, with correct order ****}*
+            #{list items:selected_fs, as:'f'}
+                #{itemfield f:f, used:true, _usedFieldName:l.getFieldName(f), i:i /}
+                %{ i++ }%
+            #{/}
+            #{list items:fs, as:'f'}
+                #{if !requiredFields.contains(f.fieldName) && !l.hasField(f.fieldName)}
+                    #{itemfield f:f, used:false, _usedFieldName:'', i:i /}
+                    %{ i++ }%
+                #{/}
+            #{/}
+            </tbody>
+            </table>
+            
+        </fieldset>
+        <fieldset>
+            <legend>&{'labels.listing.widget'}</legend>
+            <div class="grid_7 nomargin">                    
+                <div class="form-field">
+                    <label>&{'listing.mainField'}</label> 
+                    #{select 'listing.mainField', value:l.mainField,
+                        items:fs, valueProperty:'fieldName' /}
+                </div>
+                <div class="form-field">
+                    <label>&{'listing.subField'}</label> 
+                    #{select 'listing.subField', value:l.subField,
+                        items:fs, valueProperty:'fieldName' /}
+                </div>
+            </div>
+            <div class="grid_7 nomargin">                    
+                <div class="form-field">
+                    <label>&{'listing.numItems'}</label> 
+                    #{select 'listing.numItems', value:l.numItems,
+                        items:[3,5,10,15,20] /}
+                </div>
+                <div class="form-field">
+                    %{ 
+                    if( l.sort == null ){
+                        l.sort = 'created DESC';
+                    }
+                    String[] parts = l.sort.split(' ');                        
+                    }%
+                    <label>&{'listing.sort'}</label>                        
+                    #{select 'listing.sort', value:parts[0],
+                        items:fs, valueProperty:'fieldName' /} 
+                        <div class="clearleft" style="padding-left:140px">
+                        <input type="checkbox" name="isDesc" 
+                            ${parts[1] == 'DESC' ? 'checked="checked"' : ''}
+                        />
+                        <span class="label">&{'labels.desc'}</span>
+                        </div>                    
+                </div>
+            </div>
+        </fieldset>
+        <button class="button nomargin" type="submit">
+        <span>&{'labels.save'}</span>
+        </button>
+    </form>
+</div>
+</div>

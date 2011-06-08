@@ -74,7 +74,7 @@ labels.field.name = Field Name
 labels.des = Description
 labels.include = Include?
 labels.asName = as Name
-
+labels.ordering = Ordering
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -159,8 +159,8 @@ f.name.des = A short name to identify the item, for example: "Write sales report
 f.description.des = Some text (maximum 500 characters), without formatting (bold, italic, color...), to describe more about the item
 f.body.des = A long text with full formatting such as bold text, italic text, images, tables, embed YouTube video...
 f.date.des = Date and time, for example 24 December 2011 or 14:00 25/12/2011
-f.number.ds = A simple number, useful for prioritize items, or item counts...
-f.checkbox.des = A toggle between 2 states, can be Complete/Not Complete, or Plan/Bought....
+f.number.des = A simple number, useful for prioritize items, or item counts...
+f.check.des = A toggle between 2 states, can be Complete/Not Complete, or Plan/Bought....
 f.user.des = Relate/Assign this item to one member/client or the project
 f.category.des = Group items into categories for better management
 f.url.des = A link to a resource on the internet, for example http://huydung.com/ or http://somehost.com/music.mp3
