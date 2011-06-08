@@ -177,3 +177,7 @@ listing.mainField  = Main Field
 listing.subField = Sub Field
 listing.numItems = Number of Items
 listing.sort = Sort Items on
+
+
+## HELPS ##
+help.dragToOrder = (Drag and drop to re-ordering)

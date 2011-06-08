@@ -215,3 +215,6 @@ listing.mainField  = Thông tin chính
 listing.subField = Thông tin phụ
 listing.numItems = Số lượng kết quả
 listing.sort = Sắp thứ tự theo
+
+## HELPS ##
+help.dragToOrder = (Kéo-thả để thay đổi trình tự sắp xếp)

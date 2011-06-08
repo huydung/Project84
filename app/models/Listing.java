@@ -25,7 +25,7 @@ import play.i18n.Messages;
 @Entity
 public class Listing extends Model {
 	@Required
-	public Integer ordering = 1;
+	public Integer ordering = -10;
 
 	@Required
 	public String iconPath = "/public/appicons/text.png";
