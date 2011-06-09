@@ -14,10 +14,29 @@
     </form>
     </div>
 </div>
+<div class="form-quick-add grid_11 clearfix highlight">
+    <div class="fleft">
+    <form action="" class="inline tright" method="POST">
+	    <strong>&{'item.quickAdd'}</strong>
+	    <input type="hidden" name="project_id" value="${_project.id}" />
+	    <input type="hidden" name="listing_id" value="${l.id}" />
+	    <input type="text" name="item" class="item-quick-add" />
+	    <div class="tright">
+	    <a href="#" class="">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	    <a href="#" class="">&{'item.fullForm'}</a> 
+	    </div>
+	    
+    </form>  
+    </div>    
+</div>
 <div class="grid_11 listing_items">
-<ul>
-    #{list items:items, as:'item'}
-    #{include 'listings/item.html' /}
-    #{/}
-</ul>
+   
+    <div class="items">
+	    <ul>
+		    #{list items:items, as:'item'}
+		    #{include 'listings/item.html' /}
+		    #{/}
+		</ul>
+    </div>
+
 </div>

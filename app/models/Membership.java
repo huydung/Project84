@@ -294,8 +294,8 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("id", this.id);
 		String n = isInvitation() ? 
-				Messages.get("labels.invitation") + "|" + this.userEmail
-				: this.title + "|" + this.user.fullName;
+				this.userEmail
+				: this.title + " | " + this.user.fullName;
 		
 		return new Link( n, "#" );		
 	}

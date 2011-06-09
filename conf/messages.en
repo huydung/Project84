@@ -139,6 +139,9 @@ labels.activity.recent = Recent activities in the project
 
 
 ## ITEM FIELDS ##
+item.quickAdd = Quick Add
+item.fullForm = Full Form
+item.help = (help & example)
 f.name = Title
 f.description = Description
 f.body = Content

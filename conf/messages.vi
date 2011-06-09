@@ -177,6 +177,9 @@ messages.invitations = <strong>Wow, chờ chút!</strong> Bạn vừa nhận đ�
 labels.activity.recent = Những thay đổi gần đây nhất
 
 ## ITEM FIELDS ##
+item.quickAdd = Tạo nhanh mục mới
+item.fullForm = Biểu mẫu
+item.help = (trợ giúp và ví dụ)
 f.name = Tiêu đề
 f.description = Ghi chú
 f.body = Nội dung

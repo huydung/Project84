@@ -208,8 +208,9 @@ h3.widget-title{
 	color: #800;
 }
 .portlet{
-	width: 310px;
+	width: 290px;
 	float: left;
+	margin-right: 5px;
 }
 .widget-column-2{
 	width: 620px;
@@ -229,12 +230,23 @@ h3.widget-title{
 	float: left;
 	width: 65%;
 	clear:left;
+	overflow: hidden;
+	height: 1.5em;
 }
+.portlet-content li .main-info:hover{
+	height:auto;
+} 
 .portlet-content li .main-info a{color: #000;}
 .portlet-content li .sub-info{
     float: right;
     width: 35%;
     text-align: right;
+    font-size: .9em;
+    overflow: hidden;
+    height: 1.5em;
+}
+.portlet-content li .sub-info:hover{
+    height:auto;
 }
 .widget-subname{
 	text-align: right;
@@ -342,6 +354,13 @@ li:hover .drag-handler{
 }
 
 /** ITEMS **/
+#textcontent .listing_items{
+	width: 655px;
+}
+
+#textcontent .form-quick-add{
+	width: 650px;
+}
 .listing_items{
 	border-left: groove 4px #235E8b;
 	margin-left: -10px;	
@@ -374,6 +393,20 @@ li:hover .drag-handler{
 	border-top:none;
 	padding: 0;
 }
+.form-quick-add{
+	margin: 0 0 15px -10px;
+}
+.form-quick-add form{
+	margin-top:5px;
+}
+.form-quick-add .item-quick-add{
+	font-size: 1.2em;
+	width: 400px;
+	max-width: 400px;
+}
+.form-quick-add a{
+	font-size:0.8em;
+}
 
 /** FILTER BOXES **/
 #textcontent .listing_features{
@@ -397,7 +430,7 @@ li:hover .drag-handler{
 	width: 50px; height: 50px;
 	position: relative;
 	float: left;
-	margin: 4px;
+	margin: 3px;
 	overflow: hidden;
 	list-style:none;padding:0;
 }
@@ -410,5 +443,5 @@ li:hover .drag-handler{
 }
 .filter-box-user li.checked{
 	margin:1px;
-	border: solid 3px #235E8B;
+	border: solid 2px #235E8B;
 }
