@@ -21,12 +21,8 @@ public class Comment extends BasicItem {
 	@Required
 	public Long forId;
 	
-	@Required
-	public String forType;
-	
 	public Comment() {
 		super();
-		this.type = "comment";
 	}	
      
 }

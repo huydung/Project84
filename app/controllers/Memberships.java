@@ -33,6 +33,10 @@ public class Memberships extends AppController {
 		renderArgs.put("active", "people");
 	}
 	
+	public static void show(@Required Long project_id, @Required Long id){
+		render();
+	}
+	
 	public static void dashboard(Long project_id){
 		Membership _m = getActiveMembership();		
 		Project _project = getActiveProject();

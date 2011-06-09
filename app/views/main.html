@@ -107,12 +107,14 @@
 <div class="container_16" id="footer">
 &{'interface.copyrighted'}
 </div>
+#{if title != 'Fatal System Error'}
 #{ifErrors}
 <ul>
 #{errors}
     <li>${error}</li>
 #{/errors}
 </ul>
+#{/}
 #{/}
 <!-- FOOTER END -->
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>

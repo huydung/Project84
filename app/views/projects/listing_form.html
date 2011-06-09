@@ -1,7 +1,7 @@
 %{
 List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
 List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
-String requiredFields = models.Item.getRequiredFields();
+String requiredFields = models.Item.FIELDS_REQUIRED;
 }%
 <div data-id="${l.id}" class="accordion-panel listing-panel">
 <h3 class="header">${l.listingName}</h3>
@@ -40,7 +40,6 @@ String requiredFields = models.Item.getRequiredFields();
             </thead>
             <tbody>
             %{ 
-            boolean hasThisField 
             int i = 1;
             }%
             

@@ -331,6 +331,14 @@ $(document).ready(function(){
 			});
 			return false;
 		});*/
+		
+		/** LISTING FILTERS **/
+		$('.filter-field').change(function(){
+			$this = $(this);
+			console.log( $this.attr('name') + ': ' + $this.val() );
+			$this.parents('form').submit();
+			
+		});
 	};
 	processPage();
 });

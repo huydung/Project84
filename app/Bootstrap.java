@@ -72,7 +72,7 @@ public class Bootstrap extends Job {
 		tasks.iconPath = "/public/appicons/note-2.png";
 		tasks.mainField = "name";
 		tasks.subField = "date";		
-		tasks.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,check:Completed?";		
+		tasks.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,checkbox:Completed?,category:Todo List";		
 		tasks.save();		
 		
 		ListTemplate files = new ListTemplate("Files", true, null);
@@ -91,29 +91,6 @@ public class Bootstrap extends Job {
 		discussions.fields = "name:Title,body:Content,user:Author,category:Category";		
 		discussions.save();
 		
-		/*
-		ListTemplate images = new ListTemplate("Images", true, null,
-				"Image:[filePath,mimeType,category]", true);
-		images.save();
-		
-		ListTemplate links = new ListTemplate("Links", true, null,
-				"Link:[url,category]", true);
-		links.save();
-		
-		
-		
-		ListTemplate assets = new ListTemplate("Assets", true, null, 
-				"Asset:[price,amount,currency]", true);
-		assets.save();
-		
-		ListTemplate contacts = new ListTemplate("Contacts", true, null, 
-				"Contact:[email1,email2,phone1,phone2,address,lat,lan]", true);
-		contacts.save();
-		
-		ListTemplate events = new ListTemplate("Events", true, null, 
-				"Event:[date,address,lat,lan]", true);
-		events.save();
-		*/
 		
 		ProjectTemplate blank = new ProjectTemplate(
 				"Blank Project", true, null, true);
@@ -134,9 +111,6 @@ public class Bootstrap extends Job {
 		wedding.addList(files, "Files");
 		wedding.addList(discussions, "Discussions");
 		wedding.refresh();
-		//wedding.addList(contacts, "People");
-		//wedding.addList(events, "Events");
-		//wedding.addList(links, "Links");
 		
 		//Create 2 Projects
 		Project ol = new Project();
@@ -171,6 +145,57 @@ public class Bootstrap extends Job {
 		wd.buildRolePermissions();
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
+		
+		/* Add sample items */
+		//tasks.fields = "
+		//name:Name,
+		//number:Priority,
+		//date:Due Date,
+		//user:Assigned To,
+		//check:Completed?,
+		//category:Todo List";
+		Listing taskList = Listing.findByProjectAndName(wd, "Tasks");
+		
+		Item item1 = new Item(taskList);
+		item1.name = "Tìm hiểu và lựa chọn studio chụp ảnh cưới";
+		item1.user = ngochien;		item1.number = 5;
+		item1.checkbox = false;		item1.category = "Ảnh cưới";
+		cal.set(2011, 5, 14);		item1.date = cal.getTime();
+		item1.created = new Date(); item1.creator = huydung;
+
+		item1.save();
+		
+		Item item2 = new Item(taskList);
+		item2.name = "Tìm hiểu và chốt địa điểm chụp ảnh cưới";
+		item2.user = huydung;		item2.number = 4;
+		item2.checkbox = false;		item2.category = "Ảnh cưới";
+		cal.set(2011, 5, 14);		item2.date = cal.getTime();
+		item2.created = new Date(); item2.creator = huydung;
+		item2.save();
+		
+		Item item3 = new Item(taskList);
+		item3.name = "Chọn ảnh để phóng to (3 cái) và chọn mẫu album";
+		item3.user = null;		    item3.number = 3;
+		item3.checkbox = false;		item3.category = "Ảnh cưới";
+		cal.set(2011, 5, 20);		item3.date = cal.getTime();
+		item3.created = new Date(); item3.creator = huydung;
+		item3.save();
+		
+		Item item4 = new Item(taskList);
+		item4.name = "Liên hệ bạn bè và chốt Danh sách bê tráp";
+		item4.user = huydung;		item4.number = 4;
+		item4.checkbox = false;		item4.category = "Đám hỏi";
+		cal.set(2011, 5, 24);		item4.date = cal.getTime();
+		item4.created = new Date(); item4.creator = huydung;
+		item4.save();
+		
+		Item item5 = new Item(taskList);
+		item5.name = "Liên hệ bạn bè và chốt Danh sách đỡ tráp";
+		item5.user = ngochien;		item5.number = 4;
+		item5.checkbox = true;			item5.category = "Đám hỏi";
+		cal.set(2011, 5, 24);		item5.date = cal.getTime();
+		item5.created = new Date(); item5.creator = huydung;
+		item5.save();
 		
 		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
 		bride.status = ApprovalStatus.ACCEPTED;

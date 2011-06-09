@@ -28,14 +28,13 @@ public class Project extends BasicItem {
 
     public Date deadline;
     
-    public Boolean needMembers = false;
+    public Boolean needMembers = true;
     //public Boolean needClients = false;
     
     public String doneStatus = DoneStatus.ONGOING.getName();
     
     public Project() {
 		super();
-		this.type = "project";
 		this.created = new Date();
 	}	
      

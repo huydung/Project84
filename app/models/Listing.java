@@ -7,7 +7,10 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import com.huydung.utils.BasicFilter;
+import com.huydung.utils.FilterFactory;
 import com.huydung.utils.ItemField;
 import com.huydung.utils.MiscUtil;
 
@@ -56,6 +59,9 @@ public class Listing extends Model {
 	
 	@Required
 	public String sort = "created DESC";
+	
+	@OneToMany(mappedBy="listing")
+	public List<Item> items;
 		
 	public Listing(String listingName) {
 		super();
@@ -107,15 +113,19 @@ public class Listing extends Model {
 		  if( index > 0 ){
 			fName = fName.substring(0, index);
 		  }
-		return this.fields.contains(fName + ":") || Item.getRequiredFields().contains(fName);
+		return this.fields.contains(fName + ":") || Item.FIELDS_REQUIRED.contains(fName);
 	}
 	
 	public String getFieldName(ItemField f){
+		return getFieldName(f.fieldName);
+	}
+	
+	public String getFieldName(String fieldName){
 		if( this.fields.length() > 0 ){
 			String[] fieldStr = this.fields.split(",");
 			for(String fs : fieldStr){
 				String[] parts = fs.split(":");
-				if( parts[0].equals(f.fieldName) ){
+				if( parts[0].equals(fieldName) ){
 					return parts[1];
 				}
 			}
@@ -168,5 +178,23 @@ public class Listing extends Model {
 			MiscUtil.ConsoleLog("Get iconPaths from Cache");
 		}
 		return paths;
+	}
+	
+	public List<BasicFilter> getFilters(){
+		List<BasicFilter> filters = new ArrayList<BasicFilter>();
+		List<ItemField> fields = this.getItemFields();
+		for(ItemField f : fields){
+			if(f.isFilterable()){
+				BasicFilter filter = FilterFactory.createFilter(f, this);
+				if( filter != null ){
+					filters.add( filter );
+				}
+			}
+		}
+		return filters;
+	}
+	
+	public static Listing findByProjectAndName(Project project, String name){
+		return Listing.find("project = ? AND listingName = ?", project, name).first();
 	}
 }

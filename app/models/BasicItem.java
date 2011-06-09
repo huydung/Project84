@@ -21,8 +21,6 @@ public class BasicItem extends Model {
 	@Required
 	public Date updated;
 	@Required
-	public String type;
-	@Required
 	public String name;
 
 	public BasicItem() {

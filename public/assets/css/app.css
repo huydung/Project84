@@ -6,6 +6,7 @@
 .tcenter{text-align: center;}
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
+.nofloat{float:none;}
 a.icon-link, button.icon-link{
 	padding-left: 18px;
 	text-decoration: underline;
@@ -31,6 +32,7 @@ fieldset legend{
 }
 hr{margin: 0 0 1em; display: block; clear: both;}
 form hr{margin: 1em 0 1em}
+.small, .filter-box{font-size: 0.9em;}
 #page-title h1, form .button{
 	font-family: "Palatino linotype", "Times New Roman", serif;
 }
@@ -79,7 +81,7 @@ h3.ui-accordion-header{
 
 /** Horizontal Form */
 
-form label{
+form .form-field label{
 	
 	clear: left;
 	float: left;
@@ -88,7 +90,7 @@ form label{
 	padding-top: 4px;
 	font-weight: bold;
 }
-.horizontal-form label{
+.horizontal-form .form-field label{
 	width: 180px;
 }
 form button.button{
@@ -104,8 +106,8 @@ form .text, form select{
 	margin: 10px 0 0;
 	padding: 3px 10px;
 }
-form input[type="checkbox"],
-form input[type="radio"]{
+form .form-field input[type="checkbox"],
+form .form-field input[type="radio"]{
 	margin: 17px 0 0 20px;
 }
 .required label{color: #033E6B}
@@ -154,7 +156,7 @@ form.inline select{
 }
 #menu ul.group li a {
 	width: 116px;
-	height: 65px;
+	height: 60px;
 }
 #menu ul.group li a span{
     display: block; border-right: 1px solid #4985B2;
@@ -177,8 +179,6 @@ form.inline select{
 }
 #menu ul.group li a.current {
     background-position: left -100px;
-    text-decoration: underline; 
-  
 }
 #menu ul.group li.last a.current  {
     background-position: right -100px;
@@ -342,4 +342,32 @@ li:hover .drag-handler{
 }
 .ui-accordion .ui-accordion-content{
 	overflow:hidden !important;
+}
+
+/** ITEMS **/
+.listing_items li{
+	padding: 0; margin:0 0 5px;
+	list-style: none;
+	border-top: dotted 1px #AAA;
+}
+.item.checked{
+	font-weight: normal;
+	font-size: 0.9em;
+	opacity: 0.6;
+}
+.item.checked:hover{
+	opacity:1;
+}
+.item.checked strong{
+	font-weight: normal;
+}
+.listing_items .subinfo{
+	font-size: 0.85em;
+}
+.listing_items li .subinfo li{
+	float:left;
+	width:33%;
+	overflow: hidden;
+	margin: 0;
+	border-top:none;
 }

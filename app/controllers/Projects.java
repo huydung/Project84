@@ -105,6 +105,8 @@ public class Projects extends AppController {
     		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
     		render("projects/create.html", project, templates);
     	}    	
+    	project.copyFromTemplate(project.fromTemplate);
+    	project.buildRolePermissions();
     	
     	if( !res.isSuccess() ){
     		displayWarning(res.getMessage(), "save-activity-when-create-project");

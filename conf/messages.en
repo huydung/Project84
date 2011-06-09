@@ -75,6 +75,11 @@ labels.des = Description
 labels.include = Include?
 labels.asName = as Name
 labels.ordering = Ordering
+labels.readmore = read more
+labels.checked = Checked
+labels.notChecked = Not Checked
+labels.showItems = Show items that <strong>%s</strong> equal
+labels.filterBy = Filter by
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -140,7 +145,7 @@ f.body = Content
 f.date = Date/Time
 f.number = Number
 f.user = User
-f.check = Checkbox
+f.checkbox = Checkbox
 f.category = Category
 f.url = Link
 f.phone1 = Phone (1)
@@ -160,7 +165,7 @@ f.description.des = Some text (maximum 500 characters), without formatting (bold
 f.body.des = A long text with full formatting such as bold text, italic text, images, tables, embed YouTube video...
 f.date.des = Date and time, for example 24 December 2011 or 14:00 25/12/2011
 f.number.des = A simple number, useful for prioritize items, or item counts...
-f.check.des = A toggle between 2 states, can be Complete/Not Complete, or Plan/Bought....
+f.checkbox.des = A toggle between 2 states, can be Complete/Not Complete, or Plan/Bought....
 f.user.des = Relate/Assign this item to one member/client or the project
 f.category.des = Group items into categories for better management
 f.url.des = A link to a resource on the internet, for example http://huydung.com/ or http://somehost.com/music.mp3
@@ -177,6 +182,8 @@ listing.mainField  = Main Field
 listing.subField = Sub Field
 listing.numItems = Number of Items
 listing.sort = Sort Items on
+listing.items = Items in %s
+listing.filters = Item Filters
 
 
 ## HELPS ##

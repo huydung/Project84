@@ -1,5 +1,6 @@
 package com.huydung.utils;
 
+import models.Item;
 import play.i18n.Messages;
 
 public class ItemField {
@@ -37,5 +38,10 @@ public class ItemField {
 	@Override
 	public String toString(){
 		return name;
+	}
+	
+	public boolean isFilterable(){
+		MiscUtil.ConsoleLog("Check if " + fieldName +" is filterable");
+		return Item.FIELDS_FILTERABLE.contains(fieldName);
 	}
 }

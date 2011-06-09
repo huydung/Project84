@@ -55,8 +55,13 @@ public class AppController extends Controller {
             				existed = true; break;
             			}
             		}
-            		if(!existed){
-            			invitations.add((Membership)Membership.findById(accept_id));
+            		if(!existed ){
+            			Membership m = Membership.findById(accept_id);
+            			if( m != null && m.userEmail == user.email ){
+            				invitations.add(m);
+            			}else{
+            				session.remove("invitationId");
+            			}
             		}
             	}
             	
@@ -74,7 +79,7 @@ public class AppController extends Controller {
     			
     			if( project != null ){
     				renderArgs.put("_project", project);
-    				MiscUtil.ConsoleLog(request.url + ": Saved project to renderArgs (" + project.name + ")");
+    				//MiscUtil.ConsoleLog(request.url + ": Saved project to renderArgs (" + project.name + ")");
     				Membership m = Membership.findByProjectAndUser(project, user);
     				renderArgs.put("_membership", m);
     			}

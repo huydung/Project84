@@ -1,9 +1,13 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.huydung.utils.BasicFilter;
 import com.huydung.utils.ItemField;
+import com.huydung.utils.MiscUtil;
 
+import models.Item;
 import models.Listing;
 import models.Project;
 import models.templates.ListTemplate;
@@ -11,6 +15,7 @@ import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.mvc.Controller;
+import play.templates.JavaExtensions;
 
 public class Listings extends AppController {
 	
@@ -73,5 +78,43 @@ public class Listings extends AppController {
 		}else{
 			Projects.structure(project_id);
 		}
+	}
+	
+	public static void dashboard(
+			@Required Long project_id, 
+			@Required Long id){
+		
+		if( Validation.hasErrors() ){
+			notFound();
+		}
+		
+		Listing l = Listing.findById(id);
+		if( l == null ){
+			notFound("Listing", id);
+		}
+		
+		//Only set default parameters if in the params are currently have only 2 
+		//keys which is id and project_id
+		int size = params.all().size();
+		boolean setDefault = size <=3 ;
+		
+		String filterString = "";
+		List<BasicFilter> filters = l.getFilters();
+		for( BasicFilter bf : filters ){
+			if(setDefault) { 
+				bf.setDefault(params); 
+				MiscUtil.ConsoleLog("setting default for filter" + bf.toString());
+			}
+			filterString += bf.getJPQL(params);
+			filterString += " AND";
+		}
+		if( filterString.length() > 0 ){
+			filterString = filterString.substring(0, filterString.length() - 4);
+		}		
+		
+		List<Item> items = Item.findByListing(l, filterString);
+		
+		renderArgs.put("active", JavaExtensions.slugify(l.listingName, true));
+		render(filters, items, l);
 	}
 }

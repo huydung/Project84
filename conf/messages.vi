@@ -106,6 +106,11 @@ labels.field.name = Tên trường thông tin
 labels.include = Sử dụng?
 labels.asName = với tên
 labels.ordering = Thứ tự
+labels.readmore = xem thêm
+labels.checked = Được chọn
+labels.notChecked = Không được chọn
+labels.showItems = Hiển thị các mục có <strong>%s</strong> là/bằng
+labels.filterBy = Lọc theo
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -187,7 +192,7 @@ f.email2 = Email (2)
 f.address = Địa chỉ
 f.file = File
 f.cost = Giá tiền
-f.check = Đánh dấu
+f.checkbox = Đánh dấu
 f.created = Ngày tạo
 f.creator = Người tạo
 f.updated = Ngày chỉnh sửa
@@ -201,7 +206,7 @@ f.number.des = Một con số, có thể dùng để sắp xếp, chỉ mức đ
 f.user.des = Liên kết đối tượng với 1 Thành viên trong dự án, chẳng hạn như Người làm, Người được mời...
 f.category.des = Sử dụng để nhóm các đối tượng lại thành các nhóm khác nhau
 f.url.des = Một đường dẫn đến 1 tài nguyên internet, ví dụ http://huydung.com/ hoặc http://somehost.com/music.mp3
-f.check.des = Một checkbox để đánh dấu giữa 2 trạng thái, VD đã/chưa làm xong, đã/chưa mua hàng...
+f.checkbox.des = Một checkbox để đánh dấu giữa 2 trạng thái, VD đã/chưa làm xong, đã/chưa mua hàng...
 f.phone1.des = Trường số điện thoại, chỉ chấp nhận các kí tự số và các kí tự ' ', '+', '(', ')', '.'; ví dụ: (+84)984.903.707
 f.phone2.des = Trường số điện thoại thứ hai, sử dụng khi cần lưu trữ nhiều hơn 1 số điện thoại cho đối tượng 
 f.email1.des = Một địa chỉ email hợp lệ, ví dụ contact@huydung.com
@@ -215,6 +220,8 @@ listing.mainField  = Thông tin chính
 listing.subField = Thông tin phụ
 listing.numItems = Số lượng kết quả
 listing.sort = Sắp thứ tự theo
+listing.items = Các mục nằm trong %s
+listing.filters = Các bộ lọc
 
 ## HELPS ##
 help.dragToOrder = (Kéo-thả để thay đổi trình tự sắp xếp)
