@@ -63,8 +63,8 @@ h3.ui-accordion-header{
 
 /** Gravatar */
 .gravatar{
-	margin-top: 1em;
 	display: block;
+	float:left; margin: 0 5px 0 0; 
 }
 .gravatar .description{
 	text-align: center;
@@ -271,9 +271,6 @@ h3.widget-title{
 	margin: 20px 25px 10px 0;
 	width: 320px !important;
 }
-.gravatar{
-	float:left; margin: 0 5px 0 0;	
-}
 .membercard ul{
 	margin-bottom: 10px;
 }
@@ -345,10 +342,15 @@ li:hover .drag-handler{
 }
 
 /** ITEMS **/
+.listing_items{
+	border-left: groove 4px #235E8b;
+	margin-left: -10px;	
+}
 .listing_items li{
-	padding: 0; margin:0 0 5px;
+	margin:0 0 5px;
 	list-style: none;
-	border-top: dotted 1px #AAA;
+	border-top: dotted 1px #235E8b;
+	padding-left: 10px;
 }
 .item.checked{
 	font-weight: normal;
@@ -370,4 +372,43 @@ li:hover .drag-handler{
 	overflow: hidden;
 	margin: 0;
 	border-top:none;
+	padding: 0;
+}
+
+/** FILTER BOXES **/
+#textcontent .listing_features{
+	width:230px;margin-left:0;
+}
+.listing_filters{
+	opacity: 0.7;
+	font-size:0.9em !important;
+	
+}
+.listing_filters:hover{
+	opacity:1;
+}
+.filter-box{
+	clear:both;margin:5px 0 15px;
+}
+
+/** FILTER BOX FOR USER **/
+
+.filter-box-user li{
+	width: 50px; height: 50px;
+	position: relative;
+	float: left;
+	margin: 3px;
+	overflow: hidden;
+	list-style:none;padding:0;
+}
+.filter-box-user li input{
+	position: absolute;
+	bottom: -2px; right: -2px;
+}
+.filter-box-user li .gravatar{
+	margin:0;
+}
+.filter-box-user li.checked{
+	margin:1px;
+	border: solid 2px #235E8B;
 }

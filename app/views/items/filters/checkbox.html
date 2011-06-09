@@ -1,16 +1,22 @@
-<div class="filter-box">
+<div class="filter-box filter-box-checkbo">
     %{ String fname_checkbox = l.getFieldName('checkbox') }%    
     <div>
-        <label class="description nofloat nomargin">&{'labels.showItems', fname_checkbox}</label>
-        <div>
+        <label class="description">&{'labels.filterBy'} <em>${fname_checkbox}</em></label>
+        %{
+        boolean true_checked = params.get('filter_checkbox_true') == 'on';
+        boolean false_checked = params.get('filter_checkbox_false') == 'on'
+        }%
+        <div class="${true_checked ? 'checked' : ''} einline">
         <input type="checkbox" class="filter-field filter-checkbox"             
             name="filter_checkbox_true" 
-            ${params.get('filter_checkbox_true') == 'on' ? 'checked="checked"' : ''}
-            />
+            ${ true_checked ? 'checked="checked"' : ''}
+            />        
         <span class="label">&{'labels.checked'}</span>
+        </div>
+        <div class="${false_checked ? 'checked' : ''} einline">
         <input type="checkbox" class="filter-field filter-checkbox" 
             name="filter_checkbox_false" 
-            ${  params.get('filter_checkbox_false') == 'on' ? 'checked="checked"' : '' }
+            ${  false_checked ? 'checked="checked"' : '' }
             />
         <span class="label">&{'labels.notChecked'}</span>
         </div>

@@ -1,17 +1,20 @@
 #{extends 'main.html' /}
 #{set title: _project.name + ' - ' + messages.get('listing.items', l.listingName)/}
 #{set pageTitle:title /}
-<div class="grid_5 listing_features">
-    <h2>&{'listing.filters'}</h2>
+<div class="grid_4 listing_features">
+    <div class="listing_filters">
+    <h2 class="nomargin">&{'listing.filters'}</h2>
     <form action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
     #{list items:filters, as:'filter'}
         #{if filter != null}
             #{include filter.getIncludeFile() /}
         #{/}
     #{/}
+    <button class="button nomargin" type="submit"><span>&{'labels.apply'}</span></button>
     </form>
+    </div>
 </div>
-<div class="grid_10 listing_items">
+<div class="grid_11 listing_items">
 <ul>
     #{list items:items, as:'item'}
     #{include 'listings/item.html' /}

@@ -19,7 +19,7 @@ public class FilterCheck extends BasicFilter {
 		String f = params.get("filter_checkbox_false");
 		boolean showChecked = t != null && t.equals("on");
 		boolean showUnChecked = f != null && f.equals("on");
-		if( showChecked && showUnChecked ){
+		if( showChecked && showUnChecked || (!showChecked && !showUnChecked) ){
 			return "";			
 		} else if( showChecked ){
 			return " checkbox = 'TRUE'";

@@ -333,12 +333,13 @@ $(document).ready(function(){
 		});*/
 		
 		/** LISTING FILTERS **/
+		$('#form-filters button').hide();
 		$('.filter-field').change(function(){
 			$this = $(this);
 			console.log( $this.attr('name') + ': ' + $this.val() );
-			$this.parents('form').submit();
-			
+			$this.parents('form').submit();			
 		});
+		
 	};
 	processPage();
 });

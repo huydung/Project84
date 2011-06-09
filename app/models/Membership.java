@@ -219,6 +219,19 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     		return Membership.find("project = ?", project).fetch();
     	}
     }
+    
+    public static List<User> findUserByProject(Project p){
+    	List<Membership> ms = Membership.findByProject(p, -1);
+    	List<User> users = new ArrayList<User>();
+    	for( Membership m : ms ){
+    		if( !m.deleted && !m.isInvitation()){
+    			if( !users.contains(m.user) ){
+    				users.add(m.user);
+    			}    			
+    		}
+    	}
+    	return users;
+    }
 
 	@Override
 	public String getName() {		

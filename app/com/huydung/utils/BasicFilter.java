@@ -3,6 +3,7 @@ package com.huydung.utils;
 import java.util.Map;
 
 import play.mvc.Scope.Params;
+import play.mvc.Scope.RenderArgs;
 
 import models.Listing;
 
@@ -17,4 +18,5 @@ public abstract class BasicFilter {
 	public abstract void setDefault(Params params);
 	public abstract String getJPQL(Params params);
 	public abstract String getIncludeFile();
+	
 }

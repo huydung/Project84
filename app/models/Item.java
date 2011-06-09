@@ -121,7 +121,7 @@ public class Item extends BasicItem{
 		if( filter != null && filter.length() > 0 ){
 			query += " AND" + filter;
 		}
-		query +=  "ORDER BY " + listing.sort;
+		query +=  " ORDER BY " + listing.sort;
 		MiscUtil.ConsoleLog(query);
 		return Item.find(query, listing).fetch();
 	}

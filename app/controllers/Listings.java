@@ -95,18 +95,20 @@ public class Listings extends AppController {
 		
 		//Only set default parameters if in the params are currently have only 2 
 		//keys which is id and project_id
-		int size = params.all().size();
-		boolean setDefault = size <=3 ;
+		//int size = params.all().size();
+		//boolean setDefault = size <=3 ;
 		
 		String filterString = "";
 		List<BasicFilter> filters = l.getFilters();
 		for( BasicFilter bf : filters ){
-			if(setDefault) { 
-				bf.setDefault(params); 
-				MiscUtil.ConsoleLog("setting default for filter" + bf.toString());
-			}
-			filterString += bf.getJPQL(params);
-			filterString += " AND";
+			//if(setDefault) { 
+				//bf.setDefault(params); 
+				//MiscUtil.ConsoleLog("setting default for filter" + bf.toString());
+			//}
+			String query = bf.getJPQL(params);
+			if( query != null && !query.isEmpty() ){
+				filterString += query + " AND";
+			}			
 		}
 		if( filterString.length() > 0 ){
 			filterString = filterString.substring(0, filterString.length() - 4);

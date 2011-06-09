@@ -1,0 +1,18 @@
+<div class="filter-box filter-box-user">
+    %{ String fname_user = l.getFieldName('user') }%    
+    <div>
+        <label class="description">&{'labels.filterBy'} <em>${fname_user}</em></label>
+        <ul class="clearfix">
+            #{list items:filter.getUsers(), as:'u'}
+            %{ boolean checked = params.get('filter_user_'+u.id) == 'on' }%
+                <li class="${ checked ? 'checked' : '' }">
+                    #{gravatar email:u.email, size:50, noDescription:true/}
+                    <input type="checkbox" class="filter-field filter-user"
+                    name="filter_user_${u.id}" 
+                    ${ checked ? 'checked="checked"' : '' }
+                    />
+                </li>
+            #{/}
+        </ul>
+    </div>
+</div>

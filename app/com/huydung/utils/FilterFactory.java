@@ -7,6 +7,8 @@ public class FilterFactory {
 		if( field.isFilterable() ){
 			if( field.fieldName.equals("checkbox") ){
 				return new FilterCheck(field, listing);
+			}else if( field.fieldName.equals("user") ){
+				return new FilterUser(field, listing);
 			}
 		}
 		return null;
