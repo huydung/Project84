@@ -1,6 +1,7 @@
-%{
+#{if mode == 'full' }
 
-}%
+#{/}
+
 <li id="item-${item.id}" class="item item-${item.getClasses()}">
     #{if l.hasField('checkbox')}
         <input type="checkbox" name="item.checkbox" value="checkbox"

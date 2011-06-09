@@ -180,6 +180,16 @@ f.address.des = Street address, can also holds a Google Map
 f.file.des = Allow to attach files to the items, such as documents, music, videos...
 f.cost.des = Keep track of cost / price with amount and currency
 
+message.item.help = Bạn có thể gõ tên của mục muốn tạo và nhấn phím Enter để thêm mục mới. Không chỉ tiêu đề mục mà một số trường thông tin khác cũng có thể được tạo nhanh, như hướng dẫn dưới đây
+f.date.iph = Gõ vào ngày tháng đầy đủ hoặc bằng tiếng Anh. Ví dụ: <strong>2011-06-14, tomorrow, next monday</strong>... Bạn cũng có thể kéo các ô ngày tháng từ Bộ lọc thả lên các mục để gán thông tin ngày tháng.
+f.cost.iph = Gõ vào [mã tiền tệ]:[số tiền]x[số lượng], ví dụ: <strong>VND:150000x2</strong>.
+f.number.iph = Gõ vào  num:[con số], ví dụ: <strong>num:3</strong>. Lưu ý, viết các chữ số liền nhau.
+f.email1.iph = Gõ vào địa chỉ email đầy đủ, ví dụ <strong>vannessars@gmail.com</strong>.
+f.address.iph = Gõ vào add:[địa chỉ], ví dụ <strong>add:17 Quán Tháng, Ba Đình, Hà Nội#</strong>. Lưu ý <strong>phải</strong> kết thúc bằng dấu <strong>#</strong>. Hãy tưởng tượng đó giống như một hàng rào ngăn cách nhà của bạn với đường cái vậy :)
+f.phone1.iph = Gõ vào tel:[số điện thoại], ví dụ: <strong>tel:0984903706</strong>. Lưu ý, các chữ số phải viết liền nhau. Có thể nhập 1 lúc 2 số, ví dụ: <strong>tel:0984903706,0985898137</strong> 
+f.user.iph = Gõ vào @[nick name/họ tên thành viên], ví dụ: <strong>@huydung</strong>. Ngoài ra, có thể kéo gravatar từ bộ lọc thả lên các mục để gán thông tin thành viên.
+
+
 ## LISTING ##
 listing.mainField  = Main Field
 listing.subField = Sub Field

@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +31,8 @@ import play.db.jpa.Blob;
 import play.i18n.Messages;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
+import sun.misc.Regexp;
+import sun.util.resources.CurrencyNames;
 
 @Entity
 public class Item extends BasicItem implements IWidgetItem{
@@ -185,5 +189,126 @@ public class Item extends BasicItem implements IWidgetItem{
 			}
 		}
 		return "";
+	}
+	
+	public static Item createFromSmartInput(String input, Listing l){
+		//We'll add a blank character before and after the input string
+		//so our parser can guarantee that keyword are prefix/suffix by a \s
+		String name = " " + input + " ";		
+		Item item = new Item(l);		
+		
+		//TODO: Extract Date
+		name = parseNumber(name, item);
+		name = parseCost(name, item);
+		name = parseEmail(name, item);
+		name = parseTelephone(name, item);
+		name = parseAddress(name, item);
+		//TODO: Extract Address
+		
+		
+		//Clean up the name after processing
+		name = Pattern.compile("\\s{2,}").matcher(name).replaceAll(" ");
+		name = name.trim();
+		item.name = name;
+		return item;
+	}
+	
+	private static String parseAddress(String name, Item item){
+		Matcher addMatcher = Pattern.compile(
+				"[\\s]add:(.+)#").matcher(name);
+		while( addMatcher.find() ){	
+			String address = addMatcher.group().trim().substring(4);
+			item.address = address.substring(0, address.length() - 1);			
+		}
+		if( item.address != null ){
+			name = addMatcher.replaceAll(" ");
+		}
+		return name;
+	}
+
+	private static String parseTelephone(String name, Item item){
+		Matcher phoneMatcher = Pattern.compile(
+			"[\\s]tel:([\\d]{6,15})([,]([\\d]{6,15}))*").matcher(name);
+		
+		while( phoneMatcher.find() ){	
+			String phones = phoneMatcher.group().trim().substring(4);			
+			if( !phones.contains(",") ){
+				if(item.phone2 != null){
+					item.phone1 = item.phone2;
+				}
+				item.phone2 = phones;
+			}else{
+				String[] parts = phones.split(",");
+				item.phone1 = parts[ parts.length - 2 ];
+				item.phone2 = parts[ parts.length - 1 ];
+			}			
+		}
+		if( item.phone1 == null ){
+			item.phone1 = item.phone2; item.phone2 = null;
+		}
+		name = phoneMatcher.replaceAll(" ");
+		return name;
+	}
+	
+	private static String parseCost(String name, Item item) {
+		Matcher costMatcher = Pattern.compile(
+			"[\\s]([a-zA-Z]{3})[ ]?([\\d]+[\\.]?[\\d]+([xX][\\d]+)?)"
+		).matcher(name);
+		String costFound = "";
+		while( costMatcher.find() ){
+			costFound = costMatcher.group().trim();
+		};
+		if( costFound.length() > 0 ){
+			String currencyCode = costFound.substring(0, 3).toUpperCase();
+			try{
+				Currency c = Currency.getInstance(currencyCode);
+			
+				if( c!= null && c.getDefaultFractionDigits() > -1 ){
+					String priceAndAmount = costFound.substring(3).trim().toLowerCase();
+					item.cost_currency = currencyCode;
+					if( priceAndAmount.contains("x") ){
+						String[] parts = priceAndAmount.split("x");					
+						item.cost = new BigDecimal(parts[0]);
+						item.cost_amount = new Integer(parts[1]);
+					}else{
+						item.cost_amount = 1;
+						item.cost = new BigDecimal(priceAndAmount);
+					}
+					name = costMatcher.replaceAll(" ");
+				}
+			}catch(Exception e){
+				//We do not need to do anything here.
+			}
+
+		}
+		return name;
+	}
+
+	private static String parseNumber(String name, Item item) {
+		Matcher numMatcher = Pattern.compile("[\\s]num:([\\d]+)").matcher(name);
+		String numFound = "";
+		while( numMatcher.find() ){	numFound = numMatcher.group().trim(); }
+		if( numFound.length() > 0 ){
+			String[] parts = numFound.split(":");
+			item.number = Integer.parseInt(parts[1]);
+		}
+		name = numMatcher.replaceAll(" ");		
+		return name;
+	}
+
+	private static String parseEmail(String name, Item item) {
+		Matcher emailMatcher = Pattern.compile("[\\s][a-z_\\.0-9]*[a-z0-9]+@[a-z0-9\\-]+([\\.][a-z]+){1,2}").matcher(name);
+		
+		while( emailMatcher.find() ){	
+			if(item.email2 != null){
+				item.email1 = item.email2;
+			}
+			item.email2 = emailMatcher.group().trim();
+		}
+		if( item.email1 == null ){
+			item.email1 = item.email2; item.email2 = null;
+		}
+		name = emailMatcher.replaceAll(" ");
+		return name;
 	}
 }

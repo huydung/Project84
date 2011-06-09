@@ -169,6 +169,8 @@ $(document).ready(function(){
 			collapsible: true,
 			active: false
 		});
+		
+		/** PROJECT LISTINGS SORTING **/
 		$('.project_listings').sortable({
 			axis: "y",
 			handle: "h3.header",
@@ -198,8 +200,13 @@ $(document).ready(function(){
 		});
 		$('#tabs').tabs();
 		
-		/** Hide elements that will be enhanced by Javascript **/
-		$('.enhanced').hide();
+		/** Hide elements that will be enhanced or reveal by Javascript **/
+		$('.enhanced, .reveal').hide();
+		$('.reveal-toggle').click(function(){
+			$target = $($(this).attr('href'));
+			$target.is(':visible') ? $target.hide() :  $target.show();
+			return false;
+		});
 		
 		
 		/** Allow to click on label to select **/

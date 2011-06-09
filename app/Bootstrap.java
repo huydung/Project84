@@ -45,18 +45,44 @@ public class Bootstrap extends Job {
 		huydung.nickName = "huydung";
 		huydung.save();
 		
-		User ngochien = new User();
-		ngochien.fullName = "Hiền Nguyễn Ngọc";
-		ngochien.email = "oakman.hd@gmail.com";
-		ngochien.hasProfile = true;
-		ngochien.dateFormat = "dd/MM/yyyy";
-		ngochien.timeZone = "Asia/Ho_Chi_Minh";
-		ngochien.identifier = "https://www.google.com/profiles/110870856863940855723";
+		User hanguyen = new User();
+		hanguyen.fullName = "Hà Thúy Nguyễn";
+		hanguyen.email = "oakman.hd@gmail.com";
+		hanguyen.hasProfile = true;
+		hanguyen.dateFormat = "dd.MM.yyyy";
+		hanguyen.timeZone = "Asia/Ho_Chi_Minh";
+		hanguyen.identifier = "https://www.google.com/profiles/110870856863940855723";
 		cal.set(2011, 4, 12, 19, 30);
-		ngochien.lastLoggedIn = cal.getTime();
-		ngochien.mobile = "0985898137";
-		ngochien.nickName = "ngochien";
-		ngochien.save();
+		hanguyen.lastLoggedIn = cal.getTime();
+		hanguyen.mobile = "0985898137";
+		hanguyen.nickName = "thuyha";
+		hanguyen.save();
+		
+		User kimloan = new User();
+		kimloan.fullName = "Loan Hoàng Kim";
+		kimloan.email = "vannessars@yahoo.com";
+		kimloan.hasProfile = true;
+		kimloan.dateFormat = "dd.MM.yyyy";
+		kimloan.timeZone = "Asia/Ho_Chi_Minh";
+		kimloan.identifier = "https://me.yahoo.com/a/WJCrkRV7qoZX36B_BJVo2CX4UqWGxgQ-#53ea2";
+		cal.set(2011, 4, 24, 19, 30);
+		kimloan.lastLoggedIn = cal.getTime();
+		kimloan.mobile = "0985898137";
+		kimloan.nickName = "kimloan";
+		kimloan.save();
+		
+		User minhduc = new User();
+		minhduc.fullName = "Đức Mạnh Trần";
+		minhduc.email = "contact@huydung.com";
+		minhduc.hasProfile = true;
+		minhduc.dateFormat = "dd/MM/yyyy";
+		minhduc.timeZone = "Asia/Ho_Chi_Minh";
+		minhduc.identifier = "https://www.google.com/profiles/102417840131513894590";
+		cal.set(2011, 4, 24, 19, 30);
+		minhduc.lastLoggedIn = cal.getTime();
+		minhduc.mobile = "0985898137";
+		minhduc.nickName = "minhduc";
+		minhduc.save();
 						
 		//Create Project Template and List Template
 		ListTemplate blanks = new ListTemplate("Blank List", true, null);
@@ -158,7 +184,7 @@ public class Bootstrap extends Job {
 		
 		Item item1 = new Item(taskList);
 		item1.name = "Tìm hiểu và lựa chọn studio chụp ảnh cưới";
-		item1.user = ngochien;		item1.number = 5;
+		item1.user = hanguyen;		item1.number = 5;
 		item1.checkbox = false;		item1.category = "Ảnh cưới";
 		cal.set(2011, 5, 14);		item1.date = cal.getTime();
 		item1.created = new Date(); item1.creator = huydung;
@@ -191,16 +217,23 @@ public class Bootstrap extends Job {
 		
 		Item item5 = new Item(taskList);
 		item5.name = "Liên hệ bạn bè và chốt Danh sách đỡ tráp";
-		item5.user = ngochien;		item5.number = 4;
+		item5.user = hanguyen;		item5.number = 4;
 		item5.checkbox = true;			item5.category = "Đám hỏi";
 		cal.set(2011, 5, 24);		item5.date = cal.getTime();
 		item5.created = new Date(); item5.creator = huydung;
 		item5.save();
 		
-		Membership bride = Membership.findByProjectAndUser(wd, ngochien);
+		Membership bride = Membership.findByProjectAndUser(wd, hanguyen);
 		bride.status = ApprovalStatus.ACCEPTED;
 		bride.save();
-		wd.addMember("vannessars@yahoo.com", "Bridesmaid", false, huydung);
+		wd.addMember("vannessars@yahoo.com", "Wedding Planner", false, huydung);
+		Membership wp = Membership.findByProjectAndUser(wd, kimloan);
+		wp.status = ApprovalStatus.ACCEPTED;
+		wp.save();
+		wd.addMember("contact@huydung.com", "Photographer", false, hanguyen);
+		Membership pt = Membership.findByProjectAndUser(wd, minhduc);
+		pt.status = ApprovalStatus.ACCEPTED;
+		pt.save();
 		
 	}
 }

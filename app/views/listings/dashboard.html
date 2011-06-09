@@ -15,19 +15,31 @@
     </div>
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
-    <div class="fleft">
-    <form action="" class="inline tright" method="POST">
+
+    <form action="@{Items.doCreate(l.id, _project.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
-	    <input type="hidden" name="project_id" value="${_project.id}" />
-	    <input type="hidden" name="listing_id" value="${l.id}" />
 	    <input type="text" name="item" class="item-quick-add" />
 	    <div class="tright">
-	    <a href="#" class="">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-	    <a href="#" class="">&{'item.fullForm'}</a> 
+	    <a href="#inputhelp" class="reveal-toggle">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	    <a href="#" class="modal">&{'item.fullForm'}</a> 
+	    
 	    </div>
+	    <div id="inputhelp" class="tleft reveal small">
+        <br/>
+            &{'message.item.help'}
+            <ul>
+              <li>&{'f.date.iph'}</li>
+              <li>&{'f.email1.iph'}</li>
+              <li>&{'f.phone1.iph'}</li>
+              <li>&{'f.address.iph'}</li>
+              <li>&{'f.cost.iph'}</li>
+              <li>&{'f.user.iph'}</li>
+              <li>&{'f.number.iph'}</li>
+            </ul>
+        </div>
 	    
     </form>  
-    </div>    
+ 
 </div>
 <div class="grid_11 listing_items">
    

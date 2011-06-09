@@ -7,6 +7,9 @@
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
 .nofloat{float:none;}
+#textcontent{
+	min-height:400px;
+}
 a.icon-link, button.icon-link{
 	padding-left: 18px;
 	text-decoration: underline;
@@ -360,10 +363,16 @@ li:hover .drag-handler{
 
 #textcontent .form-quick-add{
 	width: 650px;
+	position: absolute;
+	margin: 0 0 15px -10px;
+	z-index: 2;
 }
 .listing_items{
 	border-left: groove 4px #235E8b;
-	margin-left: -10px;	
+	margin-left: -10px;
+	margin-top: 70px;	
+	position: relative;
+	z-index: 1;
 }
 .listing_items li{
 	margin:0 0 5px;
@@ -393,11 +402,11 @@ li:hover .drag-handler{
 	border-top:none;
 	padding: 0;
 }
-.form-quick-add{
-	margin: 0 0 15px -10px;
-}
+
 .form-quick-add form{
 	margin-top:5px;
+	width: 100%;
+	clear: both;
 }
 .form-quick-add .item-quick-add{
 	font-size: 1.2em;
@@ -406,6 +415,12 @@ li:hover .drag-handler{
 }
 .form-quick-add a{
 	font-size:0.8em;
+}
+#inputhelp{
+	font-size: 11px;
+}
+#inputhelp li{
+	margin: 5px 15px;
 }
 
 /** FILTER BOXES **/
