@@ -205,7 +205,8 @@ public class Project extends BasicItem {
     		if( this.needMembers ){
     			widgets.add(new Membership(this, user));
     		}
-    		widgets.add(new Activity(this));
+    		widgets.addAll(this.listings);
+    		widgets.add(new Activity(this));    		
     	}
     	return widgets;
     }

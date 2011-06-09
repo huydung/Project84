@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.huydung.utils.ItemField;
+import com.huydung.utils.Link;
 import com.huydung.utils.MiscUtil;
 
 import models.enums.ItemType;
@@ -24,10 +27,11 @@ import play.data.validation.Required;
 import play.data.validation.URL;
 import play.db.jpa.Blob;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.templates.JavaExtensions;
 
 @Entity
-public class Item extends BasicItem{
+public class Item extends BasicItem implements IWidgetItem{
 	
 	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox";
 	public static final String FIELDS_REQUIRED = "listing,created,creator,updated,type,name,id";
@@ -124,5 +128,62 @@ public class Item extends BasicItem{
 		query +=  " ORDER BY " + listing.sort;
 		MiscUtil.ConsoleLog(query);
 		return Item.find(query, listing).fetch();
+	}
+
+	@Override
+	public String getSubInfo() {
+		return getValueOfField(this.listing.subField);
+	}
+
+	@Override
+	public Link getInfo() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("project_id", this.listing.project.id);
+		args.put("id", this.id);
+		return new Link(
+			getValueOfField(this.listing.mainField), 
+			Router.getFullUrl("Items.show", args),
+			"modal"
+		);
+	}
+	
+	public String getValueOfField(String field){
+		
+		if( field.equals("date") ){
+			if( this.date != null ){
+				return JavaExtensions.format(this.date);
+			}
+		}
+		if( field.equals("created") ){
+			if( this.created != null ){
+				return JavaExtensions.since(this.created);
+			}
+		}
+		if( field.equals("user") ){
+			if( this.user != null ){
+				Map<String, Object> args = new HashMap<String, Object>();
+				args.put("project_id", this.listing.project.id);
+				args.put("id", this.user.id);
+				String url = Router.getFullUrl("Memberships.show", args);
+				return "<a href=\""+url+"\" class=\"modal\">" + this.user.fullName + "</a>";
+			}else{
+				return "";
+			}
+		}
+		
+		Class itemClass = Item.class;
+		
+		Field[] fields = itemClass.getFields();
+		for( Field f : fields ){			
+			if( f.getName().equals(field) ){
+				try {
+					Object value = f.get(this);
+					return value != null ? (String)value : "";
+				} catch (Exception e) {
+					MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+				}
+			}
+		}
+		return "";
 	}
 }

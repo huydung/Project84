@@ -1,7 +1,7 @@
 <div class="filter-box filter-box-user">
     %{ String fname_user = l.getFieldName('user') }%    
     <div>
-        <label class="description">&{'labels.filterBy'} <em>${fname_user}</em></label>
+        <label class="description">&{'labels.filterBy'} <strong>${fname_user}</strong></label>
         <ul class="clearfix">
             #{list items:filter.getUsers(), as:'u'}
             %{ boolean checked = params.get('filter_user_'+u.id) == 'on' }%

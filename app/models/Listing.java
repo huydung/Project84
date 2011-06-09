@@ -3,7 +3,9 @@ package models;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import com.huydung.utils.BasicFilter;
 import com.huydung.utils.FilterFactory;
 import com.huydung.utils.ItemField;
+import com.huydung.utils.Link;
 import com.huydung.utils.MiscUtil;
 
 import models.templates.ListTemplate;
@@ -24,9 +27,11 @@ import play.data.validation.CheckWith;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 import play.i18n.Messages;
+import play.mvc.Router;
+import play.templates.JavaExtensions;
 
 @Entity
-public class Listing extends Model {
+public class Listing extends Model implements IWidget {
 	@Required
 	public Integer ordering = -10;
 
@@ -196,5 +201,53 @@ public class Listing extends Model {
 	
 	public static Listing findByProjectAndName(Project project, String name){
 		return Listing.find("project = ? AND listingName = ?", project, name).first();
+	}
+
+	@Override
+	public String getName() {
+		return this.listingName;
+	}
+
+	@Override
+	public String getSubName() {
+		return this.getFieldName(this.subField);
+	}
+
+	@Override
+	public String getHtmlClass() {		
+		return JavaExtensions.slugify(this.listingName);
+	}
+
+	@Override
+	public Link getFirstLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("project_id", this.project.id);
+		args.put("id", this.id);
+		return new Link( 
+				Messages.get("labels.viewAll"),
+				Router.getFullUrl("Listings.dashboard", args),
+				"icon-link-list"
+		);
+	}
+
+	@Override
+	public Link getLastLink() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getItems(Long project_id) {		
+		return Item.findByListing(this, "");
+	}
+
+	@Override
+	public String getHtml() {
+		return null;
+	}
+
+	@Override
+	public int getColSpan() {		
+		return 1;
 	}
 }

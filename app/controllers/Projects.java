@@ -118,6 +118,7 @@ public class Projects extends AppController {
 	
 	public static void structure(Long project_id){
 		Project p = getActiveProject();
+		renderArgs.put("active", "settings");
 		if(p != null){
 			List<Listing> listings = p.listings;
 			List<ItemField> item_fields = models.Item.getItemFields();

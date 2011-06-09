@@ -1,7 +1,7 @@
 <div class="filter-box filter-box-checkbo">
     %{ String fname_checkbox = l.getFieldName('checkbox') }%    
     <div>
-        <label class="description">&{'labels.filterBy'} <em>${fname_checkbox}</em></label>
+        <label class="description">&{'labels.filterBy'} <strong>${fname_checkbox}</strong></label>
         %{
         boolean true_checked = params.get('filter_checkbox_true') == 'on';
         boolean false_checked = params.get('filter_checkbox_false') == 'on'
