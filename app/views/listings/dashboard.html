@@ -1,6 +1,7 @@
 #{extends 'main.html' /}
 #{set title: _project.name + ' - ' + messages.get('listing.items', l.listingName)/}
 #{set pageTitle:title /}
+<div style="position:relative">
 <div class="grid_4 listing_features">
     <div class="listing_filters">
     <h2 class="nomargin">&{'listing.filters'}</h2>
@@ -16,9 +17,9 @@
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
 
-    <form action="@{Items.doCreate(l.id, _project.id)}" class="inline tleft" method="POST">
+    <form action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
-	    <input type="text" name="item" class="item-quick-add" />
+	    <input type="text" name="input" class="item-quick-add" value="${params.get('input')}"/>
 	    <div class="tright">
 	    <a href="#inputhelp" class="reveal-toggle">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
 	    <a href="#" class="modal">&{'item.fullForm'}</a> 
@@ -46,9 +47,10 @@
     <div class="items">
 	    <ul>
 		    #{list items:items, as:'item'}
-		    #{include 'listings/item.html' /}
+		    #{include 'items/item.html' /}
 		    #{/}
 		</ul>
     </div>
 
+</div>
 </div>

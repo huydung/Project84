@@ -1,0 +1,69 @@
+#{if mode == 'full' }
+
+#{/}
+
+<li id="item-${item.id}" class="item inline-editable item-${item.getClasses()}">
+    <div class="inline-edit" style="display:none" >
+    <form action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">
+        <label>&{'item.quickEdit'}</label>
+	    <input name="input" value="${item.rawInput}" class="item-quick-edit" type="text" />
+	    <div style="padding-top:5px" class="fright" >
+	       <a class="icon-link icon-link-cancel fright">&{'labels.cancel'}</a>
+	       <button class="icon-link icon-link-save fright" type="submit">&{'labels.save'}</button>
+        </div>
+	</form>
+	
+    </div>
+    
+    <div class="inline-ui">
+	    #{if l.hasField('checkbox')}
+	        <input type="checkbox" name="item.checkbox" value="checkbox"
+	            ${item.checkbox == true ? 'checked="checked"' : ''} />
+	    #{/}
+	    #{if l.hasField('name')}
+	        <strong class="title">${item.name}</strong>
+	    #{/}
+	    <div class="actions fright">
+	        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+	        <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+	    </div>
+	    *{*** SUB INFOS, show maximum of 2 ***}*
+	    <ul class="subinfo">
+	        
+	        #{if l.hasField('date') && item.date != null}
+	        <li>
+	            <span class="field-name">${l.getFieldName('date')}:</span>
+	            <span class="field-value date">${item.date.format(loggedin.dateFormat)}</span>
+	         </li>
+	        #{/}
+	        #{if l.hasField('number') && item.number != null }
+	        <li>
+	            <span class="field-name">${l.getFieldName('number')}:</span>
+	            <span class="field-value date">${item.number}</span>
+	         </li>
+	        #{/}
+	        #{if l.hasField('user') && item.user != null}
+	        <li>
+	            <span class="field-name">${l.getFieldName('user')}:</span>
+	            <span class="field-value date"><a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
+	            ${item.user.fullName}</a></span>
+	         </li>
+	        #{/}
+	    </ul>
+	    
+	    *{*** ADDITIONAL INFO that can be display inline ***)}*
+	    #{if l.hasField('url')}        
+	        <a href="${item.url}" class="outlink url" rel="nofollow" target="_blank" title="${item.url}">url</a>
+	    #{/}
+	    #{if l.hasField('description')}
+	        <a href="@{Items.show(_project.id, item.id)}" class="read-more">
+	            &{'labels.readmore'}
+	        </a>
+	    #{/}
+	    #{if l.hasField('body')}
+	        <a href="@{Items.show(_project.id, item.id)}" class="read-more">
+	            &{'labels.readmore'}
+	        </a>
+	    #{/}
+    </div>
+</li>

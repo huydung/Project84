@@ -22,8 +22,9 @@ import models.templates.ProjectTemplate;
 import java.util.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Project extends BasicItem {
-	
+
     public String description;    
 
     public Date deadline;
@@ -35,7 +36,6 @@ public class Project extends BasicItem {
     
     public Project() {
 		super();
-		this.created = new Date();
 	}	
      
     @Required

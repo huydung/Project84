@@ -9,7 +9,7 @@
 <div class="grid_9">
     <form action="@{Listings.doCreate}" method="POST" class="inline tright">
         <input name="project_id" type="hidden" value="${_project.id}" />
-        <label>&{'labels.listing.add'}</label>
+        <label >&{'labels.listing.add'}</label>
         <input required="required" name="name" type="text" size="10" 
         placeholder="&{'labels.listing.name'}" value="&{flash.get('name') ?: '' }"/>      
         <span>&{'labels.baseOn'}</span>       
@@ -24,7 +24,7 @@
 <div id="accordions" class="project_listings" data-id="${_project.id}">
     #{list items:listings, as:'l'}
         #{set l:l/}
-        #{include "projects/listing_form.html" /}
+        #{include "listings/listing_form.html" /}
     #{/}
 </div>
 

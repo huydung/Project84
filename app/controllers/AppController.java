@@ -97,9 +97,12 @@ public class AppController extends Controller {
         	Application.homepage();
         }
     }
-	
-	static User getLoggedin(){
-		return renderArgs.get("loggedin", User.class);
+		
+	public static User getLoggedin(){
+		if( renderArgs != null ){
+			return renderArgs.get("loggedin", User.class);
+		}
+		return null;
 	}
 	
 	static Project getActiveProject(){

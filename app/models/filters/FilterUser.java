@@ -1,9 +1,12 @@
-package com.huydung.utils;
+package models.filters;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.huydung.utils.ItemField;
+import com.huydung.utils.MiscUtil;
 
 import models.Listing;
 import models.Membership;

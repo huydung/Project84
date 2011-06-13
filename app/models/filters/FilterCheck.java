@@ -1,6 +1,8 @@
-package com.huydung.utils;
+package models.filters;
 
 import java.util.Map;
+
+import com.huydung.utils.ItemField;
 
 import play.mvc.Scope.Params;
 

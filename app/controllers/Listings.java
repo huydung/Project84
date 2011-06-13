@@ -3,13 +3,13 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.huydung.utils.BasicFilter;
 import com.huydung.utils.ItemField;
 import com.huydung.utils.MiscUtil;
 
 import models.Item;
 import models.Listing;
 import models.Project;
+import models.filters.BasicFilter;
 import models.templates.ListTemplate;
 import play.data.validation.Required;
 import play.data.validation.Valid;
@@ -95,16 +95,16 @@ public class Listings extends AppController {
 		
 		//Only set default parameters if in the params are currently have only 2 
 		//keys which is id and project_id
-		//int size = params.all().size();
-		//boolean setDefault = size <=3 ;
+		int size = params.all().size();
+		boolean setDefault = size <=3 ;
 		
 		String filterString = "";
 		List<BasicFilter> filters = l.getFilters();
 		for( BasicFilter bf : filters ){
-			//if(setDefault) { 
-				//bf.setDefault(params); 
-				//MiscUtil.ConsoleLog("setting default for filter" + bf.toString());
-			//}
+			if(setDefault) { 
+				bf.setDefault(params); 
+				MiscUtil.ConsoleLog("setting default for filter" + bf.toString());
+			}
 			String query = bf.getJPQL(params);
 			if( query != null && !query.isEmpty() ){
 				filterString += query + " AND";

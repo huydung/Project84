@@ -80,6 +80,10 @@ labels.checked = Checked
 labels.notChecked = Not Checked
 labels.showItems = Show items that <strong>%s</strong> equal
 labels.filterBy = Filter by
+labels.checkAll = Check all
+labels.uncheckAll = Uncheck all
+labels.apply = Apply
+labels.cancel = Cancel
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -140,6 +144,7 @@ labels.activity.recent = Recent activities in the project
 
 ## ITEM FIELDS ##
 item.quickAdd = Quick Add
+item.quickEdit = Quick Edit
 item.fullForm = Full Form
 item.help = (help & example)
 f.name = Title
@@ -187,7 +192,7 @@ f.number.iph = Gõ vào  num:[con số], ví dụ: <strong>num:3</strong>. Lưu 
 f.email1.iph = Gõ vào địa chỉ email đầy đủ, ví dụ <strong>vannessars@gmail.com</strong>.
 f.address.iph = Gõ vào add:[địa chỉ], ví dụ <strong>add:17 Quán Tháng, Ba Đình, Hà Nội#</strong>. Lưu ý <strong>phải</strong> kết thúc bằng dấu <strong>#</strong>. Hãy tưởng tượng đó giống như một hàng rào ngăn cách nhà của bạn với đường cái vậy :)
 f.phone1.iph = Gõ vào tel:[số điện thoại], ví dụ: <strong>tel:0984903706</strong>. Lưu ý, các chữ số phải viết liền nhau. Có thể nhập 1 lúc 2 số, ví dụ: <strong>tel:0984903706,0985898137</strong> 
-f.user.iph = Gõ vào @[nick name/họ tên thành viên], ví dụ: <strong>@huydung</strong>. Ngoài ra, có thể kéo gravatar từ bộ lọc thả lên các mục để gán thông tin thành viên.
+f.user.iph = Gõ vào ![nick name/họ tên thành viên], ví dụ: <strong>!huydung</strong>. Ngoài ra, có thể kéo gravatar từ bộ lọc thả lên các mục để gán thông tin thành viên.
 
 
 ## LISTING ##

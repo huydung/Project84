@@ -11,12 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.huydung.utils.BasicFilter;
-import com.huydung.utils.FilterFactory;
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
 import com.huydung.utils.MiscUtil;
 
+import models.filters.BasicFilter;
+import models.filters.FilterFactory;
 import models.templates.ListTemplate;
 import models.templates.ProjectListTemplate;
 

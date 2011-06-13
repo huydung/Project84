@@ -3,8 +3,12 @@ package units;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import models.Item;
 import models.Listing;
@@ -12,9 +16,8 @@ import models.Listing;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.huydung.utils.DateParser;
-
-public class UtilTest {
+import play.templates.JavaExtensions;
+public class ItemParserTest {
 	
 	private Listing l;
 	
@@ -152,6 +155,101 @@ public class UtilTest {
 		assertEquals("0984903707", item.phone2);
 		assertEquals("Nguyễn Huy Dũng", item.name);
 		
+	}
+	
+	@Test
+	public void testParseDate(){
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeZone(TimeZone.getDefault());
+		cal.set(2011, 5, 14); //2011-06-14
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getDefault());
+				
+		Item item = Item.createFromSmartInput("Do something @tomorrow", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-15",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @yesterday", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-13",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @next 3 days", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-17",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @-4 days", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-10",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @+2day", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-16",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @last 2 day", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-12",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @next week", l, cal);
+		assertNotNull(item.date);
+		//Note: Default Start of Week is Monday
+		assertEquals("2011-06-20",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @last week", l, cal);
+		assertNotNull(item.date);
+		//Note: Default Start of Week is Monday
+		assertEquals("2011-06-06",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @next wed", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-15",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @sunday num:4", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-19",sdf.format(item.date));
+		assertEquals(new Integer(4),item.number);
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @last Thursday", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-09",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+
+		item = Item.createFromSmartInput("Do something @19/06", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-19",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+
+		item = Item.createFromSmartInput("Do something @05.06.2012", l, cal);
+		assertEquals("2012-06-05",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @1987-06-14", l, cal);
+		assertEquals("1987-06-14",sdf.format(item.date));
+		assertEquals("Do something", item.name);		
+
+		item = Item.createFromSmartInput("Do something @17-06", l, cal);	
+		assertNotNull(item.date);
+		assertEquals("2011-06-17",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @June 18", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-06-18",sdf.format(item.date));
+		assertEquals("Do something", item.name);
+		
+		item = Item.createFromSmartInput("Do something @7 Oct", l, cal);
+		assertNotNull(item.date);
+		assertEquals("2011-10-07",sdf.format(item.date));
+		assertEquals("Do something", item.name);
 	}
 	
 	@Test

@@ -42,7 +42,7 @@ form hr{margin: 1em 0 1em}
 h3.ui-accordion-header{
 	padding: 5px 5px 5px 24px;
 }
-.highlight{
+.highlight, .inline-edit{
 	padding: 5px;
 	background-color: #FFFFAA;
 	border: solid 1px #AAAA66;
@@ -280,6 +280,12 @@ h3.widget-title{
 .icon-link-email{
 	background: url('../icons/mail_small.png') no-repeat left 0;
 }
+.icon-link-save{
+    background: url('../icons/disk_black.png') no-repeat left 0;
+}
+.icon-link-cancel{
+    background: url('../icons/slash.png') no-repeat left 0;
+}   
 
 /** Membership **/
 .membercard{
@@ -358,18 +364,18 @@ li:hover .drag-handler{
 
 /** ITEMS **/
 #textcontent .listing_items{
-	width: 655px;
+	width: 650px;
 }
 
 #textcontent .form-quick-add{
 	width: 650px;
 	position: absolute;
-	margin: 0 0 15px -10px;
+	margin: 0 0 15px -5px;
 	z-index: 2;
 }
 .listing_items{
 	border-left: groove 4px #235E8b;
-	margin-left: -10px;
+	margin-left: -5px;
 	margin-top: 70px;	
 	position: relative;
 	z-index: 1;
@@ -408,7 +414,7 @@ li:hover .drag-handler{
 	width: 100%;
 	clear: both;
 }
-.form-quick-add .item-quick-add{
+.form-quick-add .item-quick-add, .item-quick-edit{
 	font-size: 1.2em;
 	width: 400px;
 	max-width: 400px;
@@ -422,19 +428,27 @@ li:hover .drag-handler{
 #inputhelp li{
 	margin: 5px 15px;
 }
-
+.item .actions{
+	visibility: hidden;
+}
+.item:hover .actions{
+	visibility: visible;
+}
+.item, .inline-editable{
+	cursor: pointer;
+}
+.item:hover, .inline-editable:hover{
+	background-color: #FFA;	
+}
 /** FILTER BOXES **/
 #textcontent .listing_features{
 	width:230px;margin-left:0;
 }
 .listing_filters{
-	opacity: 0.7;
 	font-size:0.9em !important;
 	
 }
-.listing_filters:hover{
-	opacity:1;
-}
+
 .filter-box{
 	clear:both;margin:5px 0 15px;
 }
@@ -456,7 +470,10 @@ li:hover .drag-handler{
 .filter-box-user li .gravatar{
 	margin:0;
 }
-.filter-box-user li.checked{
+.filter-box li.checked{
 	margin:1px;
-	border: solid 2px #235E8B;
+	border: solid 2px #DD8;
+}
+.filter-box div.checked{
+    background-color: #FFA;
 }

@@ -140,8 +140,18 @@ $(document).ready(function(){
 		/** Default gritter options **/
 		$.gritter.options = {		
 			position: 'bottom-right',
-			time: 15000
+			time: 10000
 		};
+		
+		/** Convert all flash messages to gritter **/
+		$('#success,#warning,#info,#error').each(function(){
+			var id = $(this).attr('id');
+			$.gritter.add({
+				title: id,
+				text: $(this).html(),
+				class_name: id,						
+			});
+		}).remove();
 		
 		/** Date Picker **/
 		$('input.date').each(function(e){
@@ -217,7 +227,7 @@ $(document).ready(function(){
 		});
 		
 		/** Convert delete action link to have confirmation **/
-		$('.icon-link-delete')
+		$('.need-confirm')
 			.click(function(){
 				window.location.href = $(this).attr('href');
 				return false;
@@ -340,13 +350,41 @@ $(document).ready(function(){
 		});*/
 		
 		/** LISTING FILTERS **/
-		$('#form-filters button').hide();
-		$('.filter-field').change(function(){
-			$this = $(this);
-			console.log( $this.attr('name') + ': ' + $this.val() );
+		/*$('#form-filters button').hide();
+		
+		$('.filter-field').change(function(e){
+			$this = $(this);			
 			$this.parents('form').submit();			
 		});
+		*/
 		
+		/** CHECK-UNCHECK ALL **/
+		$('.uncheck-all').click(function(){
+			$(this).parents('.checkboxs-holder')
+				.find('input[type="checkbox"]:checked')
+				.click();
+			return false;
+		});
+		$('.check-all').click(function(){
+			$(this).siblings('.uncheck-all').click();
+			$(this).parents('.checkboxs-holder')
+			.find('input[type="checkbox"]').attr('checked', null).click();
+			return false;
+		})
+		
+		/** INLINE-EDIT **/
+		$('.inline-editable .inline-edit').hide();
+		$('.inline-editable').dblclick(function(){
+			$(this)
+				.find('.inline-edit').show().end()
+				.find('.inline-ui').hide().end()
+				.find('input[type=text]').focus().end()
+				.find('.icon-link-cancel').click(function(){
+					$(this).parents('inline-editable')
+						.find('.inline-edit').hide().end()
+						.find('.inline-ui').show().end();
+				});
+		});
 	};
 	processPage();
 });

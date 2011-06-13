@@ -41,7 +41,7 @@ public class ItemField {
 	}
 	
 	public boolean isFilterable(){
-		MiscUtil.ConsoleLog("Check if " + fieldName +" is filterable");
+		//MiscUtil.ConsoleLog("Check if " + fieldName +" is filterable");
 		return Item.FIELDS_FILTERABLE.contains(fieldName);
 	}
 }

@@ -1,4 +1,6 @@
-package com.huydung.utils;
+package models.filters;
+
+import com.huydung.utils.ItemField;
 
 import models.Listing;
 
@@ -9,6 +11,8 @@ public class FilterFactory {
 				return new FilterCheck(field, listing);
 			}else if( field.fieldName.equals("user") ){
 				return new FilterUser(field, listing);
+			}else if( field.fieldName.equals("date") ){
+				return new FilterDate(field, listing);
 			}
 		}
 		return null;

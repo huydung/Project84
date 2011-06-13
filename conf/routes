@@ -23,7 +23,8 @@ GET     /invitation/{reply}/{id}/{inviteKey}                Application.inviteRe
 POST    /memberships/responses                              Memberships.saveInvitationResponse
 POST    /project/{project_id}/listings/orderings/{listing_ids}   Listings.saveOrderings
 GET     /project/{project_id}/listings/{id}                 Listings.dashboard
-POST    /project/{project_id}/listings/{listing_id}/create  Items.doCreate                 
+POST    /project/{project_id}/listings/{listing_id}/create  Items.doCreate
+POST    /project/{project_id}/listings/{listing_id}/{item_id}/quickEdit  Items.quickEdit                      
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

@@ -18,7 +18,7 @@ boolean isOwn = ((_member.user != null) ? (_member.user.id == _u.id) : false) ;
         
         #{if _member.isInvitation() }
             #{if canDelete || (isOwn && canDeleteOwn)}
-	        <a class="fright icon-link icon-link-delete" 
+	        <a class="fright icon-link icon-link-delete need-confirm" 
 	            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
 	        #{/}
 	        <a class="fright icon-link icon-link-email" 
@@ -28,7 +28,7 @@ boolean isOwn = ((_member.user != null) ? (_member.user.id == _u.id) : false) ;
         #{else}
         <strong>${_member.user.nickName}</strong>
             #{if canDelete || (isOwn && canDeleteOwn)}
-	        <a class="fright icon-link icon-link-delete"
+	        <a class="fright icon-link icon-link-delete need-confirm"
 	            href="@{Memberships.delete(_member.id, _member.project.id)}">&{'labels.delete'}</a>
 	        #{/}
 	        #{if canEdit || (isOwn && canEditOwn)}

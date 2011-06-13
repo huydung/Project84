@@ -1,4 +1,10 @@
-<a href="http://gravatar.com" target="_blank" class="gravatar">
+#{if _noLink == null}
+<a href="http://gravatar.com"  target="_blank" class="gravatar">
+#{/if}
+#{else}
+<div class="gravatar">
+#{/}
+
     %{    
     com.huydung.utils.gravatar.Gravatar gravatar = new com.huydung.utils.gravatar.Gravatar();
 	gravatar.setSize(_size);
@@ -11,4 +17,9 @@
     #{ifnot _noDescription}
     <span class="description">&{'actions.changeImage'}</span>
     #{/}    
+#{if _noLink == null}
 </a>
+#{/if}
+#{else}
+</div>
+#{/}
