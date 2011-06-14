@@ -135,7 +135,7 @@ public class Listing extends Model implements IWidget {
 				}
 			}
 		}
-		return "";
+		return Messages.get("f."+fieldName);
 	}
 	
 	public static Listing createFromTemplate(ListTemplate lt){
@@ -147,7 +147,7 @@ public class Listing extends Model implements IWidget {
 		l.mainField = lt.mainField;
 		l.subField = lt.subField;
 		l.numItems = lt.numItems;
-		l.sort = lt.sort;		
+		l.sort = lt.sort;	
 		return l;
 	}
 	
@@ -189,14 +189,16 @@ public class Listing extends Model implements IWidget {
 		List<BasicFilter> filters = new ArrayList<BasicFilter>();
 		List<ItemField> fields = this.getItemFields();
 		for(ItemField f : fields){
-			if(f.isFilterable()){
-				BasicFilter filter = FilterFactory.createFilter(f, this);
-				if( filter != null ){
-					filters.add( filter );
-				}
+			BasicFilter filter = FilterFactory.createFilter(f, this);
+			if( filter != null ){
+				filters.add( filter );
 			}
 		}
 		return filters;
+	}
+	
+	public List<String> getCategories(){
+		return Item.find("SELECT DISTINCT category FROM Item i WHERE listing = ? AND category IS NOT NULL", this).fetch();
 	}
 	
 	public static Listing findByProjectAndName(Project project, String name){

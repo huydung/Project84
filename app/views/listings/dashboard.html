@@ -4,7 +4,7 @@
 <div style="position:relative">
 <div class="grid_4 listing_features">
     <div class="listing_filters">
-    <h2 class="nomargin">&{'listing.filters'}</h2>
+    <h2 class="nomargin">&{'listing.filters'} &amp; &{'labels.search'}</h2>
     <form action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
     #{list items:filters, as:'filter'}
         #{if filter != null}
@@ -20,15 +20,17 @@
     <form action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
 	    <input type="text" name="input" class="item-quick-add" value="${params.get('input')}"/>
+	    
 	    <div class="tright">
 	    <a href="#inputhelp" class="reveal-toggle">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
 	    <a href="#" class="modal">&{'item.fullForm'}</a> 
 	    
 	    </div>
-	    <div id="inputhelp" class="tleft reveal small">
+	    <div id="inputhelp" class="tleft reveal small" style="display:none;">
         <br/>
             &{'message.item.help'}
             <ul>
+                <li>&{'f.category.iph'}</li>
               <li>&{'f.date.iph'}</li>
               <li>&{'f.email1.iph'}</li>
               <li>&{'f.phone1.iph'}</li>

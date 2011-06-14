@@ -3,8 +3,9 @@
     %{ String fname_user = l.getFieldName('user') }%    
     <div>
         <label class="description">&{'labels.filterBy'} <strong>${fname_user}</strong></label>
-        
-        <ul class="clearfix nomargin">
+        <a href="#" class="uncheck-all fright small">&nbsp;|&nbsp;&{'labels.uncheckAll'}</a>
+        <a href="#" class="check-all fright small">&{'labels.checkAll'}</a>
+        <ul class="clearfix nomargin" style="clear:both;">
             #{list items:filter.getUsers(), as:'u'}
             %{ boolean checked = params.get('filter_user_'+u.id) == 'on' }%
                 <li class="${ checked ? 'checked' : '' }">
@@ -16,8 +17,7 @@
                 </li>
             #{/}
         </ul>
-        <a href="#" class="uncheck-all fright small">&nbsp;|&nbsp;&{'labels.uncheckAll'}</a>
-        <a href="#" class="check-all fright small">&{'labels.checkAll'}</a>
+        
     </div>
 #{/}
 </div>

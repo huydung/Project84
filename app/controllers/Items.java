@@ -26,13 +26,19 @@ public class Items extends AppController {
 			item.creator = getLoggedin();
 			if(!item.validateAndSave()){
 				displayValidationMessage();
+			}else{
+				flash.put("success", "Item " + item.name + " created!");
 			}
 		}
 		if( request.isAjax() ){
 			render("items/item.html");
 		}else{
-			params.flash();
-			Listings.dashboard(project_id, listing_id);
+			String prevPath = params.get("prevPath"); 
+			if(prevPath != null){
+				redirect(prevPath);
+			}else{
+				Listings.dashboard(project_id, listing_id);
+			}
 		}
 	}
 	
@@ -40,7 +46,20 @@ public class Items extends AppController {
 			@Required Long project_id,
 			@Required Long listing_id, 
 			@Required Long id){
-		renderText("Edit Form");
+		if(Validation.hasErrors()){
+			notFound();
+		}
+		Listing l = Listing.findById(listing_id);
+		if(l == null){ notFound("Listing", listing_id); }
+		Item item;
+		if( id != 0 ){
+			item = Item.findById(id);
+		}else{
+			item = new Item(l);
+		}
+		if( item == null ){	notFound("Item", id);	}
+		
+		render("items/form.html", item, l);
 	}
 	
 	public static void quickEdit(
@@ -48,9 +67,7 @@ public class Items extends AppController {
 			@Required Long listing_id,
 			@Required Long item_id,
 			@Required String input){
-		if(Validation.hasErrors()){
-			notFound();
-		}
+		if(Validation.hasErrors()){notFound();}
 		Item item = Item.findById(item_id);
 		if( item == null ){	notFound("Item", item_id);	}
 		Listing l = Listing.findById(listing_id);
@@ -65,7 +82,14 @@ public class Items extends AppController {
 			@Required Long project_id,
 			@Required Long listing_id, 
 			@Valid Item item){
-		renderText("Edit Form");
+		if( Validation.hasErrors() ){
+			displayValidationMessage();
+			flash.keep();
+			Validation.keep();
+			edit(project_id, listing_id, item.id);
+		}
+		item.save();
+		Listings.dashboard(project_id, listing_id);
 	}
 	
 	public static void delete(

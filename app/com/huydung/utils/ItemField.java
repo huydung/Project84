@@ -39,9 +39,4 @@ public class ItemField {
 	public String toString(){
 		return name;
 	}
-	
-	public boolean isFilterable(){
-		//MiscUtil.ConsoleLog("Check if " + fieldName +" is filterable");
-		return Item.FIELDS_FILTERABLE.contains(fieldName);
-	}
 }

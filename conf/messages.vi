@@ -61,6 +61,7 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 
 
 ## LABELS ##
+labels.search = Tìm kiếm
 labels.save = Lưu
 labels.email = Email
 labels.emailAddress = Địa chỉ email
@@ -93,6 +94,7 @@ labels.acceptInvite = Nhận lời tham gia
 labels.deny = Từ chối
 labels.confirm = Xác nhận
 labels.from = Từ
+labels.to = Đến
 labels.system = Hệ thống
 labels.displayTab = Hiển thị Tab?
 labels.chooseIcon = Chọn ảnh
@@ -115,6 +117,9 @@ labels.checkAll = Chọn hết
 labels.uncheckAll = Bỏ chọn hết
 labels.apply = Áp dụng
 labels.cancel = Ngưng thao tác
+labels.with = với
+labels.updateMap = Cập nhật bản đồ
+labels.all = Tất cả
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -181,9 +186,13 @@ messages.invitations = <strong>Wow, chờ chút!</strong> Bạn vừa nhận đ�
 labels.activity.recent = Những thay đổi gần đây nhất
 
 ## ITEM FIELDS ##
+
+item.amount = số lượng
 item.quickAdd = Tạo nhanh mục mới
 item.quickEdit = Sửa nhanh
 item.fullForm = Biểu mẫu
+item.containKeyword = Có chứa từ khóa
+labels.currentFile = File hiện tại
 item.help = (trợ giúp và ví dụ)
 f.name = Tiêu đề
 f.description = Ghi chú
@@ -224,6 +233,7 @@ f.file.des = Cho phép upload lên các file, ví dụ file ảnh, nhạc, video
 f.cost.des = Lưu giá tiền, số đơn vị sản phẩm và đơn vị tiền tệ tương ứng
 
 message.item.help = Bạn có thể gõ tên của mục muốn tạo và nhấn phím Enter để thêm mục mới. Không chỉ tiêu đề mục mà một số trường thông tin khác cũng có thể được tạo nhanh, như hướng dẫn dưới đây
+f.category.iph = Gõ vào tên phân mục trong cặp dấu &lt; &gt;, ví dụ: <strong>&lt;Phân mục A&gt;</strong>, <strong>&lt;Phân mục B&gt;</strong>
 f.date.iph = Gõ vào ngày tháng đầy đủ hoặc bằng tiếng Anh với kí hiệu @ ở đầu. Ví dụ: <strong>@2011-06-14, @tomorrow, @next monday, @June 14, @+4 days</strong>... Bạn cũng có thể kéo các ô ngày tháng từ Bộ lọc thả lên các mục để gán thông tin ngày tháng.
 f.cost.iph = Gõ vào [mã tiền tệ]:[số tiền]x[số lượng], ví dụ: <strong>VND:150000x2</strong>.
 f.number.iph = Gõ vào  num:[con số], ví dụ: <strong>num:3</strong>. Lưu ý, viết các chữ số liền nhau.

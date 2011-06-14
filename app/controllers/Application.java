@@ -10,9 +10,13 @@ import play.libs.WS;
 import play.libs.XPath;
 import play.mvc.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.Collator;
 import java.util.*;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.w3c.dom.*;
 
@@ -138,4 +142,45 @@ public class Application extends Controller {
 			Application.homepage();
     	}
 	}
+    
+    public static void getLatLang(@Required String address){
+    	if(Validation.hasErrors()){
+    		notFound();
+    	}
+    	String url = "?address=" + address;
+    	Document xml = WS.url("https://maps.googleapis.com/maps/api/geocode/xml")
+    		.setParameter("address", address).post().getXml();
+    	Node response = XPath.selectNode("/GeocodeResponse", xml); 
+    	String status = XPath.selectText("status", response);
+    	if( status == "OK" ){
+    		Map<String, String> latLng = new HashMap<String, String>();
+    		latLng.put("lat", XPath.selectText("result/geometry/location/lat", response));
+    		latLng.put("lng", XPath.selectText("result/geometry/location/lng", response));
+    		renderJSON(latLng);
+    	}else{
+    		notFound();
+    	}
+    }
+    /*
+    public static void upload(String qqfile) {
+       if(request.isNew) {
+		       FileOutputStream moveTo = null;
+		
+		       Logger.info("Name of the file %s", qqfile);
+		       // Another way I used to grab the name of the file
+		       String filename = request.headers.get("x-file-name").value();
+	       
+		       Logger.info("Absolute on where to send %s", Play.getFile("").getAbsolutePath() + File.separator + "uploads" + File.separator);
+	       try {
+	           InputStream data = request.body;
+	           moveTo = new FileOutputStream(new File(Play.getFile("").getAbsolutePath()) + File.separator + "uploads" + File.separator + filename );
+	           IOUtils.copy(data, moveTo);           
+	       } catch(Exception ex) {
+	           renderJSON("{success: false}");
+	       }     
+       }
+   
+       renderJSON("{success: true}");
+   }
+   */
 }

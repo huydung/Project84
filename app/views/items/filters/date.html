@@ -1,0 +1,19 @@
+<div class="filter-box filter-box-date">
+    %{ String fname_date = l.getFieldName('date') }%    
+    <label class="description">&{'labels.filterBy'} <strong>${fname_date}</strong></label>
+    
+    <div class="date-inline inline">
+        <label>&{'labels.from'}</label>
+        <input name="filter_date_from" class="date"
+        data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }"
+        data-range-limit="false"
+        value="${ params.get('filter_date_from') ?: '' }"
+        />
+        <label>&{'labels.to'}</label>
+        <input name="filter_date_to" class="date"
+        data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }"
+        data-range-limit="false"
+        value="${ params.get('filter_date_to') ?: '' }"
+        />
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="filter-box filter-box-name">
+    %{ String fname_date = l.getFieldName('name') }%    
+    <label class="description">&{'labels.filterBy'} <strong>${fname_date}</strong></label>
+    
+    <div class="date-inline inline">
+        <label>&{'item.containKeyword'}</label>
+        <input name="filter_name_keyword" style="width:120px;"
+        value="${ params.get('filter_name_keyword') ?: '' }"
+        />        
+    </div>
+</div>

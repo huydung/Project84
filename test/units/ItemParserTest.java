@@ -275,6 +275,15 @@ public class ItemParserTest {
 	}
 	
 	@Test
+	public void testItemParseCategory(){
+		Item item = Item.createFromSmartInput(
+				"Nguyễn Huy Dũng <category 1>", l);
+		assertEquals("category 1", item.category);
+		assertEquals("Nguyễn Huy Dũng", item.name);
+				
+	}
+	
+	@Test
 	public void testItemParseAll(){
 		Item item = Item.createFromSmartInput(
 				"Buy hosting USD 250x3 num:4", l);

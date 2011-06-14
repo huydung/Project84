@@ -1,0 +1,29 @@
+<div class="filter-box filter-box-category checkboxs-holder">
+%{
+def categories = filter.getCategories();
+}%
+
+%{ String fname_category = l.getFieldName('category') }%    
+<div>
+    <label class="description">&{'labels.filterBy'} <strong>${fname_category}</strong></label>
+        <a href="#" class="uncheck-all fright small">&nbsp;|&nbsp;&{'labels.uncheckAll'}</a>
+        <a href="#" class="check-all fright small">&{'labels.checkAll'}</a>
+    <ul class="clearfix nomargin" style="clear:both;">
+            #{list items:categories, as:'c'}
+            #{if c != null}
+            %{ boolean checked = params.get('filter_category_'+c.slugify()) == 'on' }%
+                <li>                    
+                    <input type="checkbox" class="filter-field filter-category"
+                    name="filter_category_${c.slugify()}" 
+                    ${ checked ? 'checked="checked"' : '' }
+                    />
+                    <span class="category-filter-item" data-category-name="${c}">
+                    ${c}
+                    </span>
+                </li>
+            #{/}
+            #{/}
+        </ul>
+</div>
+
+</div>

@@ -119,4 +119,16 @@ public class Listings extends AppController {
 		renderArgs.put("active", JavaExtensions.slugify(l.listingName, true));
 		render(filters, items, l);
 	}
+	
+	public static void getCategories(@Required Long listing_id){
+		if(Validation.hasErrors()){
+			notFound();
+		}
+		Listing l = Listing.findById(listing_id);
+		if( l == null ){
+			notFound("Listing", listing_id);
+		}
+		List<String> categories = l.getCategories();
+		renderJSON(categories);
+	}
 }

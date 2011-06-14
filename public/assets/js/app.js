@@ -1,139 +1,4 @@
-/**
- * Confirm plugin 1.3
- *
- * Copyright (c) 2007 Nadia Alramli (http://nadiana.com/)
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
- */
-
-/**
- * For more docs and examples visit:
- * http://nadiana.com/jquery-confirm-plugin
- * For comments, suggestions or bug reporting,
- * email me at: http://nadiana.com/contact/
- */
-
-jQuery.fn.confirm = function(options) {
-  options = jQuery.extend({
-    msg: 'Really Delete? ',
-    stopAfter: 'never',
-    wrapper: '<span></span>',
-    eventType: 'click',
-    dialogShow: 'show',
-    dialogSpeed: '',
-    timeout: 0
-  }, options);
-  options.stopAfter = options.stopAfter.toLowerCase();
-  if (!options.stopAfter in ['never', 'once', 'ok', 'cancel']) {
-    options.stopAfter = 'never';
-  }
-  options.buttons = jQuery.extend({
-    ok: ' Yes ',
-    cancel: ' No ',
-    wrapper:'<a href="#"></a>',
-    separator: '/'
-  }, options.buttons);
-
-  // Shortcut to eventType.
-  var type = options.eventType;
-
-  return this.each(function() {
-    var target = this;
-    var $target = jQuery(target);
-    var timer;
-    var saveHandlers = function() {
-      var events = jQuery.data(target, 'events');
-      if (!events && target.href) {
-        // No handlers but we have href
-        $target.bind('click', function() {document.location = target.href});
-        events = jQuery.data(target, 'events');
-      } else if (!events) {
-        // There are no handlers to save.
-        return;
-      }
-      target._handlers = new Array();
-      for (var i in events[type]) {
-        target._handlers.push(events[type][i]);
-      }
-    }
-    
-    // Create ok button, and bind in to a click handler.
-    var $ok = jQuery(options.buttons.wrapper)
-      .append(options.buttons.ok)
-      .click(function() {
-      // Check if timeout is set.
-      if (options.timeout != 0) {
-        clearTimeout(timer);
-      }
-      $target.unbind(type, handler);
-      $target.show();
-      $dialog.hide();
-      // Rebind the saved handlers.
-      if (target._handlers != undefined) {
-        jQuery.each(target._handlers, function() {
-          $target.click(this.handler);
-        });
-      }
-      // Trigger click event.
-      $target.click();
-      if (options.stopAfter != 'ok' && options.stopAfter != 'once') {
-        $target.unbind(type);
-        // Rebind the confirmation handler.
-        $target.one(type, handler);
-      }
-      return false;
-    })
-
-    var $cancel = jQuery(options.buttons.wrapper).append(options.buttons.cancel).click(function() {
-      // Check if timeout is set.
-      if (options.timeout != 0) {
-        clearTimeout(timer);
-      }
-      if (options.stopAfter != 'cancel' && options.stopAfter != 'once') {
-        $target.one(type, handler);
-      }
-      $target.show();
-      $dialog.hide();
-      return false;
-    });
-
-    if (options.buttons.cls) {
-      $ok.addClass(options.buttons.cls);
-      $cancel.addClass(options.buttons.cls);
-    }
-
-    var $dialog = jQuery(options.wrapper)
-    .append(options.msg)
-    .append($ok)
-    .append(options.buttons.separator)
-    .append($cancel);
-
-    var handler = function() {
-      jQuery(this).hide();
-
-      // Do this check because of a jQuery bug
-      if (options.dialogShow != 'show') {
-        $dialog.hide();
-      }
-
-      $dialog.insertBefore(this);
-      // Display the dialog.
-      $dialog[options.dialogShow](options.dialogSpeed);
-      if (options.timeout != 0) {
-        // Set timeout
-        clearTimeout(timer);
-        timer = setTimeout(function() {$cancel.click(); $target.one(type, handler);}, options.timeout);
-      }
-      return false;
-    };
-
-    saveHandlers();
-    $target.unbind(type);
-    target._confirm = handler
-    target._confirmEvent = type;
-    $target.one(type, handler);
-  });
-};
+var currencies = ["AED", "ANG", "ARS", "AUD", "BDT", "BGN", "BHD", "BND", "BOB", "BRL", "BWP", "CAD", "CHF", "CLP", "CNY", "COP", "CRC", "CZK", "DKK", "DOP", "DZD", "EEK", "EGP", "EUR", "FJD", "GBP", "HKD", "HNL", "HRK", "HUF", "IDR", "ILS", "INR", "ISK", "JMD", "JOD", "JPY", "KES", "KRW", "KWD", "KYD", "KZT", "LBP", "LKR", "LTL", "LVL", "MAD", "MDL", "MKD", "MUR", "MVR", "MXN", "MYR", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "SAR", "SCR", "SEK", "SGD", "SKK", "SLL", "SVC", "THB", "TND", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VEF", "VND", "XOF", "YER", "ZAR", "ZMK"];
 
 $(document).ready(function(){
 	var processPage = function(){
@@ -161,13 +26,13 @@ $(document).ready(function(){
 				changeMonth: true,
 				changeYear: true,
 				dateFormat: format,
-				minDate: "+1d"
+				minDate:  $dp.attr('data-range-limit') == 'false' ? null : "+1d"
 			})
-		})
-		
+		});
+
 		/** Accordion & Tabs **/
 		var stop = false;
-		$( "#accordions h3.header" ).click(function( event ) {
+		$( "#accordions .header" ).click(function( event ) {
 			if ( stop ) {
 				event.stopImmediatePropagation();
 				event.preventDefault();
@@ -175,10 +40,21 @@ $(document).ready(function(){
 			}
 		});
 		$('#accordions').accordion({
-			header: 'h3.header',
+			header: '.header',
 			collapsible: true,
-			active: false
+			active: false,
+			autoHeight: false
 		});
+		$('#form-item #accordions').accordion("activate", 0);
+		
+		/** Numeric **/
+		/*
+		$('input.numeric').numeric({
+			minValue: 0,
+			increment: $(this).attr('data-inc'),
+			format: $(this).attr('data-format')
+		});
+		*/
 		
 		/** PROJECT LISTINGS SORTING **/
 		$('.project_listings').sortable({
@@ -380,11 +256,38 @@ $(document).ready(function(){
 				.find('.inline-ui').hide().end()
 				.find('input[type=text]').focus().end()
 				.find('.icon-link-cancel').click(function(){
-					$(this).parents('inline-editable')
+					$(this).parents('.inline-editable')
 						.find('.inline-edit').hide().end()
 						.find('.inline-ui').show().end();
 				});
 		});
+		
+		/** CURRENCY AUTO COMPLETE **/
+		$('.item_field_currency').autocomplete({
+			source: currencies
+		});
+		var categoriesSourceUrl = $('.field-category input.category').attr('data-source');
+		if( categoriesSourceUrl ){
+			$.ajax({
+				url: categoriesSourceUrl,
+				dataType: 'json',
+				success: function(data, status, xhr){
+					var categories = data;
+					console.log(categories);
+					$('.field-category input.category').autocomplete({
+						source: categories,
+						minLength: 0
+					});
+				}
+			})
+		}
+		
+		/** Map updater **/
+		$('.map-updater').click(function(){
+			var address = $(this).siblings('input.address,textarea.address').val();
+			
+			return false;
+		})
 	};
 	processPage();
 });

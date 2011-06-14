@@ -2,20 +2,22 @@
 
 #{/}
 
-<li id="item-${item.id}" class="item inline-editable item-${item.getClasses()}">
+<li id="item-${item.id}" class="item clearfix inline-editable item-${item.getClasses()}">
     <div class="inline-edit" style="display:none" >
     <form action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">
         <label>&{'item.quickEdit'}</label>
-	    <input name="input" value="${item.rawInput}" class="item-quick-edit" type="text" />
-	    <div style="padding-top:5px" class="fright" >
-	       <a class="icon-link icon-link-cancel fright">&{'labels.cancel'}</a>
-	       <button class="icon-link icon-link-save fright" type="submit">&{'labels.save'}</button>
+	    <input name="input" value="${item.rawInput}" class="item-quick-edit" type="text" 
+	    style="width:550px"/>
+	    <div style="padding-top:5px;padding-left:100px;" class="clearfix" >
+	       <button class="icon-link icon-link-save fleft" type="submit">&{'labels.save'}</button>
+	       <a class="icon-link icon-link-cancel fleft">&{'labels.cancel'}</a>
+	       <a class="icon-link icon-link-full fleft" href="@{Items.edit(_project.id, l.id, item.id)}">&{'item.fullForm'}</a>
         </div>
 	</form>
 	
     </div>
     
-    <div class="inline-ui">
+    <div class="inline-ui clearfix">
 	    #{if l.hasField('checkbox')}
 	        <input type="checkbox" name="item.checkbox" value="checkbox"
 	            ${item.checkbox == true ? 'checked="checked"' : ''} />
@@ -29,7 +31,19 @@
 	    </div>
 	    *{*** SUB INFOS, show maximum of 2 ***}*
 	    <ul class="subinfo">
-	        
+	        #{if l.hasField('user') && item.user != null}
+            <li>
+                <span class="field-name">${l.getFieldName('user')}:</span>
+                <span class="field-value date"><a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
+                ${item.user.nickName}</a></span>
+             </li>
+            #{/}
+            #{if l.hasField('category') && item.category != null}
+            <li>
+                <span class="field-name">${l.getFieldName('category')}:</span>
+                <span class="field-value date">${item.category}</span>
+             </li>
+            #{/}
 	        #{if l.hasField('date') && item.date != null}
 	        <li>
 	            <span class="field-name">${l.getFieldName('date')}:</span>
@@ -42,19 +56,23 @@
 	            <span class="field-value date">${item.number}</span>
 	         </li>
 	        #{/}
-	        #{if l.hasField('user') && item.user != null}
-	        <li>
-	            <span class="field-name">${l.getFieldName('user')}:</span>
-	            <span class="field-value date"><a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
-	            ${item.user.fullName}</a></span>
-	         </li>
-	        #{/}
+	        #{if l.hasField('cost') && item.cost != null }
+            <li>
+                <span class="field-name">${l.getFieldName('cost')}:</span>
+                <span class="field-value date">${item.getCostDisplay()}</span>
+             </li>
+            #{/}
+	        #{if l.hasField('url') && item.url != null }
+            <li>
+                <span class="field-name">${l.getFieldName('url')}:</span>
+                <span class="field-value date"><a href="${item.url}" class="outlink url" rel="nofollow" target="_blank" title="${item.url}">
+                ${item.url.abbr(25)}
+                </a></span>
+             </li>
+            #{/}
 	    </ul>
 	    
-	    *{*** ADDITIONAL INFO that can be display inline ***)}*
-	    #{if l.hasField('url')}        
-	        <a href="${item.url}" class="outlink url" rel="nofollow" target="_blank" title="${item.url}">url</a>
-	    #{/}
+	    *{*** ADDITIONAL INFO that can not be display inline ***)}*
 	    #{if l.hasField('description')}
 	        <a href="@{Items.show(_project.id, item.id)}" class="read-more">
 	            &{'labels.readmore'}

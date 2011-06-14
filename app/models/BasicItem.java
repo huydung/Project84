@@ -21,12 +21,10 @@ import play.db.jpa.Model;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class BasicItem extends Model {
 	
-	@Required
 	public Date created;
 	@ManyToOne
 	@Required
 	public User creator;
-	@Required
 	public Date updated;
 	@Required
 	public String name;

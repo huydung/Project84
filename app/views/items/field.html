@@ -1,0 +1,189 @@
+#{if f.fieldName == 'description'}
+    <div class="form-field field-description">
+    <label>${l.getFieldName('description')}</label>
+    <textarea class="description text"
+         name="item.description"
+         rows="5"      
+         maxlength="500"    
+    >${item.description}</textarea> 
+    </div>
+#{/}
+#{if f.fieldName == 'body'}
+    <div class="form-field field-body">
+    <label>${l.getFieldName('body')}</label>
+    <textarea class="body text wysiwyg"
+         name="item.body"
+         rows="10"   
+    >${item.body}</textarea> 
+    </div>
+#{/}
+#{if f.fieldName == 'date'}
+    #{hdfield name:'item.date', label:l.getFieldName('date'), hasBody:true, not_required:true }
+    <input class="text date" data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }" 
+         value="${item.date != null ? item.date.format(loggedin.dateFormat) : ''}" name="item.date"
+         />
+    #{/}
+#{/}
+#{if f.fieldName == 'number'}
+    <div class="form-field field-number">
+    <label>${l.getFieldName('number')}</label>
+    <input class="numeric text" 
+         value="${item.number}" 
+         name="item.number"
+         type="number"
+         step="1"    
+         />   
+    </div>
+#{/}
+#{if f.fieldName == 'user'}
+    <div class="form-field field-user">
+    <label>${l.getFieldName('user')}</label>
+    %{
+    def users = models.Membership.findUserByProject(_project);
+    def unassigned = new models.User();
+    unassigned.id = null;
+    unassigned.fullName = "-- select --";
+    users.add(0, unassigned);
+    }%
+    #{select 'item.user.id', items:users, 
+        valueProperty:id, value:item.user != null ? item.user.id : null
+        
+    /}
+    </div>
+#{/}
+#{if f.fieldName == 'category'}
+    <div class="form-field field-category">
+    <label>${l.getFieldName('category')}</label>
+    <input class="category text autocomplete" 
+         value="${item.category}" 
+         name="item.category"
+         type="text"
+         data-source="@{Listings.getCategories(l.id)}"          
+         />   
+    </div>
+#{/}
+
+#{if f.fieldName == 'url'}
+    <div class="form-field field-url">
+    <label>${l.getFieldName('url')}</label>
+    <input class="url text" 
+         value="${item.url}" 
+         name="item.url"
+         type="url"          
+         />   
+    </div>
+#{/}
+#{if f.fieldName == 'phone1'}    
+    <div class="form-field field-phone1">
+        <label>${l.getFieldName('phone1')}</label>
+        <input class="phone text" 
+             value="${item.phone1}" 
+             name="item.phone1"
+             type="phone"          
+             />  
+    </div>
+#{/}
+
+#{if f.fieldName == 'phone2'}
+    
+    <div class="form-field field-phone2">
+        <label>${l.getFieldName('phone2')}</label>
+        <input class="phone text" 
+             value="${item.phone2}" 
+             name="item.phone2"
+             type="phone"          
+             />  
+    </div>
+#{/}
+
+#{if f.fieldName == 'email1'}    
+    <div class="form-field field-email1">
+	    <label>${l.getFieldName('email1')}</label>
+	    <input class="email text" 
+	         value="${item.email1}" 
+	         name="item.email1"
+	         type="email"          
+	         />  
+    </div>
+#{/}
+
+#{if f.fieldName == 'email2'}
+    
+    <div class="form-field field-email2">
+        <label>${l.getFieldName('email2')}</label>
+        <input class="email text" 
+             value="${item.email2}" 
+             name="item.email2"
+             type="email"          
+             />  
+    </div>
+#{/}
+
+#{if f.fieldName == 'address'}
+    <div class="form-field field-address">
+    <label>${l.getFieldName('address')}</label>
+    <textarea class="address text"
+         name="item.address"
+         rows="3"          
+    >${item.address}</textarea> 
+    <a href="@{Application.getLatLang()}" class="fright map-updater icon-link icon-link-refresh">
+    &{'labels.updateMap'}
+    </a>
+    <input type="hidden" name="item.address_lat"
+        value="${item.address_lat}" />
+    <input type="hidden" name="item.address_lan"
+        value="${item.address_lan}" />    
+    <div class="google_map fright">
+    #{if item.address_lat != null && item.address_lan != null}
+    %{ 
+    String latlng = item.address_lat + "," + item.address_lan;
+    }%    
+    <a href="http://maps.google.com?q=${latlng}">
+	    <img src="http://maps.google.com/maps/api/staticmap?center=${latlng}&zoom=15&size=220x220&maptype=roadmap%20&markers=color:red%7Clabel:D%7C${latlng}&sensor=false"
+	    width="220" height="220"/>
+    </a>
+    #{/}
+    </div>
+    </div>
+#{/}
+#{if f.fieldName == 'file'}
+    <div class="form-field field-cost">
+    <label>${l.getFieldName('file')}</label>
+    <input type="file" class="text" name="item.file" />
+    #{if item.file != null && item.file_name != null}
+    <span>&{'labels.currentFile'}: <em>${item.file_name}</em></span>
+    #{/}
+    </div>
+#{/}
+
+
+#{if f.fieldName == 'cost'}
+    <div class="form-field field-cost">
+    <label>${l.getFieldName('cost')}</label>
+    <input class="numeric text" 
+         value="${item.cost}" 
+         name="item.cost"
+         type="number"
+         min="0"
+         step="1000"  
+         style="width:130px;"       
+         />
+    <input value="${item.cost_currency ?: 'USD'}" 
+         name="item.cost_currency"
+         class="item_field_currency text"
+         style="width:40px;"
+         size="4"
+         maxlength="3"
+         />
+     
+    <span class="fleft" style="padding:13px 5px 0;">&{'labels.with'} &{'item.amount'}</span>
+    <input class="numeric text"
+         type="number" 
+         min="0"
+         step="1"
+         value="${item.cost_amount ?: 1}" 
+         name="item.cost_amount"
+         style="width:50px;"
+         />
+    </div>
+#{/}

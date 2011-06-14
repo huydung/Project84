@@ -30,6 +30,7 @@ actions.contactWarning = This is not critical, but please <a href="/contact?acti
 actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us</a> so we can fix it for you. Thank you!
 
 ## LABELS ##
+labels.search = Search
 labels.save = Save
 labels.email = Email
 labels.emailAddress = Email Address
@@ -62,6 +63,7 @@ labels.acceptInvite = Accept Invitation
 labels.deny = Deny
 labels.confirm = Confirm
 labels.from = From
+labels.to = To
 labels.system = System
 labels.listing.add = Add new Listings
 labels.listing.name = Listing name
@@ -84,7 +86,9 @@ labels.checkAll = Check all
 labels.uncheckAll = Uncheck all
 labels.apply = Apply
 labels.cancel = Cancel
-
+labels.with = with
+labels.updateMap = Update the Map
+labels.all = All
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
 membership.alreadyAccepted = %s (%s) is already a member of the project.
@@ -143,9 +147,13 @@ labels.activity.recent = Recent activities in the project
 
 
 ## ITEM FIELDS ##
+item.showUnder = Show items under
 item.quickAdd = Quick Add
 item.quickEdit = Quick Edit
 item.fullForm = Full Form
+labels.currentFile = Current File
+item.containKeyword = Contains keyword
+item.amount = amount
 item.help = (help & example)
 f.name = Title
 f.description = Description
@@ -186,6 +194,7 @@ f.file.des = Allow to attach files to the items, such as documents, music, video
 f.cost.des = Keep track of cost / price with amount and currency
 
 message.item.help = Bạn có thể gõ tên của mục muốn tạo và nhấn phím Enter để thêm mục mới. Không chỉ tiêu đề mục mà một số trường thông tin khác cũng có thể được tạo nhanh, như hướng dẫn dưới đây
+f.category.iph = Gõ vào tên phân mục trong cặp dấu &lt; &gt;, ví dụ: <strong>&lt;Phân mục A&gt;</strong>, <strong>&lt;Phân mục B&gt;</strong>
 f.date.iph = Gõ vào ngày tháng đầy đủ hoặc bằng tiếng Anh. Ví dụ: <strong>2011-06-14, tomorrow, next monday</strong>... Bạn cũng có thể kéo các ô ngày tháng từ Bộ lọc thả lên các mục để gán thông tin ngày tháng.
 f.cost.iph = Gõ vào [mã tiền tệ]:[số tiền]x[số lượng], ví dụ: <strong>VND:150000x2</strong>.
 f.number.iph = Gõ vào  num:[con số], ví dụ: <strong>num:3</strong>. Lưu ý, viết các chữ số liền nhau.

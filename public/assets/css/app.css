@@ -136,12 +136,12 @@ form label:after{
 form.inline{
 	margin-top: 17px;
 }
-form.inline label,
-form.inline input,
-form.inline span,
-form.inline button,
-form.inline select,
-form.inline .form-field{
+.inline label,
+.inline input,
+.inline span,
+.inline button,
+.inline select,
+.inline .form-field{
     display: inline;
     padding-right: 5px;
     width: auto;
@@ -285,7 +285,14 @@ h3.widget-title{
 }
 .icon-link-cancel{
     background: url('../icons/slash.png') no-repeat left 0;
-}   
+}
+.icon-link-refresh{
+    background: url('../icons/arrow_circle_double.png') no-repeat left 0;
+}
+.icon-link-full{
+	background: url('../icons/blog.png') no-repeat left 0;
+}
+
 
 /** Membership **/
 .membercard{
@@ -452,6 +459,15 @@ li:hover .drag-handler{
 .filter-box{
 	clear:both;margin:5px 0 15px;
 }
+.filter-box li{
+	list-style: none;
+	padding:0;
+	margin: 3px;
+}
+.listing_filters form .text,
+.listing_filters form select{
+	max-width:215px;
+}
 
 /** FILTER BOX FOR USER **/
 
@@ -459,9 +475,9 @@ li:hover .drag-handler{
 	width: 50px; height: 50px;
 	position: relative;
 	float: left;
-	margin: 3px;
+	
 	overflow: hidden;
-	list-style:none;padding:0;
+	
 }
 .filter-box-user li input{
 	position: absolute;
@@ -476,4 +492,7 @@ li:hover .drag-handler{
 }
 .filter-box div.checked{
     background-color: #FFA;
+}
+.filter-box-date input.date{
+	width: 75px;
 }

@@ -1,0 +1,35 @@
+#{if !ajax}
+
+#{extends 'main.html' /}
+#{set title:messages.get('labels.edit') + ' ' + messages.get('labels.item') /}
+#{set pageTitle:title /}
+
+#{/}
+
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+}%
+<form id="form-item" method="POST" class="horizontal-form" action="@{Items.doEdit(_project.id, l.id)}">
+    <input type="hidden" name="item.id" value="${item.id ?: 0}"/>
+    <input type="hidden" name="item.creator.id" value="${item.creator.id ?: loggedin.id}"/>
+    #{hdfield name:'item.name', value:item.name, label:l.getFieldName('name') /}
+    <br />
+    <div id="accordions" class="custom-fields">
+	    <h3 class="header">Fields of type <em>${l.listingName}</em></h3>
+	    <div>
+	       #{list items:selected_fs, as:'f'}	            
+	           #{include "items/field.html" /}
+	       #{/}
+	    </div>
+	    <h3 class="header">Additional Field</h3>
+	    <div>
+	       #{list items:fs, as:'f'}          
+	           #{if !l.hasField(f.fieldName) }     
+                    #{include "items/field.html" /}
+               #{/}
+           #{/}
+	    </div>    
+    </div>
+    <button class="button" type="submit"><span>&{'labels.save'}</span></button>
+</form>

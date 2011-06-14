@@ -56,6 +56,7 @@ public class ProjectTemplate extends BaseTemplate {
 		if( this.projectList != null ){
 			for( ProjectListTemplate plt : this.projectList ){
 				if( !lts.contains(plt.listTemplate) ){
+					plt.listTemplate.name = plt.name;					
 					lts.add(plt.listTemplate);
 				}
 			}

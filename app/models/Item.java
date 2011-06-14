@@ -47,7 +47,7 @@ import sun.util.resources.CurrencyNames;
 @Entity
 public class Item extends BasicItem implements IWidgetItem{
 	
-	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox";
+	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox,name";
 	public static final String FIELDS_REQUIRED = "listing,created,creator,updated,type,name,id";
 	public static final String FIELDS_SUBINFO = "date,number,user,phone1,email1,cost,file";
 	@MaxSize(500)
@@ -78,11 +78,12 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	/* Address Related Attributes */
 	public String address;
-	public Long address_lat;
-	public Long address_lan;
+	public String address_lat;
+	public String address_lan;
 	
 	/* File Attributes */
 	public Blob file;
+	public String file_name;
 	public String file_mimeType;
 	public Long file_size;
 	
@@ -90,6 +91,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	public BigDecimal cost;
 	public Integer cost_amount;
 	public String cost_currency;
+	public BigDecimal cost_total;
 	
 	@ManyToOne
 	public Listing listing;
@@ -103,6 +105,32 @@ public class Item extends BasicItem implements IWidgetItem{
 	public void beforeSave(){
 		if(this.rawInput == null){
 			this.createSmartInput();
+		}
+		if( this.cost != null ){
+			if(this.cost_amount == null){ this.cost_amount = 1; }
+			if(this.cost_currency == null){ this.cost_currency = "USD"; }
+			this.cost_total = this.cost.multiply(new BigDecimal(this.cost_amount));
+		}else{
+			this.cost_amount = null;
+			this.cost_currency = null;
+			this.cost_total = null;
+		}
+		if( this.address == null ){
+			this.address_lan = null; this.address_lat = null;
+		}else{
+			//Fetch Google LatLan
+		}
+		if( this.file != null && this.file.getFile() == null ){
+			File f = file.getFile();
+			if( f.isFile() ){
+				this.file_size = f.length();
+				this.file_name = f.getName();
+				this.file_mimeType = file_name.substring(file_name.length() - 3);
+			}
+		}else{
+			this.file_mimeType = null;
+			this.file_name = null;
+			this.file_size = null;
 		}
 	}
 	
@@ -181,6 +209,9 @@ public class Item extends BasicItem implements IWidgetItem{
 			if( this.created != null ){
 				return JavaExtensions.since(this.created);
 			}
+		}
+		if( field.equals("cost") ){
+			return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
 		}
 		if( field.equals("user") ){
 			if( this.user != null ){
@@ -290,7 +321,7 @@ public class Item extends BasicItem implements IWidgetItem{
 		name = parseEmail(name, item);
 		name = parseTelephone(name, item);
 		name = parseAddress(name, item);
-		
+		name = parseCategory(name, item);
 		
 		//Clean up the name after processing
 		name = Pattern.compile("\\s{2,}").matcher(name).replaceAll(" ");
@@ -542,6 +573,18 @@ public class Item extends BasicItem implements IWidgetItem{
 		return name;
 	}
 	
+	private static String parseCategory(String name, Item item){
+		Matcher categoryMatcher = Pattern.compile(
+			" <(.+)>", Pattern.CASE_INSENSITIVE).matcher(name);
+		
+		while( categoryMatcher.find() ){	
+			String category = categoryMatcher.group(1);			
+			item.category = category;			
+		}
+		name = categoryMatcher.replaceAll(" ");
+		return name;
+	}
+	
 	private static String parseCost(String name, Item item) {
 		Matcher costMatcher = Pattern.compile(
 			"[\\s]([a-zA-Z]{3})[ ]?([\\d]+[\\.]?[\\d]+([xX][\\d]+)?)", Pattern.CASE_INSENSITIVE
@@ -604,5 +647,14 @@ public class Item extends BasicItem implements IWidgetItem{
 		}
 		name = emailMatcher.replaceAll(" ");
 		return name;
+	}
+	
+	public String getCostDisplay(){
+		if( cost_amount > 1 ){
+			return cost + " x " + cost_amount + " = " + JavaExtensions.formatCurrency(cost_total, cost_currency);
+		}else{
+			return JavaExtensions.formatCurrency(cost, cost_currency);
+		}
+
 	}
 }
