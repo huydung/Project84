@@ -1,0 +1,66 @@
+%{
+String fn = f.fieldName;
+}%
+#{if !'checkbox,name'.contains(fn)}
+#{if !(fn == 'body' && mode == 'full')}
+<li class="field-${fn} ${ fn == 'description' ? 'span2' : fn == 'body' ? 'span3' : '' }">
+    #{if mode == "full" && l.hasField('checkbox')}
+         <input type="checkbox" name="item.checkbox" value="checkbox"
+             ${item.checkbox == true ? 'checked="checked"' : ''} />
+     #{/}
+    <span class="field-name">${l.getFieldName(fn)}:</span>
+    <span class="field-value ${fn}">
+    
+    #{if fn == 'date' && item.date != null}
+        ${item.date.format(loggedin.dateFormat)}
+    #{/} 
+    
+    #{if fn == 'user' && item.user != null}
+        <a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
+        ${item.user.nickName}</a>
+    #{/}
+    
+    #{if fn == 'category' && item.category != null}
+        ${item.category}
+    #{/}
+    
+    #{if fn == 'number' && item.number != null}
+        ${item.number}
+    #{/}
+    
+    #{if fn == 'cost' && item.cost != null}
+        ${item.getCostDisplay()}
+    #{/}
+    
+    #{if fn == 'url' && item.url != null}
+        <a href="${item.url}" class="outlink url" rel="nofollow" target="_blank" title="${item.url}">
+        ${item.url.abbr(25)}
+        </a>
+    #{/}
+    
+    #{if fn == 'phone1' && item.phone1 != null}
+        #{link-tel item.phone1 /}
+    #{/}
+    #{if fn == 'phone2' && item.phone2 != null}
+        #{link-tel item.phone2 /}
+    #{/}
+    
+    #{if fn == 'mail1' && item.mail1 != null}
+        #{link-mail item.mail1 /}
+    #{/}
+    #{if fn == 'mail2' && item.mail2 != null}
+        #{link-mail item.mail2 /}
+    #{/}
+    
+    #{if fn == 'address' && item.address != null}
+        #{link-mail item.address /}
+    #{/}
+    
+    #{if fn == 'body' && item.body != null}
+        <br/><em>${item.body.textOnly().abbr(360)}</em> &nbsp;&raquo;<a href="@{Items.show(_project.id, l.id, item.id)}">&{'labels.readmore'}</a>
+
+    #{/}
+    </span>
+</li>
+#{/}
+#{/}

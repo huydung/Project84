@@ -19,7 +19,8 @@ public class Comment extends BasicItem {
 	public String body;
 	
 	@Required
-	public Long forId;
+	@ManyToOne
+	public BasicItem parent;
 	
 	public Comment() {
 		super();

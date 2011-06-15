@@ -3,7 +3,7 @@
     return this.each(function() {
     	//add some CSS to this element
     	this.css({position: 'relative', overflow: 'visible'})
-    		.addClass('needConfirm').
+    		.addClass('needConfirm')
     		.append(
     			'<div class="confirmTooltip" ' 
     				+ 'style="display: none; position: absolute; height: 25px; top: -25px; left: 0;">'

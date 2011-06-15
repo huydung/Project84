@@ -1,3 +1,7 @@
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+}%
 #{if mode == 'full' }
 
 #{/}
@@ -31,57 +35,14 @@
 	    </div>
 	    *{*** SUB INFOS, show maximum of 2 ***}*
 	    <ul class="subinfo">
-	        #{if l.hasField('user') && item.user != null}
-            <li>
-                <span class="field-name">${l.getFieldName('user')}:</span>
-                <span class="field-value date"><a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
-                ${item.user.nickName}</a></span>
-             </li>
-            #{/}
-            #{if l.hasField('category') && item.category != null}
-            <li>
-                <span class="field-name">${l.getFieldName('category')}:</span>
-                <span class="field-value date">${item.category}</span>
-             </li>
-            #{/}
-	        #{if l.hasField('date') && item.date != null}
-	        <li>
-	            <span class="field-name">${l.getFieldName('date')}:</span>
-	            <span class="field-value date">${item.date.format(loggedin.dateFormat)}</span>
-	         </li>
-	        #{/}
-	        #{if l.hasField('number') && item.number != null }
-	        <li>
-	            <span class="field-name">${l.getFieldName('number')}:</span>
-	            <span class="field-value date">${item.number}</span>
-	         </li>
-	        #{/}
-	        #{if l.hasField('cost') && item.cost != null }
-            <li>
-                <span class="field-name">${l.getFieldName('cost')}:</span>
-                <span class="field-value date">${item.getCostDisplay()}</span>
-             </li>
-            #{/}
-	        #{if l.hasField('url') && item.url != null }
-            <li>
-                <span class="field-name">${l.getFieldName('url')}:</span>
-                <span class="field-value date"><a href="${item.url}" class="outlink url" rel="nofollow" target="_blank" title="${item.url}">
-                ${item.url.abbr(25)}
-                </a></span>
-             </li>
-            #{/}
-	    </ul>
-	    
-	    *{*** ADDITIONAL INFO that can not be display inline ***)}*
-	    #{if l.hasField('description')}
-	        <a href="@{Items.show(_project.id, item.id)}" class="read-more">
-	            &{'labels.readmore'}
-	        </a>
-	    #{/}
-	    #{if l.hasField('body')}
-	        <a href="@{Items.show(_project.id, item.id)}" class="read-more">
-	            &{'labels.readmore'}
-	        </a>
-	    #{/}
+	       #{list items:selected_fs, as:'f'}              
+               #{include "items/field_display.html" /}
+           #{/}
+           #{list items:fs, as:'f'}          
+               #{if !l.hasField(f.fieldName) && item.hasData(f.fieldName)}    
+                    #{include "items/field_display.html" /}
+               #{/}
+           #{/}
+	    </ul>	    
     </div>
 </li>

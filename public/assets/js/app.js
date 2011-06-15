@@ -113,6 +113,64 @@ $(document).ready(function(){
 				wrapper:'<span class="confirmation fright"></span>'
 			});
 		
+		
+		/** SHOW ALL/HIED ALL **/
+		$('a.showhide').each(function(){
+			$this = $(this);
+			var showText = $this.attr('data-showText');
+			var hideText = $this.attr('data-hideText');
+			var clazz = $this.attr('data-class');
+			$this.click(function(){
+				if( $this.text() === showText ){
+					$('.' + clazz).show();
+					$this.text(hideText)
+						.addClass('icon-link-open')
+						.removeClass('icon-link-collapse');					
+				}else{
+					$('.' + clazz).hide();
+					$this.text(showText)
+						.removeClass('icon-link-open')
+						.addClass('icon-link-collapse');	
+				}
+			});
+			$('li.item .title').click(function(){
+				var si = $(this).siblings('.subinfo');
+				if( si.is(':visible') ){
+					si.hide();
+				}else{
+					si.show();
+				}					
+			});
+		});
+		
+		/** WYM EDITOR **/
+		$('.wymeditor').wymeditor({
+			skin: 'compact',
+			logoHtml: '',
+			toolsItems: [
+	             {'name': 'Bold', 'title': 'Strong', 'css': 'wym_tools_strong'}, 
+	             {'name': 'Italic', 'title': 'Emphasis', 'css': 'wym_tools_emphasis'},
+	             {'name': 'Superscript', 'title': 'Superscript',
+	                 'css': 'wym_tools_superscript'},
+	             {'name': 'Subscript', 'title': 'Subscript',
+	                 'css': 'wym_tools_subscript'},
+	             {'name': 'InsertOrderedList', 'title': 'Ordered_List',
+	                 'css': 'wym_tools_ordered_list'},
+	             {'name': 'InsertUnorderedList', 'title': 'Unordered_List',
+	                 'css': 'wym_tools_unordered_list'},           
+	             
+	             {'name': 'CreateLink', 'title': 'Link', 'css': 'wym_tools_link'},
+	             {'name': 'Unlink', 'title': 'Unlink', 'css': 'wym_tools_unlink'},
+	             {'name': 'InsertImage', 'title': 'Image', 'css': 'wym_tools_image'},	             
+	             {'name': 'Paste', 'title': 'Paste_From_Word',
+	                 'css': 'wym_tools_paste'},
+	             {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
+	             {'name': 'Preview', 'title': 'Preview', 'css': 'wym_tools_preview'}
+	         ],
+	         classesHtml: '',
+	         containersHtml: ''
+		});
+		
 		/** Convert modal actions in widget to use AJAX **/
 		$('.modal').click(function(){
 			$this = $(this);

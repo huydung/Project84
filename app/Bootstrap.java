@@ -5,6 +5,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import net.sf.cglib.core.Local;
 
 import play.Logger;
@@ -152,7 +154,7 @@ public class Bootstrap extends Job {
 		wedding.addList(tasks, "To-Do");
 		wedding.addList(costs, "To-Buy");		
 		wedding.addList(guests, "Guests");
-		wedding.addList(files, "Files");
+		wedding.addList(discussions, "Discussions");
 		
 		wedding.refresh();
 		
@@ -313,7 +315,8 @@ public class Bootstrap extends Job {
 		
 		Item item11 = new Item(guestList);
 		item11.name = "Cô Liên Nhượng";
-		item11.user = huydung;		
+		item11.user = huydung;
+		item11.creator = huydung;	
 		item11.checkbox = false;		
 		item11.category = "Bạn bố mẹ";
 		item11.number = 54;
@@ -322,6 +325,23 @@ public class Bootstrap extends Job {
 		item11.address = "18 Yết Kiêu, Hà Nội";
 		item11.save();
 		
+		Listing discussList = Listing.findByProjectAndName(wd, "Discussions");
+		//discussions.fields = "name:Title,body:Content,user:Author,category:Category";
+		Item item12 = new Item(discussList);
+		item12.name = "10 đúc kết từ đám cưới xưa và nay";
+		item12.creator = hanguyen;
+		item12.category = "Tham khảo";
+		item12.user = hanguyen;
+		item12.body = "<div id=\"entry\"><div align=\"justify\">Bài viết nhằm đúc kết một cách thiết thực nhất những thay đổi trong đám cưới xưa và nay. Những lập luận tổng thể được chắt lọc sẽ giúp cho chúng ta có được một cái nhìn chung nhất về đời sống hôn nhân của xã hội hiện đại. Nhiều khi chúng ta cũng cần phải cập nhật để \"hội nhập\". Những ai cho rằng quan niệm của mình về hôn nhân là đúng đắn có thể sẽ bị bất ngờ với \"thực tế\". Và hiện trạng thực tế của hôn nhân ngày nay là gì? <i><br></i><br><div align=\"center\"><br><img title=\"Photo by daoducquan\" alt=\"đám cưới, xưa và nay, tình yêu, hôn nhân, kết hôn, vợ chồng, quan niệm, truyền thống, hiện đại, tân hôn, môn đăng hộ đối, gia đình\" src=\"http://www.marry.vn/sites/default/files/fancy/daoducquan_1.jpg\"><br>Photo by <i><a href=\"http://www.flickr.com/photos/daoducquan/\">daoducquan</a></i><br><br><br></div><i>Có thể có rất nhiều quan điểm về tuyền thống và hiện đại, nhưng chúng ta khó có thể phủ nhận những điểm được liệt kê dưới đây: </i><br><br><br><b>10 đúc kết từ đám cưới xưa và nay:<br></b><br>1. Đám cưới ngày nay không thể thiếu tình yêu. Và người ta <b>thật sự muốn sống bên nhau dài lâu.</b><br><br>2. Đám cưới<b> </b>ngày<b> </b>nay <a href=\"http://www.marry.vn/bai-viet/dam-cuoi-ngay-nay-thuong-mai-hoa-qua\">\"thương mai\"</a><b> </b>hơn, nhưng ít mang nặng tính truyền thống và phong tục hơn. <br><br>3. Đám cưới ngày nay là một \"công nghệ\" đãi tiệc. CD-CR phải trang bị cho mình những kiến thức nhất định về tổ chức tiệc cưới. <br><br>4. Những dịch vụ cưới ngày càng chuyên nghiệp và phong phú hơn, hỗ trợ cho CD-CR nhiều hơn. <br><br>5. Đêm <a href=\"http://www.marry.vn/bai-viet/dem-tan-hon-thoi-hien-dai\">tân hôn</a> của đôi vợ chồng có thể \"không phải là đêm đầu tiên\". <br><br>6. Người ta kết hôn sau khi đã sống thử. <br><br>7. Người ta cân nhắc nhiều hơn, kén chọn nhiều hơn và lấy nhau với những tư tưởng <a href=\"http://www.marry.vn/bai-viet/dinh-nghia-mon-dang-ho-doi-thoi-hien-dai\">môn đăng hộ đối</a> của thời hiện đại. <br><br>8. CD-CR lấy nhau nhưng vẫn muốn tiếp tục sự nghiệp và hoài bão của mình<br><br>9. Hạnh phúc chỉ có thể trọn vẹn khi con người ta thấy cuộc sống mình đầy đủ và ấm no<b>.</b><br><br>10. Quan niệm về cưới ngày nay hoàn toàn khác trước. <b><i>Kết hôn là một con thuyền, mà ngày nay người ta luôn muốn và cố gắng để lèo lái nó theo ý mình. </i></b><br><br><br><div align=\"center\"><img title=\"\" alt=\"\" src=\"http://www.marry.vn/sites/default/files/fancy/em-co-dong-y-lay-anh-khong.jpg\"><br></div><br><br><b>Và 10 đúc kết vui: </b><br><br>1. Đám cưới ngày xưa chú rể không nhức đầu tìm cách cầu hôn cô dâu. <br><br>2. Đám cưới ngày xưa người ta không bị \"tra tấn\" bởi \"nhạc\". <br><br>3. Chú rể mong chờ \"đem tân hôn\" hơn cả lễ cưới. <br><br>4. Cô dâu chỉ trông chờ vào bộ váy cưới. <br><br>5. CD-CR cười đơ hết cả hàm trong ngày cưới. <br><br>6. Tất cả mọi người đều muốn mình là tâm điểm của bữa tiệc. <br><br>7. CD-CR sợ không có hình đẹp vào ngày cưới. <br><br>8. Người ta không cãi nhau vì chi phí, thời gian, con người... mà họ có thể cãi nhau chỉ vì màu của một chiếc khăn ăn hay hoa trang trí. <br><br>9. Chẳng ai nhớ nổi mình đã mời những ai. <br><br>10. Ngày nay, vợ nói chồng phải \"nghe\". <br><br><br><div align=\"center\"><img title=\"\" alt=\"\" src=\"http://www.marry.vn/sites/default/files/fancy/laychong_0.jpg\"><br></div><br><br>Với tất cả những gì được nêu ở trên, đám cưới có thể xem là một cột mốc quan trọng, đặc biệt và thú vị nhất trong một đời người. Đừng quên rằng dù đời sống hiện đại có thay đổi quan niệm người ta như thế nào, thì kết hôn vẫn luôn giữ được vẻ đẹp truyền thống và ý nghĩa gắn kết thiêng liêng của nó. <br><br>Chúc bạn có một ngày cuối tuần thật thư giãn!<br><br><div align=\"right\"><i><b>Marry.vn<br>Hình ảnh: sưu tầm<br></b></i></div><br></div></div>";
+		item12.save();		
+		
+		Item item13 = new Item(discussList);
+		item13.name = "Trình tự một đám cưới ở Việt Nam";
+		item13.creator = hanguyen;
+		item13.category = "Tham khảo";
+		item13.user = hanguyen;
+		item13.body = "<div id=\"entry\"><p>Đám cưới ngày nay mà Người xưa gọi là Hôn-Lễ, theo lễ tục xưa người  ta làm lễ cưới vào buổi chiều  tối. Buổi chiều tối là lúc Dương qua Âm  lại, âm dương giao hoán với nhau  được thuần, cho nên dùng giờ này để  làm Hôn-Lễ, tức là thuận theo lẽ  tuần hoàn của trời đất.Theo xưa thì có 6 lễ, phân ra như sau :</p><h2>1.- Lễ Nạp Thái</h2>Theo  tục lệ Trung Hoa thì sau khi nghị hôn rồi, nhà trai mang sang  nhà gái  một cặp “nhạn”. Sở dĩ đem chim nhạn là vì chim nhạn là loài  chim rất  chung tình, không sánh đôi hai lần. Tương truyền rằng loài  chim nhạn rất  thảo ăn, khi chúng nó gặp mồi thì kêu nhau ăn chung, vừa  lúc đẻ trứng  thì khi nở thế nào cũng có một con trống và con mái mà  thôi. Khác với  các loại chim khác, chim nhạn khi có một con chết thì  một con còn lại  cũng buồn rầu mà chết theo. Sau này, người Trung Hoa  nào còn theo cổ lễ  thì chỉ dùng ngỗng thay thế cho chim nhạn. (Loài  ngỗng tuy ngông nghênh,  nhưng rất chung tình).<h2>2.- Lễ Vấn Danh</h2>Là hỏi tên và họ của cô gái là gì, được bao nhiêu tuổi, đã có hứa hôn với ai chưa.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-van-danh.jpg\"><img title=\"Cuoi-le-van-danh\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-van-danh.jpg\" alt=\"Cuoi le van danh Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"328\" width=\"448\"></a><h2><br></h2><h2>3.- Lễ Nạp Cát</h2>Là sắm sửa lễ phẩm đem sang nhà gái cầu hôn. Tùy theo nhà giàu thì lễ quí, còn nghèo thì chút đỉnh gọi là.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-vat.jpg\"><img title=\"Cuoi-le-vat\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-vat.jpg\" alt=\"Cuoi le vat Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"300\" width=\"500\"></a><h2><br></h2><h2>4.- Lễ Nạp Chưng</h2>Lễ  Nạp Chưng hay là Lễ Nạp Tệ (“chưng” nghĩa là chứng, “Tệ” nghĩa là  lụa)  là lễ đem hàng lụa hay vật phẩm quí giá đến nhà gái làm tang  chứng cho  sự hứa hôn chắc chắn, rồi chỉ chờ ngày cưới dâu.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-nap-tai.jpg\"><img title=\"Cuoi-le-nap-tai\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-nap-tai.jpg\" alt=\"Cuoi le nap tai Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"405\" width=\"540\"></a><h2><br></h2><h2>5.- Lễ Thỉnh Kỳ</h2>Là  Lễ xin định ngày giờ làm Lễ Cưới, nhưng ngày giờ cũng do bên trai  định,  rồi hỏi lại ý kiến bên gái mà thôi, song thế nào nhà gái cũng  tùy ý bên  trai.<h2>6.- Lễ Thân Nghinh</h2>Là đã được nhà gái ưng thuận, ngày giờ đã định của bên trai.Bên nhà trai đem lễ vật sang làm lễ rước dâu về.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-don-dau.jpg\"><img title=\"Cuoi-le-don-dau\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-don-dau.jpg\" alt=\"Cuoi le don dau Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"328\" width=\"500\"></a><br><p></p></div>";		
+		item13.save();
 		
 		Membership bride = Membership.findByProjectAndUser(wd, hanguyen);
 		bride.status = ApprovalStatus.ACCEPTED;

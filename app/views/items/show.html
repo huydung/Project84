@@ -1,0 +1,32 @@
+#{extends 'main.html' /}
+#{set title:item.name /}
+#{set pageTitle:title /}
+
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+}%
+
+<div class="clearfix full-item">          
+     *{*** SUB INFOS, show maximum of 2 ***}*
+     <ul class="subinfo">
+        <li class="actions">
+        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+         <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+     
+        </li>
+        #{list items:selected_fs, as:'f'}              
+            #{include "items/field_display.html" /}
+        #{/}
+        #{list items:fs, as:'f'}          
+            #{if !l.hasField(f.fieldName) && item.hasData(f.fieldName)}    
+                 #{include "items/field_display.html" /}
+            #{/}
+        #{/}
+     </ul>       
+     #{if item.body != null && item.body.length() > 0}
+     <div class="body-text">
+	   ${item.body.html().raw() }
+	</div>
+     #{/}
+ </div>

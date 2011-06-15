@@ -120,6 +120,10 @@ labels.cancel = Ngưng thao tác
 labels.with = với
 labels.updateMap = Cập nhật bản đồ
 labels.all = Tất cả
+labels.showAll = Hiển thị tất cả
+labels.hideAll = Giấu đi tất cả
+item.subinfo = Trường thông tin phụ
+labels.noItems = Không có kết quả nào phù hợp
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.

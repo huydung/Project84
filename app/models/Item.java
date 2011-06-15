@@ -48,8 +48,8 @@ import sun.util.resources.CurrencyNames;
 public class Item extends BasicItem implements IWidgetItem{
 	
 	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox,name";
-	public static final String FIELDS_REQUIRED = "listing,created,creator,updated,type,name,id";
-	public static final String FIELDS_SUBINFO = "date,number,user,phone1,email1,cost,file";
+	public static final String FIELDS_REQUIRED = "listing,created,creator,updated,type,name,id,rawInput";
+
 	@MaxSize(500)
 	public String description;
 	
@@ -196,6 +196,27 @@ public class Item extends BasicItem implements IWidgetItem{
 			Router.getFullUrl("Items.show", args),
 			"modal"
 		);
+	}
+	
+	public boolean hasData(String field){
+		if(field.equals("rawInput")){
+			return false;
+		}
+		if(field.equals("file")){
+			return this.file_name != null;
+		}
+		Field[] fields = Item.class.getFields();
+		for( Field f : fields ){			
+			if( f.getName().equals(field) ){
+				try {
+					Object value = f.get(this);
+					return value != null && value.toString().length() > 0;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public String getValueOfField(String field){

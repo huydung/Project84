@@ -12,7 +12,7 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 }%
 <form id="form-item" method="POST" class="horizontal-form" action="@{Items.doEdit(_project.id, l.id)}">
     <input type="hidden" name="item.id" value="${item.id ?: 0}"/>
-    <input type="hidden" name="item.creator.id" value="${item.creator.id ?: loggedin.id}"/>
+    <input type="hidden" name="item.creator.id" value="${item?.creator?.id ?: loggedin.id}"/>
     #{hdfield name:'item.name', value:item.name, label:l.getFieldName('name') /}
     <br />
     <div id="accordions" class="custom-fields">

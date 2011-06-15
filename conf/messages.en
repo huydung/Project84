@@ -89,6 +89,9 @@ labels.cancel = Cancel
 labels.with = with
 labels.updateMap = Update the Map
 labels.all = All
+labels.noItems = No result found.
+
+
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
 membership.alreadyAccepted = %s (%s) is already a member of the project.
@@ -152,6 +155,9 @@ item.quickAdd = Quick Add
 item.quickEdit = Quick Edit
 item.fullForm = Full Form
 labels.currentFile = Current File
+labels.showAll = Show all
+labels.hideAll = Hide all
+item.subinfo = Sub-fields of Item
 item.containKeyword = Contains keyword
 item.amount = amount
 item.help = (help & example)

@@ -1,6 +1,7 @@
 #{extends 'main.html' /}
 #{set title: _project.name + ' - ' + messages.get('listing.items', l.listingName)/}
 #{set pageTitle:title /}
+%{ boolean isEmpty = items.size() == 0 }%  
 <div style="position:relative">
 <div class="grid_4 listing_features">
     <div class="listing_filters">
@@ -45,12 +46,21 @@
  
 </div>
 <div class="grid_11 listing_items">
-   
+     
     <div class="items">
-	    <ul>
+        #{if !isEmpty}
+        <div class="actions fright "><a href="#" class="showhide  icon-link icon-link-open" 
+        data-class="subinfo" data-hideText="&{'labels.hideAll'} &{'item.subinfo'}" data-showText="&{'labels.showAll'} &{'item.subinfo'}">&{'labels.hideAll'} &{'item.subinfo'}</a></div>
+        <span class="clear" style="margin-top:5px;"></span>
+        <br/>
+	    <ul class="clearfix">	    
 		    #{list items:items, as:'item'}
 		    #{include 'items/item.html' /}
 		    #{/}
+		#{/}
+		#{else}
+		  &{'labels.noItems'}
+		#{/}
 		</ul>
     </div>
 

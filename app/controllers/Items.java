@@ -5,11 +5,39 @@ import models.Listing;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.mvc.Before;
 import play.mvc.Controller;
+import play.templates.JavaExtensions;
 
 public class Items extends AppController {
-	public static void show(@Required Long project_id, @Required Long listing_id){
-		renderText("");
+	
+	@Before
+	protected static void setupListing(){
+		Long listing_id = params.get("listing_id", Long.class);
+		if( listing_id == null ){ error(403, "Bad Request"); }
+		Listing l = Listing.findById(listing_id);
+		if( l == null ) { error(403, "Bad Request"); }
+		renderArgs.put("l", l);
+		renderArgs.put("active", JavaExtensions.slugify(l.listingName));
+	}	
+	
+	protected static Listing getListing(){
+		return renderArgs.get("l", Listing.class);
+	}
+	
+	public static void show(
+			@Required Long project_id, 
+			@Required Long listing_id,
+			@Required Long item_id){
+		if(Validation.hasErrors()){
+			error(403, "Bad Request");
+		}
+		Item item = Item.findById(item_id);
+		if(item == null){
+			notFound("Item", item_id);
+		}
+		renderArgs.put("mode", "full");
+		render(item);
 	}
 	
 	public static void doCreate(
@@ -19,8 +47,7 @@ public class Items extends AppController {
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 		}else{
-			Listing l = Listing.findById(listing_id);
-			if( l == null ){ notFound("Listing", listing_id); }
+			Listing l = getListing();
 			
 			Item item = Item.createFromSmartInput(input, l);
 			item.creator = getLoggedin();
@@ -49,8 +76,7 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){
 			notFound();
 		}
-		Listing l = Listing.findById(listing_id);
-		if(l == null){ notFound("Listing", listing_id); }
+		Listing l = getListing();
 		Item item;
 		if( id != 0 ){
 			item = Item.findById(id);
@@ -70,8 +96,7 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){notFound();}
 		Item item = Item.findById(item_id);
 		if( item == null ){	notFound("Item", item_id);	}
-		Listing l = Listing.findById(listing_id);
-		if(l == null){ notFound("Listing", listing_id); }
+		Listing l = getListing();
 		item.updateFromSmartInput(input);
 		item.save();
 		flash.put("success", "Item " + item.name + " updated!");

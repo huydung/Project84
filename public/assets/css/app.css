@@ -293,7 +293,12 @@ h3.widget-title{
 	background: url('../icons/blog.png') no-repeat left 0;
 }
 
-
+.icon-link-open{
+    background: url('../icons/folder_open.png') no-repeat left 0;
+}
+.icon-link-collapse{
+    background: url('../icons/folder.png') no-repeat left 0;
+}
 /** Membership **/
 .membercard{
 	margin: 20px 25px 10px 0;
@@ -379,6 +384,8 @@ li:hover .drag-handler{
 	position: absolute;
 	margin: 0 0 15px -5px;
 	z-index: 2;
+	top: 0;
+right: 0;
 }
 .listing_items{
 	border-left: groove 4px #235E8b;
@@ -415,7 +422,15 @@ li:hover .drag-handler{
 	border-top:none;
 	padding: 0;
 }
-
+.listing_items li .subinfo li.span2{
+	width: 66%;
+}
+.listing_items li .subinfo li.span3{
+    width: 99%;
+}
+.subinfo .field-name{
+	color: #999;
+}
 .form-quick-add form{
 	margin-top:5px;
 	width: 100%;
@@ -438,7 +453,7 @@ li:hover .drag-handler{
 .item .actions{
 	visibility: hidden;
 }
-.item:hover .actions{
+.item:hover .actions, .full-item .actions{
 	visibility: visible;
 }
 .item, .inline-editable{
@@ -446,6 +461,10 @@ li:hover .drag-handler{
 }
 .item:hover, .inline-editable:hover{
 	background-color: #FFA;	
+}
+.item .title{
+    display: inline-block;	
+	min-width: 500px;
 }
 /** FILTER BOXES **/
 #textcontent .listing_features{
@@ -495,4 +514,21 @@ li:hover .drag-handler{
 }
 .filter-box-date input.date{
 	width: 75px;
+}
+
+/** ITEM FORM AND FULL DISPLAY **/
+.horizontal-form .wym_box{
+	width:620px !important;
+	margin: 10px 0 0 190px;
+	
+}
+.wym_skin_compact .wym_iframe iframe{
+	height: 300px;
+}
+.horizontal-form .wym_box .wym_section  h2{
+	font-size:12px !important;
+}
+.full-item ul.subinfo li{
+	display: inline;
+	list-style: none;
 }

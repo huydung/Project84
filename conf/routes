@@ -24,6 +24,7 @@ POST    /memberships/responses                              Memberships.saveInvi
 POST    /project/{project_id}/listings/orderings/{listing_ids}   Listings.saveOrderings
 GET     /project/{project_id}/listings/{id}                 Listings.dashboard
 POST    /project/{project_id}/listings/{listing_id}/create  Items.doCreate
+GET     /project/{project_id}/listings/{listing_id}/{item_id} Items.show
 POST    /project/{project_id}/listings/{listing_id}/{item_id}/quickEdit  Items.quickEdit                      
 
 # Map static resources from the /app/public folder to the /public path
