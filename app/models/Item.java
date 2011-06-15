@@ -30,6 +30,7 @@ import com.huydung.utils.MiscUtil;
 
 import controllers.AppController;
 
+import models.enums.ActivityType;
 import models.enums.ItemType;
 
 import play.Logger;
@@ -677,5 +678,20 @@ public class Item extends BasicItem implements IWidgetItem{
 			return JavaExtensions.formatCurrency(cost, cost_currency);
 		}
 
+	}
+	
+	public void log(ActivityType type){
+		String message = "";
+		User user = AppController.getLoggedin();
+		if( type == ActivityType.CREATE ){
+			message = "[" + user.nickName + "] has created [" + this.name + "] in " + this.listing.listingName;
+		}else if( type == ActivityType.CHANGE ){
+			message = "[" + this.name + "]" + " has been updated by [" + user.nickName + "]";
+		}else if( type == ActivityType.DELETE ){
+			message = "[" + this.name + "]" + " has been deleted by [" + user.nickName + "]";
+		}else if( type == ActivityType.COMMENT ){
+			message = "[" + this.name + "]" + " has received new comment from [" + user.nickName +"]";
+		}
+		Activity.track(message, this.listing.project, type, user);
 	}
 }

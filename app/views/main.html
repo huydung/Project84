@@ -119,6 +119,11 @@
 #{/}
 #{/}
 <!-- FOOTER END -->
+
+<script type="text/javascript">
+var hd = hd || {};
+hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
+</script>
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/jquery-ui-1.8.12.custom.min.js'}"></script>

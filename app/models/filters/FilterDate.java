@@ -48,13 +48,13 @@ public class FilterDate extends BasicFilter {
 		if( dateStart != null && dateEnd != null ){
 			//Because we want to include the last Date in range, we add 1 day to dateEnd
 			dateEnd.setTime(dateEnd.getTime() + DateUtils.MILLIS_PER_DAY);
-			return " date >= '" + JavaExtensions.format(dateStart, "yyyy-MM-dd") + "'" +
-				" AND date <= '"+ JavaExtensions.format(dateEnd, "yyyy-MM-dd")  +"'";
+			return " (date IS NULL OR (date >= '" + JavaExtensions.format(dateStart, "yyyy-MM-dd") + "'" +
+				" AND date <= '"+ JavaExtensions.format(dateEnd, "yyyy-MM-dd")  +"'))";
 		}else if( dateStart != null ){
-			return " date >= '" + JavaExtensions.format(dateStart, "yyyy-MM-dd") + "'" ;
+			return " (date IS NULL OR date >= '" + JavaExtensions.format(dateStart, "yyyy-MM-dd") + "')" ;
 		}else if( dateEnd != null){
 			dateEnd.setTime(dateEnd.getTime() + DateUtils.MILLIS_PER_DAY);
-			return " date <= '"+ JavaExtensions.format(dateEnd, "yyyy-MM-dd")  +"'";	
+			return " (date IS NULL OR date <= '"+ JavaExtensions.format(dateEnd, "yyyy-MM-dd")  +"')";	
 		}
 		return "";
 	}

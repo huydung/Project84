@@ -6,7 +6,7 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 
 #{/}
 
-<li id="item-${item.id}" class="item clearfix inline-editable item-${item.getClasses()}">
+<li id="item-${item.id}" class="item clearfix inline-editable item-${item.getClasses()}" data-id="${item.id}">
     <div class="inline-edit" style="display:none" >
     <form action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">
         <label>&{'item.quickEdit'}</label>

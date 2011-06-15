@@ -2,6 +2,7 @@ package controllers;
 
 import models.Item;
 import models.Listing;
+import models.enums.ActivityType;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -14,15 +15,33 @@ public class Items extends AppController {
 	@Before
 	protected static void setupListing(){
 		Long listing_id = params.get("listing_id", Long.class);
-		if( listing_id == null ){ error(403, "Bad Request"); }
+		if( listing_id == null ){ error(400, "Bad Request"); }
 		Listing l = Listing.findById(listing_id);
-		if( l == null ) { error(403, "Bad Request"); }
+		if( l == null ) { error(400, "Bad Request"); }
 		renderArgs.put("l", l);
 		renderArgs.put("active", JavaExtensions.slugify(l.listingName));
 	}	
 	
 	protected static Listing getListing(){
 		return renderArgs.get("l", Listing.class);
+	}
+	
+	public static void updateCheck(
+			@Required Long project_id, 
+			@Required Long listing_id,
+			@Required Long item_id,
+			@Required Boolean checked){
+		if(Validation.hasErrors()){
+			error(400, "Bad Request");
+		}
+		Item item = Item.findById(item_id);
+		if(item == null){
+			notFound("Item", item_id);
+		}
+		item.checkbox = checked;
+		item.save();
+		item.log(ActivityType.CHANGE);
+		renderText("Item " + item.name + " updated!");
 	}
 	
 	public static void show(
@@ -56,7 +75,9 @@ public class Items extends AppController {
 			}else{
 				flash.put("success", "Item " + item.name + " created!");
 			}
+			item.log(ActivityType.CREATE);
 		}
+		
 		if( request.isAjax() ){
 			render("items/item.html");
 		}else{
@@ -98,6 +119,7 @@ public class Items extends AppController {
 		if( item == null ){	notFound("Item", item_id);	}
 		Listing l = getListing();
 		item.updateFromSmartInput(input);
+		item.log(ActivityType.CHANGE);
 		item.save();
 		flash.put("success", "Item " + item.name + " updated!");
 		Listings.dashboard(project_id, listing_id);
@@ -113,6 +135,7 @@ public class Items extends AppController {
 			Validation.keep();
 			edit(project_id, listing_id, item.id);
 		}
+		item.log(ActivityType.CHANGE);
 		item.save();
 		Listings.dashboard(project_id, listing_id);
 	}
@@ -129,6 +152,7 @@ public class Items extends AppController {
 			notFound("Item", id);
 		}
 		item.delete();
+		item.log(ActivityType.DELETE);
 		Listings.dashboard(project_id, listing_id);
 	}
 }

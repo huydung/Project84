@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 import com.huydung.helpers.ActionResult;
@@ -35,8 +37,9 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	@ManyToOne
 	public Project project;
 	
+	@Enumerated(EnumType.STRING)
 	@Required
-	public String type;
+	public ActivityType type;
 	
 	public Activity(Project project){
 		super();
@@ -45,7 +48,7 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	
 	public static ActionResult track( String message, Project project, ActivityType type, User user ){
 		Activity activity = new Activity(project);
-		activity.setActivityType(type);
+		activity.type = type;
 		activity.message = message;		
 		activity.creator = user;
 		activity.created = new Date();
@@ -57,14 +60,6 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 		}
 	}
 	
-	public void setActivityType(ActivityType t){
-		type = t.getName();
-	}
-	
-	public ActivityType getActivityType(){
-		return ActivityType.parse(type);
-	}
-
 	@Override
 	public String getSubInfo() {
 		return JavaExtensions.since(this.created);
