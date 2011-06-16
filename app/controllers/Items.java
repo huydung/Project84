@@ -8,8 +8,10 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.With;
 import play.templates.JavaExtensions;
 
+@With(Authorization.class)
 public class Items extends AppController {
 	
 	@Before(priority=2)
@@ -27,7 +29,7 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){
 			error(400, "Bad Request");
 		}
-		Item item = Item.findById(item_id);
+		Item item = getItem();
 		if(item == null){
 			notFound("Item", item_id);
 		}
@@ -44,7 +46,7 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){
 			error(403, "Bad Request");
 		}
-		Item item = Item.findById(item_id);
+		Item item = getItem();
 		if(item == null){
 			notFound("Item", item_id);
 		}
@@ -86,18 +88,13 @@ public class Items extends AppController {
 	public static void edit(
 			@Required Long project_id,
 			@Required Long listing_id, 
-			@Required Long id){
+			@Required Long item_id){
 		if(Validation.hasErrors()){
 			notFound();
 		}
 		Listing l = getListing();
-		Item item;
-		if( id != 0 ){
-			item = Item.findById(id);
-		}else{
-			item = new Item(l);
-		}
-		if( item == null ){	notFound("Item", id);	}
+		Item item = getItem();		
+		if( item == null ){	notFound("Item", item_id);	}
 		
 		render("items/form.html", item, l);
 	}
@@ -108,7 +105,7 @@ public class Items extends AppController {
 			@Required Long item_id,
 			@Required String input){
 		if(Validation.hasErrors()){notFound();}
-		Item item = Item.findById(item_id);
+		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
 		Listing l = getListing();
 		item.updateFromSmartInput(input);
@@ -121,7 +118,8 @@ public class Items extends AppController {
 	public static void doEdit(
 			@Required Long project_id,
 			@Required Long listing_id, 
-			@Valid Item item){
+			@Valid Item item,
+			@Required Long item_id){
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 			flash.keep();
@@ -136,15 +134,16 @@ public class Items extends AppController {
 	public static void delete(
 			@Required Long project_id,
 			@Required Long listing_id, 
-			@Required Long id){
+			@Required Long item_id){
 		if( Validation.hasErrors() ){
 			notFound();
 		}
-		Item item = Item.findById(id);
+		Item item = getItem();
 		if( item == null ){
-			notFound("Item", id);
+			notFound("Item", item_id);
 		}
-		item.delete();
+		item.deleted = true;
+		item.save();
 		item.log(ActivityType.DELETE);
 		Listings.dashboard(project_id, listing_id);
 	}

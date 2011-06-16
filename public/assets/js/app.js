@@ -301,37 +301,38 @@ $(document).ready(function(){
 		/** When item is checked **/
 		$('.listing_items .item input[type=checkbox]').click(function(){
 			var $this = $(this);
-			//submit to server
-			var lid = $this.parents('ul.items').attr('data-listing-id');
-			var pid = $this.parents('ul.items').attr('data-project-id');
-			var id = $this.parents('li').attr('data-id');
-			var checked = $this.is(':checked');
-			$.ajax({
-				url: hd.itemCheckAction({
-					project_id: pid, listing_id: lid, item_id: id, checked: checked
-				}),
-				success: function(data, status, xhr){
-					$.gritter.add({
-						title: 'Success',
-						text: data,
-						class_name: 'success'
-					});
-				},
-				error: function(data, status, xhr){
-					$.gritter.add({
-						title: 'Error',
-						text: status,
-						class_name: 'error'
-					});
-				},
-			});
-			//add/remove class on the wrapper
-			if( checked ){
-				$this.parents('li').addClass('checked');
-			}else{
-				$this.parents('li').removeClass('checked');
-			};	
-			
+
+				//submit to server
+				var lid = $this.parents('ul.items').attr('data-listing-id');
+				var pid = $this.parents('ul.items').attr('data-project-id');
+				var id = $this.parents('li').attr('data-id');
+				var checked = $this.is(':checked');
+				$.ajax({
+					url: hd.itemCheckAction({
+						project_id: pid, listing_id: lid, item_id: id, checked: checked
+					}),
+					success: function(data, status, xhr){
+						$.gritter.add({
+							title: 'Success',
+							text: data,
+							class_name: 'success'
+						});
+					},
+					error: function(data, status, xhr){
+						$.gritter.add({
+							title: 'Error',
+							text: xhr,
+							class_name: 'error'
+						});
+					},
+				});
+				//add/remove class on the wrapper
+				if( checked ){
+					$this.parents('li').addClass('checked');
+				}else{
+					$this.parents('li').removeClass('checked');
+				};	
+
 		});		
 		
 		/** INLINE-EDIT **/

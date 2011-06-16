@@ -24,7 +24,7 @@ import play.db.jpa.Model;
 @Filter(name="deleted")
 public class BasicItem extends Model {
 	
-	public Date created;
+	public Date created = null;
 	@ManyToOne
 	@Required
 	public User creator;

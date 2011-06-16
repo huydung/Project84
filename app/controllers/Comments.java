@@ -8,7 +8,9 @@ import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.mvc.Controller;
+import play.mvc.With;
 
+@With(Authorization.class)
 public class Comments extends AppController {
 	public static void doCreate(@Required Long project_id,@Required Long listing_id, Comment comment){
 		if(Validation.hasErrors()){ error(400, "Bad Request"); }

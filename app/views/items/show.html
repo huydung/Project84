@@ -43,7 +43,10 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
      
      *{*********** Comments section ***********}*
      
+     #{if controllers.Authorization.check(
+        _project.id, loggedin.id, models.enums.PermissionKey.CREATE_COMMENT, l) }
      #{include 'comments/form.html' /}
+     #{/}
      %{ def comments = item.getComments() }%
      #{if comments != null && comments.size() > 0}
      <h3>&{'labels.comments'}</h3>

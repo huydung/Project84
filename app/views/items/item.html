@@ -1,12 +1,34 @@
 %{
 List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
 List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+
+
+boolean canDelete = controllers.Authorization.check( _project.id, loggedin.id, 
+            models.enums.PermissionKey.DELETE_ITEM, l);            
+boolean canDeleteOwn = controllers.Authorization.check( _project.id, loggedin.id, 
+            models.enums.PermissionKey.DELETE_OWN_ITEM, l);
+if( item.creator.id == loggedin.id && canDeleteOwn ){
+    canDelete = true;
+}                  
+
+boolean canEdit = controllers.Authorization.check( _project.id, loggedin.id, 
+            models.enums.PermissionKey.EDIT_ITEM, l);            
+boolean canEditOwn = controllers.Authorization.check( _project.id, loggedin.id, 
+            models.enums.PermissionKey.EDIT_OWN_ITEM, l);   
+if( item.creator.id == loggedin.id && canEditOwn ){
+    canEdit = true;
+}  
+
+boolean canCheck = controllers.Authorization.check( _project.id, loggedin.id, 
+            models.enums.PermissionKey.CHECK_ITEM, l);            
+
 }%
 #{if mode == 'full' }
 
 #{/}
 
-<li id="item-${item.id}" class="item clearfix inline-editable item-${item.getClasses()}" data-id="${item.id}">
+<li id="item-${item.id}" class="item clearfix ${ canEdit ? 'inline-editable' : '' } item-${item.getClasses()}" data-id="${item.id}">
+    #{if canEdit }
     <div class="inline-edit" style="display:none" >
     <form action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">
         <label>&{'item.quickEdit'}</label>
@@ -20,19 +42,29 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 	</form>
 	
     </div>
+    #{/}
     
     <div class="inline-ui clearfix">
 	    #{if l.hasField('checkbox')}
+	        #{if canCheck}
 	        <input type="checkbox" name="item.checkbox" value="checkbox"
 	            ${item.checkbox == true ? 'checked="checked"' : ''} />
+	        #{/}
+	        #{else}
+	        	${item.checkbox == true ? '[X]' : '[ ]'}        
+	        #{/}
 	    #{/}
 	    #{if l.hasField('name')}
 	        <strong class="title">${item.name}</strong>
 	    #{/}
 	    <div class="actions fright">
 	        <a href="@{Items.show(_project.id, l.id, item.id)}" class="icon-link icon-link-full">&{'labels.view'}</a>
+	        #{if canEdit}
 	        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+	        #{/}
+	        #{if canDelete}
 	        <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+	        #{/}
 	    </div>
 	    *{*** SUB INFOS, show maximum of 2 ***}*
 	    <ul class="subinfo">

@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.HashMap;
 
+import models.Comment;
+import models.Item;
 import models.Listing;
 import models.Membership;
 import models.Project;
@@ -15,6 +17,7 @@ import com.huydung.utils.MiscUtil;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Finally;
+import sun.security.action.GetLongAction;
 
 public class Authorization extends Controller {
 	
@@ -22,8 +25,9 @@ public class Authorization extends Controller {
 
 	@Finally
 	public static void clearPermissionsCacheIfNeeded(){
-		if( request.controllerClass == Memberships.class && 
-				"doEdit,delete".contains(request.actionMethod)
+		if( 
+			(request.controllerClass == Memberships.class && "doEdit,delete".contains(request.actionMethod)) ||
+			(request.controllerClass == Projects.class && "savePermissions".contains(request.actionMethod))
 		){
 			MiscUtil.ConsoleLog("Clear Cache because may be there're changes in memberships permission");
 			perms.clear();
@@ -76,6 +80,8 @@ public class Authorization extends Controller {
 		String method = request.actionMethod;
 		Membership m = AppController.getActiveMembership();
 		Project p = AppController.getActiveProject();
+		Listing l =  AppController.getListing();
+		Item item = AppController.getItem();
 		//Projects Controller
 		if( request.controllerClass == Projects.class ){			
 			if( "dashboard".contains(method) ){				
@@ -84,6 +90,10 @@ public class Authorization extends Controller {
 				}
 			}else if( "structure".contains(method) ){
 				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO)){  
+					error(403, "Access Denied");	
+				};	
+			}else if( "permissions,savePermissions".contains(method) ){
+				if( !p.allow(m, PermissionKey.EDIT_USERS_PERMISSIONS)){  
 					error(403, "Access Denied");	
 				};	
 			}
@@ -109,11 +119,15 @@ public class Authorization extends Controller {
 		//Listings Controller
 		else if( request.controllerClass == Listings.class ){
 			if( "dashboard".contains(method) ){
-				if( !p.allow(m, PermissionKey.VIEW_ITEMS, AppController.getListing()) ){
+				if( !p.allow(m, PermissionKey.VIEW_ITEMS, l) ){
 					error(403, "Access Denied");
 				}
-			}else if( "doEdit,saveOrderings,doCreate".contains(method) ){
-				if( !p.allow(m, PermissionKey.LISTING_CONFIG, AppController.getListing()) ){
+			}else if( "doEdit,doCreate".contains(method) ){
+				if( !p.allow(m, PermissionKey.LISTING_CONFIG, l) ){
+					error(403, "Access Denied");
+				}
+			}else if( "saveOrderings".contains(method) ){
+				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO, l) ){
 					error(403, "Access Denied");
 				}
 			}
@@ -121,14 +135,53 @@ public class Authorization extends Controller {
 		//Items Controller
 		else if( request.controllerClass == Items.class ){
 			if( "show".contains(method) ){
-				if( !p.allow(m, PermissionKey.VIEW_ITEMS, AppController.getListing()) ){
+				if( !p.allow(m, PermissionKey.VIEW_ITEMS, l) ){
 					error(403, "Access Denied");
+				}
+			}else if( "quickEdit,edit,doEdit".contains(method) ){				
+				if( !p.allow(m, PermissionKey.EDIT_ITEM, l) ){
+					if( item != null && item.creator.id == m.user.id ){
+						if( !p.allow(m, PermissionKey.EDIT_OWN_ITEM, l) ){
+							error(403, "Access Denied");
+						}
+					}else{
+						error(403, "Access Denied");
+					}					
+				}
+			}else if( "updateCheck".contains(method) ){
+				if( !p.allow(m, PermissionKey.CHECK_ITEM, l) ){
+					error(403, "Access Denied");
+				}
+			}else if( "doCreate".contains(method) ){
+				if( !p.allow(m, PermissionKey.CREATE_ITEM, l) ){
+					error(403, "Access Denied");
+				}
+			}else if( "delete".contains(method) ){				
+				if( !p.allow(m, PermissionKey.DELETE_ITEM, l) ){
+					if( item != null && item.creator.id == m.user.id ){
+						if( !p.allow(m, PermissionKey.DELETE_OWN_ITEM, l) ){
+							error(403, "Access Denied");
+						}
+					}else{error(403, "Access Denied");}
 				}
 			}
 		}
 		//Comments Controller
 		else if( request.controllerClass == Comments.class ){
-			
+			if( "doCreate".contains(method) ){
+				if( !p.allow(m, PermissionKey.CREATE_COMMENT, l) ){
+					error(403, "Access Denied");
+				}
+			}else if( "delete".contains(method) ){				
+				if( !p.allow(m, PermissionKey.DELETE_COMMENT, l) ){
+					Comment cm = Comment.findById(params.get("comment_id", Long.class));
+					if( cm != null && cm.creator.id == m.user.id ){
+						if( !p.allow(m, PermissionKey.DELETE_OWN_COMMENT, l) ){
+							error(403, "Access Denied");
+						}
+					}else{error(403, "Access Denied");}
+				}
+			}
 		}
 	}
 }

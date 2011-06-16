@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import com.huydung.utils.MiscUtil;
 
 
+import models.Item;
 import models.Listing;
 import models.Membership;
 import models.Project;
@@ -95,6 +96,15 @@ public class AppController extends Controller {
     			};    			
     		}
     		
+    		//get active listing, if having it
+            Long item_id = params.get("item_id", Long.class);
+    		if( item_id != null ){  			
+    			Item item = Item.findById(item_id);
+    			if( item != null ) { 
+    				renderArgs.put("item", item);
+    			};    			
+    		}
+    		
     		//set up paramater to tell is the current request is sent by AJAX
     		renderArgs.put("ajax", request.isAjax());
     		
@@ -121,6 +131,10 @@ public class AppController extends Controller {
 	
 	static Listing getListing(){
 		return renderArgs.get("l", Listing.class);
+	}
+	
+	static Item getItem(){
+		return renderArgs.get("item", Item.class);
 	}
 	
 	static Membership getActiveMembership(){

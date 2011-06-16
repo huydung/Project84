@@ -9,6 +9,7 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
     <form action="@{Listings.doEdit}" method="POST" class="ajaxify">
         <input name="project_id" type="hidden" value="${_project.id}" />
         <input name="listing.id" type="hidden" value="${l.id}" />
+        <input name="listing_id" type="hidden" value="${l.id}" />
         <fieldset>
             <legend>&{'labels.basicInfo'}</legend>
             <div class="grid_8 required">

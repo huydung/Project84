@@ -3,7 +3,7 @@ String fn = f.fieldName;
 }%
 #{if !'checkbox,name'.contains(fn)}
 #{if !(fn == 'body' && mode == 'full')}
-<li class="field-${fn} ${ fn == 'description' ? 'span2' : fn == 'body' ? 'span3' : '' }">
+<li class="field-${fn} ${ 'description,body'.contains(fn) ? 'span3' : '' }">
     
     <span class="field-name">${l.getFieldName(fn)}:</span>
     <span class="field-value ${fn}">
@@ -54,6 +54,10 @@ String fn = f.fieldName;
     
     #{if fn == 'body' && item.body != null}
         <br/><em>${item.body.textOnly().abbr(360)}</em> &nbsp;&raquo;<a href="@{Items.show(_project.id, l.id, item.id)}">&{'labels.readmore'}</a>
+
+    #{/}
+    #{if fn == 'description' && item.description != null}
+        <em>${item.description}</em> 
 
     #{/}
     </span>

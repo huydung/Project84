@@ -27,6 +27,7 @@ import org.hibernate.annotations.Filter;
 
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
+import com.huydung.utils.MiscExtensions;
 import com.huydung.utils.MiscUtil;
 
 import controllers.AppController;
@@ -105,6 +106,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	@PostPersist
 	public void beforeSave(){
+		super.beforeSave();
 		if(this.rawInput == null){
 			this.createSmartInput();
 		}
@@ -228,19 +230,14 @@ public class Item extends BasicItem implements IWidgetItem{
 	public String getValueOfField(String field){
 		
 		if( field.equals("date") ){
-			if( this.date != null ){
-				return JavaExtensions.format(this.date);
+			if( this.date != null ){return JavaExtensions.format(this.date);}
+		}else if( field.equals("created") ){
+			if( this.created != null ){	return JavaExtensions.since(this.created);	}
+		}else if( field.equals("cost") ){
+			if( this.cost != null ){
+				return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
 			}
-		}
-		if( field.equals("created") ){
-			if( this.created != null ){
-				return JavaExtensions.since(this.created);
-			}
-		}
-		if( field.equals("cost") ){
-			return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
-		}
-		if( field.equals("user") ){
+		}else if( field.equals("user") ){
 			if( this.user != null ){
 				Map<String, Object> args = new HashMap<String, Object>();
 				args.put("project_id", this.listing.project.id);
@@ -250,18 +247,38 @@ public class Item extends BasicItem implements IWidgetItem{
 			}else{
 				return "";
 			}
-		}
+		} else if( field.equals("address") ){
+			if( this.address != null ){
+				return MiscExtensions.abbr(this.address, 30);
+			}
+		}else if( field.equals("description") ){
+			if( this.description != null ){
+				return MiscExtensions.abbr(this.description, 30);
+			}
+		}else if( field.equals("body") ){
+			if( this.body != null ){
+				return MiscExtensions.abbr(MiscExtensions.textOnly(this.body), 30);
+			}
+		}else if( field.equals("checkbox") ){
+			if( this.checkbox != null ){
+				return this.listing.getFieldName("checkbox") + 
+					" <input type=\"checkbox\" " + 
+					(this.checkbox ? "checked=\"checked\"" : "") 
+					+ "/>";
+			}
+		}else{
 		
-		Class itemClass = Item.class;
-		
-		Field[] fields = itemClass.getFields();
-		for( Field f : fields ){			
-			if( f.getName().equals(field) ){
-				try {
-					Object value = f.get(this);
-					return value != null ? (String)value : "";
-				} catch (Exception e) {
-					MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+			Class itemClass = Item.class;
+			
+			Field[] fields = itemClass.getFields();
+			for( Field f : fields ){			
+				if( f.getName().equals(field) ){
+					try {
+						Object value = f.get(this);
+						return value != null ? value.toString() : "";
+					} catch (Exception e) {
+						MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+					}
 				}
 			}
 		}
@@ -394,25 +411,33 @@ public class Item extends BasicItem implements IWidgetItem{
 
 	private static String parseDate(String name, Item item, Calendar basedDate){
 		Calendar date = (Calendar)basedDate.clone();
-		if( name.contains("@tomorrow ")){
+		if( name.contains("@today ")){
+			item.date = date.getTime();
+			name = name.replaceAll("@today", " ");
+		}
+		else if( name.contains("@tomorrow ")){
 			date.add(Calendar.DAY_OF_YEAR, 1);
 			item.date = date.getTime();
-			name = name.replace("@tomorrow", " ");
-		}else if( name.contains("@yesterday ") ){
+			name = name.replaceAll("@tomorrow", " ");
+		}
+		else if( name.contains("@yesterday ") ){
 			date.add(Calendar.DAY_OF_YEAR, -1);
 			item.date = date.getTime();
-			name = name.replace("@yesterday", " ");
-		}else if( name.contains("@next week ")){
+			name = name.replaceAll("@yesterday", " ");
+		}
+		else if( name.contains("@next week ")){
 			date.add(Calendar.WEEK_OF_YEAR, 1);
 			date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);			
 			item.date = date.getTime();
-			name = name.replace("@next week", " ");
-		}else if( name.contains("@last week ") ){
+			name = name.replaceAll("@next week", " ");
+		}
+		else if( name.contains("@last week ") ){
 			date.add(Calendar.WEEK_OF_YEAR, -1);
 			date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 			item.date = date.getTime();
-			name = name.replace("@last week", " ");
-		}else {
+			name = name.replaceAll("@last week", " ");
+		}
+		else {
 			boolean founded = false;
 			//Format: next 3 days, -4days 
 			Matcher nextPrevMatcher = Pattern.compile(

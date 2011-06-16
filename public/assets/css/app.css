@@ -484,7 +484,8 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 }
 .item .title{
     display: inline-block;	
-	width: 450px;
+	width: 400px;
+	overflow: hidden;
 }
 /** FILTER BOXES **/
 #textcontent .listing_features{

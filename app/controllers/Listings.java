@@ -52,7 +52,9 @@ public class Listings extends AppController {
 	}
 	
 	public static void doEdit(Listing listing,
-			Boolean isDesc, String[] fields, @Required Long project_id){
+			Boolean isDesc, String[] fields, 
+			@Required Long project_id,
+			@Required Long listing_id){
 		//Correcting format of sorting string
 		if(isDesc == null || isDesc == false){
 			listing.sort += " ASC";

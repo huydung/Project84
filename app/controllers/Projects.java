@@ -154,7 +154,7 @@ public class Projects extends AppController {
 			}
 		}
 		flash.put("success", "Permissions for Members of the Project have been saved");
-		structure(project_id);
+		permissions(project_id);
 	}
 	
 }

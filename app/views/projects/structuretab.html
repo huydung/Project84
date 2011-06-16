@@ -1,6 +1,8 @@
+#{if controllers.Authorization.check(_project.id, loggedin.id, models.enums.PermissionKey.EDIT_USERS_PERMISSIONS)}
 <div class="subnav grid_15 clearfix">
     <ul class="clearfix">
         <li class="${ tab == 'dashboard' ? 'active' : '' }"><a href="@{Memberships.dashboard(_project.id)}">&{'project.members'}</a></li>
         <li class="${ tab == 'permissions' ? 'active' : '' }"><a href="@{Projects.permissions(_project.id)}">&{'project.permissions'}</a></li>
     </ul>
 </div>
+#{/}
