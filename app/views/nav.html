@@ -22,10 +22,12 @@
         <span>&{'project.people'}</span></a>
     </li>
     #{/}
+    #{if controllers.Authorization.check( _project.id, loggedin.id, models.enums.PermissionKey.EDIT_PROJECT_INFO )}
     <li class="item settings last">
         <a href="@{Projects.structure(_project.id)}" class="${active == 'settings' ? 'current' : ''}">
             <span>&{'project.configuration'}</span>
         </a>
     </span></li>    
+    #{/}
 </ul>
 #{/}

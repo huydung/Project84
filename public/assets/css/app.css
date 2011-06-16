@@ -7,6 +7,15 @@
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
 .nofloat{float:none;}
+.gototop{
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+	opacity: 0.7;
+}
+.gototop:hover{
+	opacity: 1;
+}
 blockquote{
 	border-left: solid 2px #999;
 	padding-left: 10px;
@@ -562,4 +571,52 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 }
 .your-comment blockquote{
     border-left-color: #B11223;
+}
+
+/** SUB TABS **/
+.subnav ul{
+	width: 100%;
+	border-bottom:solid 2px #033E6B;
+	padding-left: 15px;
+	height: auto;
+}
+.subnav ul li{
+    float:left;    
+    border: solid 1px #033E6B;
+    border-bottom: none;
+    font-weight: bold;
+    list-style: none;    
+    margin: 4px 0 0 -1px;
+    font-size: 1.2em;
+}
+.subnav ul li a{
+	padding: 3px 10px;
+}
+
+.subnav ul li.active a{
+	color: #fff;
+	
+}
+.subnav ul li.active {
+	background-color: #033E6B;
+	margin: 0 0 0 -1px;
+	padding-top: 4px;
+}
+
+/** PERMISSIONS PAGE **/
+.permissions table th{
+	min-width: 100px;
+	text-align: center;
+}
+.permissions table td.permission-check{
+    text-align: center;
+}
+.permissions table .permission-group{
+	display: block;
+	font-size: 1.2em;
+	text-transform: uppercase;
+    color:#033E6B;	
+}
+.permissions table .permission-name{
+	text-transform: capitalize;
 }

@@ -3,6 +3,7 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,7 @@ public class RolePermission extends Model {
 	public Project project;
 	@Enumerated(EnumType.STRING)
 	public Role role;
+	@Lob
 	public String permissions;
 	
 	public RolePermission(Project project, Role role, String permissions) {
@@ -28,9 +30,9 @@ public class RolePermission extends Model {
 		this.permissions = permissions;
 	}
 
-	public boolean check(Role role, PermissionKey permission){
+	public boolean check(Role role, String key){
 		if( this.role.equals(role) ){
-			return this.permissions.toLowerCase().contains(permission.toString().toLowerCase());
+			return this.permissions.toLowerCase().contains(key.toLowerCase());
 		}
 		return false;
 	}

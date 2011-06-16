@@ -150,6 +150,7 @@ membership.created.log = %s đã mời %s tham gia dự án.
 ## PROJECT ##
 project.create = Tạo dự án mới
 project.member = Thành viên
+project.members = Các thành viên
 project.manager = Quản lý
 project.list = Các dự án bạn đang tham gia
 project.active_projects = Dự án đang chạy
@@ -160,7 +161,7 @@ project.configuration = Cấu hình
 project.configuration.long = %s - Cài đặt và Phân quyền
 project.addMember = Thêm thành viên
 projects.created = %s đã khởi tạo dự án.
-
+project.permissions = Phân quyền
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án
 labels.project.deadline = Hạn chót

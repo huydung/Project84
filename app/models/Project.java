@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.MiscUtil;
+import com.huydung.utils.PermConfig;
 
 import models.enums.ActivityType;
 import models.enums.ApprovalStatus;
@@ -72,10 +73,39 @@ public class Project extends BasicItem {
      * This method MUST be called AFTER save() the project
      */
     public void buildRolePermissions(){
+    	this.save();
     	for(Role role : Role.values()){
     		RolePermission rp = new RolePermission(this, role, PermissionKey.getDefaultPermissions(role));
+    		//TODO: For all Listing, build default
 	    	rp.save();
-    	}    	
+    	}       	
+    }
+    
+    public void addListingPermissions(Listing l){
+    	if( this.rolePermissions == null ){
+    		return;
+    	}
+    	boolean alreadyHad = true;
+    	String str = PermissionKey.LISTING_CONFIG.toString() + "_" + l.id;
+    	
+    	for( RolePermission rp : this.rolePermissions ){
+    		if( !rp.permissions.contains(str) ){
+    			alreadyHad = false;
+    			break;
+    		}
+    	}
+    	if(!alreadyHad){
+    		for( RolePermission rp : this.rolePermissions ){
+       			String p = PermissionKey.getDefaultListingPermissions(rp.role, l.id);
+       			if( p!= null && p.length() > 0 ){
+       				if(rp.permissions != null && rp.permissions.length() > 0){
+       					rp.permissions += ",";
+       				}
+       				rp.permissions += p;
+           			rp.save();
+       			}       			
+        	}
+    	}
     }
     
     public ActionResult assignCreator(User user, String title){
@@ -93,20 +123,32 @@ public class Project extends BasicItem {
     	}
     }
     
-    public boolean allow(Membership m, PermissionKey key){
+    public boolean allow(Role r, String key){
+		for(RolePermission rp : rolePermissions){
+			if( rp.role == r ){
+				return rp.check(r, key);
+			}
+    	} 	
+		return false;
+    }
+    
+    public boolean allow(Membership m, String key){
     	if( m == null ){ return false; }
-    	if( key == null ){ return false; }
-    	
-    	MiscUtil.ConsoleLog("Checking if user "+m.getEmail()+" can "+key.toString()+" with Project "+ this.name);
+    	if( key == null ){ return false; }    	
     	List<Role> roles = m.getRoles();
 		for(Role role : roles){
-			for(RolePermission rp : rolePermissions){
-    			if( rp.check(role, key) ){
-    				return true;
-	    		}
-	    	}
+			if(allow(role, key)){ return true; }
 		}    	
 		return false;
+    }
+    
+    public boolean allow(Membership m, PermissionKey key){
+    	return allow(m, key.toString());
+    }
+    
+    public boolean allow(Membership m, PermissionKey key, Listing l){
+    	if( l == null ){ return false; }
+    	return allow(m, key.toString() + "_" + l.id);
     }
 
     public ActionResult saveAndGetResult(User actor){
@@ -212,14 +254,23 @@ public class Project extends BasicItem {
     }
     
     public void copyFromTemplate(ProjectTemplate pt){
+    	buildRolePermissions();
+    	refresh();
     	this.fromTemplate = pt;
     	this.needMembers = pt.needMembers;
     	this.save();
     	for( ListTemplate lt : pt.getListTemplates() ){    		
-    		Listing l = Listing.createFromTemplate(lt, this);
-    		l.save();
+    		addListing(lt, lt.name);    		
     	}  	
     	
     }
-
+    
+    public Listing addListing(ListTemplate lt, String name){
+    	Listing l = Listing.createFromTemplate(lt, this);
+    	l.listingName = name;
+    	l.save();
+		addListingPermissions(l);
+		return l;
+    }
+    
 }

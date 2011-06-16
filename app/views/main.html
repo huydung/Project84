@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" type="image/png" href="@{'/public/assets/images/favicon.png'}" />
-<title>#{get 'pageTitle' /} | Project84</title>
+<title>${ pageTitle.raw() } | Project84</title>
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/960.css'}" media="screen"/>
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/reset.css'}" media="screen" />
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/text.css'}" media="screen,print" />
@@ -119,7 +119,7 @@
 #{/}
 #{/}
 <!-- FOOTER END -->
-
+<a href="#wrapper" class="gototop"><img src="@{'/public/assets/images/top.png'}" width="48" height="48" alt="Go to Top"/></a>
 <script type="text/javascript">
 var hd = hd || {};
 hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
@@ -130,6 +130,7 @@ hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id',
     <script type="text/javascript" src="@{'/public/assets/js/jquery.gritter.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/fileuploader.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/confirm.js'}"></script>
+    <script type="text/javascript" src="@{'/public/assets/js/fixedtableheader.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/wymeditor/jquery.wymeditor.pack.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/app.js'}"></script>
     #{get 'moreScripts' /}

@@ -172,7 +172,6 @@ public class Bootstrap extends Job {
 		ol.updated = ol.created;
 		ol.saveAndGetResult(huydung);
 		ol.copyFromTemplate(software);
-		ol.buildRolePermissions();
 		ol.assignCreator(huydung, "Manager");
 		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
 		
@@ -186,9 +185,8 @@ public class Bootstrap extends Job {
 		wd.setStatus( DoneStatus.ONGOING );
 		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
 		wd.updated = ol.created;
-		wd.saveAndGetResult(huydung);	
-		wd.copyFromTemplate(wedding);
-		wd.buildRolePermissions();
+		wd.saveAndGetResult(huydung);		
+		wd.copyFromTemplate(wedding);		
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
 		

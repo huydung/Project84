@@ -1,0 +1,59 @@
+#{extends 'main.html' /}
+#{set title:messages.get('project.configuration.long', _project.name) /}
+#{set pageTitle:title /}
+
+#{set tab:'permissions'/}
+#{include 'projects/structuretab.html' /}
+
+<div class="permissions grid_15">
+    <form action="@{Projects.savePermissions(_project.id)}" method="POST">
+    %{ def permSet = perms.entrySet(); def i = 0; }%
+    <div class="bordered fright" id="toc">        
+        <h2>Groups of Permission</h2>
+        <ul>
+            #{list items:permSet, as:'permGroup'}
+            <li><a href="#group-${i}">${permGroup.getKey()}</a></li>
+            %{ i++; }%
+            #{/}
+        </ul>
+    </div>
+    <table class="box-table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            #{list items:roles, as:'r'}
+            <th>${r.toString()}</th>
+            #{/}
+        </tr>        
+        </thead>
+        <tbody>
+            %{ i = 0 }%
+            #{list items:permSet, as:'permGroup'}
+            <tr>
+                <td colspan="${ roles.size() + 1}">                    
+                    <strong class="permission-group" id="group-${i}">${permGroup.getKey()}<a href="#toc" class="fright">&uarr;&uarr;</a></strong>
+                    %{ i++; }%
+                </td>
+            </tr>
+            #{list items:permGroup.getValue(), as:'permRow'}
+            <tr>
+                <td>
+                    <strong class="permission-name">${permRow.key.toString().replaceAll("_", " ").toLowerCase().capAll()}</strong>
+                    
+                </td>
+                
+                #{list items:roles, as:'r'}
+                <td class="permission-check">
+                    <input type="checkbox" ${ permRow.isAllow(r) ? 'checked="checked"' : '' }
+                        name="permConfigs[${r.toString()}][]" value="${permRow.getPermKey()}"/>
+                </td>
+                #{/}
+            </tr>
+            #{/}
+            #{/}
+        </tbody>
+    </table>
+    <br/>
+    <button class="button nomargin" type="submit"><span>&{'labels.save'}</span></button>
+    </form>
+</div>

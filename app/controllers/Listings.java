@@ -15,8 +15,10 @@ import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.mvc.Controller;
+import play.mvc.With;
 import play.templates.JavaExtensions;
 
+@With(Authorization.class)
 public class Listings extends AppController {
 	
 	public static void saveOrderings(@Required Long project_id, String listing_ids){
@@ -43,9 +45,7 @@ public class Listings extends AppController {
 				Validation.addError("template_id", "Template not found");
 				displayValidationMessage();
 			}			
-			Listing l = Listing.createFromTemplate(lt, getActiveProject() );
-			l.listingName = name;
-			l.save();
+			getActiveProject().addListing(lt, name);
 		}
 		
 		Projects.structure(project_id);
@@ -82,16 +82,13 @@ public class Listings extends AppController {
 	
 	public static void dashboard(
 			@Required Long project_id, 
-			@Required Long id){
+			@Required Long listing_id){
 		
 		if( Validation.hasErrors() ){
 			notFound();
 		}
 		
-		Listing l = Listing.findById(id);
-		if( l == null ){
-			notFound("Listing", id);
-		}
+		Listing l = getListing();
 		
 		//Only set default parameters if in the params are currently have only 2 
 		//keys which is id and project_id

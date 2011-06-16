@@ -1,9 +1,13 @@
 package models.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum Role {
 	ADMIN,
-	MEMBER,
 	POWER_MEMBER,
+	MEMBER,
+	
 	CLIENT;
 
 	public static Role parse(String name){
@@ -16,4 +20,13 @@ public enum Role {
 		}
 		return role;
 	}
+	
+    public static List<Role> getRoles(){
+    	Role[] rs = Role.values();
+    	ArrayList<Role> roles = new ArrayList<Role>();
+    	for( Role r : rs ){
+    		roles.add(r);
+    	}
+    	return roles;
+    }
 }

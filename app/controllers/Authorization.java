@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.HashMap;
 
+import models.Listing;
 import models.Membership;
 import models.Project;
 import models.User;
@@ -29,35 +30,45 @@ public class Authorization extends Controller {
 		}		 
 	}
 	
-	public static boolean check( Long project_id, Long user_id, PermissionKey key){
-		if( project_id == null || user_id == null){
-			return false;
-		}
-
-		String cacheKey = project_id + ":" + user_id + ":" + key;
-		//Check in cache first
+	public static boolean check( String cacheKey, Long project_id, Long user_id, String permKey){
 		if( perms.containsKey(cacheKey) ){
 			MiscUtil.ConsoleLog("Get from permissions cache: " + cacheKey );
 			return perms.get(cacheKey);
 		}else{
 			Project p = AppController.getActiveProject();
 			if(p == null || ( p != null && p.id != project_id )){
-				MiscUtil.ConsoleLog("Need to fetch Project from db");
+				 MiscUtil.ConsoleLog("Need to fetch Project from db");
 				 p = Project.findById(project_id);
 				 if(p==null){return false;}
 			}
 			
 			Membership m = AppController.getActiveMembership();
 			if(m == null || ( m != null && m.user.id != user_id )){
-				MiscUtil.ConsoleLog("Need to fetch Membership from db");
+				 MiscUtil.ConsoleLog("Need to fetch Membership from db");
 				 m = Membership.findByProjectAndUser(p, (User)User.findById(user_id));				 
 			}
 			
-			boolean isAllow = p.allow(m, key);
+			boolean isAllow = p.allow(m, permKey);
 			perms.put(cacheKey, isAllow);
 			MiscUtil.ConsoleLog("Added to permissions cache: " + cacheKey + " - " + isAllow);
 			return isAllow;
 		}
+	}
+	
+	public static boolean check( Long project_id, Long user_id, PermissionKey key, Listing l){
+		if( project_id == null || user_id == null || l == null){
+			return false;
+		}
+		String cacheKey = project_id + ":" + user_id + ":" + key + ":" + l.id;
+		return check(cacheKey, project_id, user_id, key.toString() + "_" + l.id);		
+	}
+	
+	public static boolean check( Long project_id, Long user_id, PermissionKey key){
+		if( project_id == null || user_id == null){
+			return false;
+		}
+		String cacheKey = project_id + ":" + user_id + ":" + key;
+		return check(cacheKey, project_id, user_id, key.toString());
 	}
 	
 	@Before(priority=10)
@@ -67,10 +78,14 @@ public class Authorization extends Controller {
 		Project p = AppController.getActiveProject();
 		//Projects Controller
 		if( request.controllerClass == Projects.class ){			
-			if( "dashboard,structure".contains(method) ){				
+			if( "dashboard".contains(method) ){				
 				if(m == null){	
 					error(403, "Access Denied");
 				}
+			}else if( "structure".contains(method) ){
+				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO)){  
+					error(403, "Access Denied");	
+				};	
 			}
 		}
 		//Memberships Controller
@@ -90,6 +105,30 @@ public class Authorization extends Controller {
 					}
 				}
 			}
+		}
+		//Listings Controller
+		else if( request.controllerClass == Listings.class ){
+			if( "dashboard".contains(method) ){
+				if( !p.allow(m, PermissionKey.VIEW_ITEMS, AppController.getListing()) ){
+					error(403, "Access Denied");
+				}
+			}else if( "doEdit,saveOrderings,doCreate".contains(method) ){
+				if( !p.allow(m, PermissionKey.LISTING_CONFIG, AppController.getListing()) ){
+					error(403, "Access Denied");
+				}
+			}
+		}
+		//Items Controller
+		else if( request.controllerClass == Items.class ){
+			if( "show".contains(method) ){
+				if( !p.allow(m, PermissionKey.VIEW_ITEMS, AppController.getListing()) ){
+					error(403, "Access Denied");
+				}
+			}
+		}
+		//Comments Controller
+		else if( request.controllerClass == Comments.class ){
+			
 		}
 	}
 }

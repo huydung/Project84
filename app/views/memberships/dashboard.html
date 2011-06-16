@@ -2,6 +2,9 @@
 #{set title:_project.name + ' - ' + messages.get('project.people') /}
 #{set pageTitle:title /}
 
+#{set tab:'dashboard'/}
+#{include 'projects/structuretab.html' /}
+
 #{if (_project.needMembers && members != null) }
 <div class="grid_6">
 <h1>&{'members.teamLong'}</h1>

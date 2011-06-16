@@ -123,6 +123,7 @@ membership.created.log = %s has invited %s to join the project.
 ## PROJECT ##
 project.create = Create new Project
 project.member = Member
+project.members = Members
 project.manager = Manager
 project.list = Projects you involve
 project.active_projects = Active Projects
@@ -143,6 +144,8 @@ labels.yourInvitations = Your current invitations
 labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
 projects.created = %s has created the project
 user.lastLoggedIn = Last Logged in
+
+project.permissions = Permissions
 
 message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s</span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án

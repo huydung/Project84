@@ -312,7 +312,6 @@ a.inline_tip { padding-left:21px; background:url(../images/icons/lightbulb_off.g
 	text-align: left;
 	border-collapse: separate;
 	border: 1px solid #CCC;
-	border-bottom:none;
 }
 .box-table th {
 	font-size: 13px;
