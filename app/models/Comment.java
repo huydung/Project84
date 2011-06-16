@@ -7,10 +7,13 @@ import play.db.jpa.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Filter;
+
 
 import java.util.*;
 
 @Entity
+
 public class Comment extends BasicItem {
 	
 	@Lob
@@ -20,10 +23,17 @@ public class Comment extends BasicItem {
 	
 	@Required
 	@ManyToOne
-	public BasicItem parent;
+	public Item parent;
 	
 	public Comment() {
 		super();
 	}	
+	
+	public static long countCommentsOfItem(Item item){
+		return Comment.count( "parent = ? ", item );
+	}
      
+	public static List<Comment> getCommentsOfItem(Item item){
+		return Comment.find( "parent = ? ", item ).fetch();
+	}
 }

@@ -295,7 +295,7 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 		args.put("id", this.id);
 		String n = isInvitation() ? 
 				this.userEmail
-				: this.title + " | " + this.user.fullName;
+				: this.title + "|" + this.user.fullName;
 		
 		return new Link( n, "#" );		
 	}

@@ -30,6 +30,7 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 	        <strong class="title">${item.name}</strong>
 	    #{/}
 	    <div class="actions fright">
+	        <a href="@{Items.show(_project.id, l.id, item.id)}" class="icon-link icon-link-full">&{'labels.view'}</a>
 	        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
 	        <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
 	    </div>

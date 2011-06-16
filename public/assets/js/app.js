@@ -46,6 +46,7 @@ $(document).ready(function(){
 			autoHeight: false
 		});
 		$('#form-item #accordions').accordion("activate", 0);
+		$('#tabs').tabs();
 		
 		/** Numeric **/
 		/*
@@ -104,10 +105,10 @@ $(document).ready(function(){
 		
 		/** Convert delete action link to have confirmation **/
 		$('.need-confirm')
-			.click(function(){
+			/*.click(function(){
 				window.location.href = $(this).attr('href');
 				return false;
-			})
+			})*/
 			.confirm({
 				timeout:5000,
 				wrapper:'<span class="confirmation fright"></span>'
@@ -141,7 +142,16 @@ $(document).ready(function(){
 					si.show();
 				}					
 			});
+			return false;
 		});
+		
+		/** Make all portlets equal in height **/
+		var portlet_max_height = 0;
+		$('#portlets .widget-container').each(function(){
+			var h = $(this).height();
+			portlet_max_height = portlet_max_height < h ? h : portlet_max_height;
+			//alert(portlet_max_height + 30);
+		}).height(portlet_max_height + 30);
 		
 		/** WYM EDITOR **/
 		$('.wymeditor').wymeditor({
@@ -263,25 +273,7 @@ $(document).ready(function(){
 			helper: fixHelper,
 			placeholder: 'ui-sortable-placeholder'
 		}).disableSelection();
-		
-		
-		/** Ajaxify Form **/
-		/*
-		$('form.ajaxify button[type=submit], form.ajaxify input[type=submit]').click(function(){
-			$form = $(this).parent('form');
-			$.ajax({
-				type: $form.attr('method'),
-				url: $form.attr('action'),
-				dataType: html,
-				success: function(data, textStatus, jqXHR){
-					$form.parent('.accordion-panel').html(data);
-				},
-				error: function(){
-					alert('Error');
-				}
-			});
-			return false;
-		});*/
+
 		
 		/** LISTING FILTERS **/
 		/*$('#form-filters button').hide();
@@ -328,11 +320,11 @@ $(document).ready(function(){
 				error: function(data, status, xhr){
 					$.gritter.add({
 						title: 'Error',
-						text: data,
+						text: status,
 						class_name: 'error'
 					});
 				},
-			})
+			});
 			//add/remove class on the wrapper
 			if( checked ){
 				$this.parents('li').addClass('checked');

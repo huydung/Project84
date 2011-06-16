@@ -30,6 +30,7 @@ actions.contactWarning = This is not critical, but please <a href="/contact?acti
 actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us</a> so we can fix it for you. Thank you!
 
 ## LABELS ##
+labels.send = Send
 labels.search = Search
 labels.save = Save
 labels.email = Email
@@ -90,7 +91,10 @@ labels.with = with
 labels.updateMap = Update the Map
 labels.all = All
 labels.noItems = No result found.
-
+labels.writtenBy = Written by
+labels.writtenOn = at
+labels.view = View
+labels.comments = Recent Comments
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).
@@ -150,6 +154,7 @@ labels.activity.recent = Recent activities in the project
 
 
 ## ITEM FIELDS ##
+f.deleted = Deleted
 item.showUnder = Show items under
 item.quickAdd = Quick Add
 item.quickEdit = Quick Edit

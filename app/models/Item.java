@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PostPersist;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.hibernate.annotations.Filter;
 
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
@@ -47,9 +48,9 @@ import sun.util.resources.CurrencyNames;
 
 @Entity
 public class Item extends BasicItem implements IWidgetItem{
-	
+		
 	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox,name";
-	public static final String FIELDS_REQUIRED = "listing,created,creator,updated,type,name,id,rawInput";
+	public static final String FIELDS_REQUIRED = "deleted,listing,created,creator,updated,type,name,id,rawInput";
 
 	@MaxSize(500)
 	public String description;
@@ -96,7 +97,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	@ManyToOne
 	public Listing listing;
-		
+			
 	public Item(Listing listing) {
 		super();
 		this.listing = listing;
@@ -191,7 +192,8 @@ public class Item extends BasicItem implements IWidgetItem{
 	public Link getInfo() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", this.listing.project.id);
-		args.put("id", this.id);
+		args.put("listing_id", this.listing.id);
+		args.put("item_id", this.id);
 		return new Link(
 			getValueOfField(this.listing.mainField), 
 			Router.getFullUrl("Items.show", args),
@@ -200,6 +202,9 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public boolean hasData(String field){
+		if( Item.FIELDS_REQUIRED.contains(field) ){
+			return false;
+		}
 		if(field.equals("rawInput")){
 			return false;
 		}
@@ -673,7 +678,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	public String getCostDisplay(){
 		if( cost_amount > 1 ){
-			return cost + " x " + cost_amount + " = " + JavaExtensions.formatCurrency(cost_total, cost_currency);
+			return JavaExtensions.formatCurrency(cost, cost_currency) + " x " + cost_amount + " = " + JavaExtensions.formatCurrency(cost_total, cost_currency);
 		}else{
 			return JavaExtensions.formatCurrency(cost, cost_currency);
 		}
@@ -684,14 +689,23 @@ public class Item extends BasicItem implements IWidgetItem{
 		String message = "";
 		User user = AppController.getLoggedin();
 		if( type == ActivityType.CREATE ){
-			message = "[" + user.nickName + "] has created [" + this.name + "] in " + this.listing.listingName;
-		}else if( type == ActivityType.CHANGE ){
-			message = "[" + this.name + "]" + " has been updated by [" + user.nickName + "]";
-		}else if( type == ActivityType.DELETE ){
-			message = "[" + this.name + "]" + " has been deleted by [" + user.nickName + "]";
+			message = "[" + user.nickName + "] has created [" + this.name + "] in [" + this.listing.listingName + "]";
 		}else if( type == ActivityType.COMMENT ){
-			message = "[" + this.name + "]" + " has received new comment from [" + user.nickName +"]";
+			message = "[" + this.listing.listingName + ": "+ this.name + "]" + " has received new comment from [" + user.nickName +"]";
+		}else {
+			message = "[" + this.listing.listingName + ": "+ this.name + "]" + " has been " + 
+			( type == ActivityType.CHANGE ? "updated" : (
+				type == ActivityType.CHECK ? "checked" : (
+					type == ActivityType.UNCHECK ? "unchecked" : "deleted" 
+				)
+			) ) +
+			" by [" + user.nickName + "]";
 		}
+		
 		Activity.track(message, this.listing.project, type, user);
+	}
+	
+	public List<Comment> getComments(){
+		return Comment.getCommentsOfItem(this);
 	}
 }

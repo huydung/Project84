@@ -7,6 +7,10 @@
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
 .nofloat{float:none;}
+blockquote{
+	border-left: solid 2px #999;
+	padding-left: 10px;
+}
 #textcontent{
 	min-height:400px;
 }
@@ -95,6 +99,13 @@ form .form-field label{
 }
 .horizontal-form .form-field label{
 	width: 180px;
+}
+.vertical-form label, .vertical-form input[type="text"], .vertical-form textarea{
+	clear:both;
+	width: 90%;
+	display: block;
+	text-align: left !important;
+	margin: 3px 0;
 }
 form button.button{
 	clear:left;
@@ -429,7 +440,7 @@ right: 0;
     width: 99%;
 }
 .subinfo .field-name{
-	color: #999;
+	color: #666;
 }
 .form-quick-add form{
 	margin-top:5px;
@@ -450,10 +461,10 @@ right: 0;
 #inputhelp li{
 	margin: 5px 15px;
 }
-.item .actions{
+li .actions, .full-item .comment .actions{
 	visibility: hidden;
 }
-.item:hover .actions, .full-item .actions{
+li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 	visibility: visible;
 }
 .item, .inline-editable{
@@ -464,7 +475,7 @@ right: 0;
 }
 .item .title{
     display: inline-block;	
-	min-width: 500px;
+	width: 450px;
 }
 /** FILTER BOXES **/
 #textcontent .listing_features{
@@ -528,7 +539,27 @@ right: 0;
 .horizontal-form .wym_box .wym_section  h2{
 	font-size:12px !important;
 }
+.sidebar{
+	opacity: 0.7;
+}
+.full-item{
+	border-right: 2px solid #033E6B;
+	margin-left: -5px;
+	padding-right: 8px;
+	margin-right: 0; 
+}
 .full-item ul.subinfo li{
-	display: inline;
+	display: inline-block;
 	list-style: none;
+	margin-left: 0;
+	margin-right: 15px;
+}
+.comments .comment{
+	margin: 20px 0;
+}
+.author-comment blockquote{
+	border-left-color: #033E6B;
+}
+.your-comment blockquote{
+    border-left-color: #B11223;
 }

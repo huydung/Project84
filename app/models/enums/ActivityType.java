@@ -7,5 +7,7 @@ public enum ActivityType{
 	LIST,
 	ITEM,
 	CREATE,
-	DELETE;
+	DELETE,
+	CHECK,
+	UNCHECK;
 }

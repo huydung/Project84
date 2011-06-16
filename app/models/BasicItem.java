@@ -13,12 +13,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostPersist;
 
+import org.hibernate.annotations.Filter;
+
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Filter(name="deleted")
 public class BasicItem extends Model {
 	
 	public Date created;
@@ -28,10 +31,11 @@ public class BasicItem extends Model {
 	public Date updated;
 	@Required
 	public String name;
+	
+	public Boolean deleted = false; 
 
 	public BasicItem() {
 		super();
-		this.updated = new Date();
 	}	
 	
 	@PostPersist

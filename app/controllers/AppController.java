@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import com.huydung.utils.MiscUtil;
 
 
+import models.Listing;
 import models.Membership;
 import models.Project;
 import models.User;
@@ -73,9 +74,9 @@ public class AppController extends Controller {
             }
             
             //get active projects of the logged in user, if she having it
-            String project_id = params.get("project_id");
+            Long project_id = params.get("project_id", Long.class);
     		if( project_id != null ){
-    			Project project = Project.findById(Long.parseLong(project_id));
+    			Project project = Project.findById(project_id);
     			
     			if( project != null ){
     				renderArgs.put("_project", project);
@@ -83,6 +84,15 @@ public class AppController extends Controller {
     				Membership m = Membership.findByProjectAndUser(project, user);
     				renderArgs.put("_membership", m);
     			}
+    		}
+    		
+    		//get active listing, if having it
+            Long listing_id = params.get("listing_id", Long.class);
+    		if( listing_id != null ){  			
+    			Listing l = Listing.findById(listing_id);
+    			if( l != null ) { 
+    				renderArgs.put("l", l);
+    			};    			
     		}
     		
     		//set up paramater to tell is the current request is sent by AJAX
@@ -107,6 +117,10 @@ public class AppController extends Controller {
 	
 	static Project getActiveProject(){
 		return renderArgs.get("_project", Project.class);
+	}
+	
+	static Listing getListing(){
+		return renderArgs.get("l", Listing.class);
 	}
 	
 	static Membership getActiveMembership(){

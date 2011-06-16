@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:item.name /}
+#{set title:"Item in " + l.listingName /}
 #{set pageTitle:title /}
 
 %{
@@ -7,14 +7,24 @@ List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
 List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
 }%
 
-<div class="clearfix full-item">          
-     *{*** SUB INFOS, show maximum of 2 ***}*
-     <ul class="subinfo">
-        <li class="actions">
-        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
-         <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+<div class="clearfix">  
+    
+    <div class="grid_10  full-item">   
+     <h1>${item.name}
+     <span class="actions fright">
+        <a href="@{Items.edit(_project.id, l.id, item.id)}" style="font-size:12px;" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+        <a href="@{Items.delete(_project.id, l.id, item.id)}" style="font-size:12px;" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
      
+     </span>   
+     </h1>  
+     
+     <ul class="subinfo clearfix">
+        
+        #{if l.hasField('checkbox')}
+        <li><span class="field-name">${l.getFieldName('checkbox')}:</span><input type="checkbox" name="item.checkbox" value="checkbox"
+             ${item.checkbox == true ? 'checked="checked"' : ''} />
         </li>
+        #{/}
         #{list items:selected_fs, as:'f'}              
             #{include "items/field_display.html" /}
         #{/}
@@ -27,6 +37,24 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
      #{if item.body != null && item.body.length() > 0}
      <div class="body-text">
 	   ${item.body.html().raw() }
-	</div>
+	 </div>
      #{/}
+     
+     
+     *{*********** Comments section ***********}*
+     
+     #{include 'comments/form.html' /}
+     %{ def comments = item.getComments() }%
+     #{if comments != null && comments.size() > 0}
+     <h3>&{'labels.comments'}</h3>
+     <ul class="comments">
+	     #{list items:comments, as:'c'}
+	       #{include 'comments/display.html' /}  
+	     #{/}
+	 </ul>
+     #{/}
+     </div>
+     <div class="grid_5 sidebar">
+         #{widget widget:l /}
+     </div>
  </div>

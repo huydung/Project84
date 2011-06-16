@@ -218,6 +218,22 @@ public class Bootstrap extends Job {
 		item2.creator = huydung;
 		item2.save();
 		
+		Comment m1 = new Comment();
+		m1.parent = item2;
+		m1.creator = huydung;
+		m1.name = "Comment of huydung ";
+		m1.deleted = false;
+		m1.body = "Anh đề nghị đi chụp ở Asean Resort cho nó có nhiều kỉ niệm ý.";
+		m1.save();
+		
+		Comment m2 = new Comment();
+		m2.parent = item2;
+		m2.creator = hanguyen;
+		m2.name = "Comment of hanguyen ";
+		m2.deleted = false;
+		m2.body = "Em đề xuất đi Mộc Châu, thấy bạn bè em đứa nào lên đó chụp ảnh nhân dịp gì cũng đều rất đẹp ý.";
+		m2.save();
+		
 		Item item3 = new Item(taskList);
 		item3.name = "Chọn ảnh để phóng to (3 cái) và chọn mẫu album";
 		item3.user = null;		    item3.number = 3;

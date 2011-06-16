@@ -4,10 +4,7 @@ String fn = f.fieldName;
 #{if !'checkbox,name'.contains(fn)}
 #{if !(fn == 'body' && mode == 'full')}
 <li class="field-${fn} ${ fn == 'description' ? 'span2' : fn == 'body' ? 'span3' : '' }">
-    #{if mode == "full" && l.hasField('checkbox')}
-         <input type="checkbox" name="item.checkbox" value="checkbox"
-             ${item.checkbox == true ? 'checked="checked"' : ''} />
-     #{/}
+    
     <span class="field-name">${l.getFieldName(fn)}:</span>
     <span class="field-value ${fn}">
     
@@ -16,8 +13,7 @@ String fn = f.fieldName;
     #{/} 
     
     #{if fn == 'user' && item.user != null}
-        <a href="@{Memberships.show(_project.id, item.user.id)}" class="modal">
-        ${item.user.nickName}</a>
+        #{link-user u:item.user, p:_project /}
     #{/}
     
     #{if fn == 'category' && item.category != null}

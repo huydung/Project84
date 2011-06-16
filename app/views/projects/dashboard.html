@@ -3,7 +3,7 @@
 #{set pageTitle: _project.name + ' - ' + messages.get('project.dashboard') /}
 
 #{if _project}
-<div id="portlets clearfix">
+<div id="portlets" class="clearfix">
 	#{list items:_project.getWidgets(), as:'widget'}
 	   #{widget widget:widget /}
 	#{/}

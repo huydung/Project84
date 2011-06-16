@@ -1,0 +1,6 @@
+<li class="comment clearfix ${c.creator.id == loggedin.id ? 'your-comment' : ( c.creator.id == item.creator.id ? 'author-comment' : '' )}">
+    <em class="small description">&{'labels.writtenBy'} #{link-user u:c.creator, p:_project /} &{'labels.writtenOn'} ${c.created.format('hh:mm ' + loggedin.dateFormat)}
+    <a href="@{Comments.delete(_project.id, l.id, c.id)}" class="actions icon-link icon-link-delete fright need-confirm">&{'labels.delete'}</a></em>
+    <blockquote class="comment-body">${c.body}</blockquote>    
+    
+</li>

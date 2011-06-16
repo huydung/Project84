@@ -1,0 +1,16 @@
+<form action="@{Comments.doCreate}" class="vertical-form comment-form" method="POST" >
+    <fieldset>
+        <legend class="collapsible collapsed">&{'labels.postComment'}</legend>
+        <input type="hidden" name="comment.creator.id" value="${loggedin.id}" />
+	    <input type="hidden" name="comment.parent.id" value="${item.id}" />
+	    <input type="hidden" name="project_id" value="${_project.id}" />
+        <input type="hidden" name="listing_id" value="${l.id}" />
+        <input type="hidden" class="text" required="required" 
+	        name="comment.name" value="${params.get('comment.name') != null ? params.get('comment.name') : 'Comment from ' + loggedin.nickName + ' on ' + item.name}"/>
+	    <div class="form-field #{ifError 'comment.body'} error #{/}">
+	        <textarea name="comment.body" rows="5" required="required">${params.get('comment.body')}</textarea>
+	        <span class="error">#{error 'comment.body' /}</span> 
+	    </div>
+	    <button class="button nomargin" type="submit"><span>&{'labels.send'}</span></button>
+    </fieldset>   
+</form>

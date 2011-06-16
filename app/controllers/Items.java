@@ -12,20 +12,13 @@ import play.templates.JavaExtensions;
 
 public class Items extends AppController {
 	
-	@Before
+	@Before(priority=2)
 	protected static void setupListing(){
-		Long listing_id = params.get("listing_id", Long.class);
-		if( listing_id == null ){ error(400, "Bad Request"); }
-		Listing l = Listing.findById(listing_id);
-		if( l == null ) { error(400, "Bad Request"); }
-		renderArgs.put("l", l);
+		Listing l = getListing();
+		if( l == null ){ error(400, "Bad Request"); }
 		renderArgs.put("active", JavaExtensions.slugify(l.listingName));
 	}	
-	
-	protected static Listing getListing(){
-		return renderArgs.get("l", Listing.class);
-	}
-	
+
 	public static void updateCheck(
 			@Required Long project_id, 
 			@Required Long listing_id,
@@ -40,7 +33,7 @@ public class Items extends AppController {
 		}
 		item.checkbox = checked;
 		item.save();
-		item.log(ActivityType.CHANGE);
+		item.log( checked ? ActivityType.CHECK : ActivityType.UNCHECK);
 		renderText("Item " + item.name + " updated!");
 	}
 	

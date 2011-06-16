@@ -61,6 +61,7 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 
 
 ## LABELS ##
+labels.send = Gửi
 labels.search = Tìm kiếm
 labels.save = Lưu
 labels.email = Email
@@ -124,6 +125,11 @@ labels.showAll = Hiển thị tất cả
 labels.hideAll = Giấu đi tất cả
 item.subinfo = Trường thông tin phụ
 labels.noItems = Không có kết quả nào phù hợp
+labels.writtenBy = Viết bởi
+labels.writtenOn = vào lúc
+labels.view = Xem
+labels.comments = Các bình luận gần đây
+labels.postComment = Gửi bình luận của bạn
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -198,6 +204,7 @@ item.fullForm = Biểu mẫu
 item.containKeyword = Có chứa từ khóa
 labels.currentFile = File hiện tại
 item.help = (trợ giúp và ví dụ)
+f.deleted = Đã bị xóa
 f.name = Tiêu đề
 f.description = Ghi chú
 f.body = Nội dung
