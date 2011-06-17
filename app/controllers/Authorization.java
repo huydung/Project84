@@ -128,7 +128,7 @@ public class Authorization extends Controller {
 					error(403, "Access Denied");
 				}
 			}else if( "saveOrderings".contains(method) ){
-				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO, l) ){
+				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO) ){
 					error(403, "Access Denied");
 				}
 			}

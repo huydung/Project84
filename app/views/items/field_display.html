@@ -41,15 +41,15 @@ String fn = f.fieldName;
         #{link-tel item.phone2 /}
     #{/}
     
-    #{if fn == 'mail1' && item.mail1 != null}
-        #{link-mail item.mail1 /}
+    #{if fn == 'email1' && item.email1 != null}
+        #{link-mail item.email1 /}
     #{/}
-    #{if fn == 'mail2' && item.mail2 != null}
-        #{link-mail item.mail2 /}
+    #{if fn == 'email2' && item.email2 != null}
+        #{link-mail item.email2 /}
     #{/}
     
     #{if fn == 'address' && item.address != null}
-        #{link-mail item.address /}
+        <a href="http://maps.google.com/?q=${item.address}" target="_blank">${item.address}</a>
     #{/}
     
     #{if fn == 'body' && item.body != null}

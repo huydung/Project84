@@ -292,13 +292,6 @@ $(document).ready(function(){
 	
 	function bindEventToItem(el){
 		$item = $(el);
-		
-		/** MAKE delete link COMFIRMABLE **/
-		$('.need-confirm', $item).confirm({
-			timeout:5000,
-			wrapper:'<span class="confirmation fright"></span>'
-		});
-		
 		/** INLINE EDIT **/
 		$item.find('.inline-edit').hide().end()
 		.dblclick(function(){
@@ -379,8 +372,7 @@ $(document).ready(function(){
 	function processItemListings(){
 		/** Quick Add  **/
 		  $('form#quick-add-form').submit(function(){
-			 var $this = $(this);
-			 alert('Going to submit');
+			 var $this = $(this);			 
 			 $.post($this.attr('action'), $this.serialize(), function(response, status, xhr){
 				 $('ul.items').prepend(response);
 				 var $newel = $('ul.items li.item').eq(0);
@@ -389,7 +381,8 @@ $(document).ready(function(){
 					class_name: 'success',
 					text: "Item <em>" + $newel.find('.title').text() + "</em> has been created!" 
 				});
-				bindEventToItem($newel.get()); 
+				bindEventToItem($newel.get());
+				$this.find('input.item-quick-add').val('');
 			 });
 			 return false;
 		  });
