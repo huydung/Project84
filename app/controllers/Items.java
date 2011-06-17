@@ -1,7 +1,12 @@
 package controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import models.Item;
 import models.Listing;
+import models.User;
 import models.enums.ActivityType;
 import play.data.validation.Required;
 import play.data.validation.Valid;
@@ -34,9 +39,70 @@ public class Items extends AppController {
 			notFound("Item", item_id);
 		}
 		item.checkbox = checked;
-		item.save();
-		item.log( checked ? ActivityType.CHECK : ActivityType.UNCHECK);
-		renderText("Item " + item.name + " updated!");
+		try{
+			item.save();
+			item.log( checked ? ActivityType.CHECK : ActivityType.UNCHECK);
+			renderText("Item " + item.name + " updated!");
+		}catch(Exception e){error();}
+	}
+	
+	public static void updateField(
+			@Required Long project_id, 
+			@Required Long listing_id,
+			@Required Long item_id){
+		if(Validation.hasErrors()){
+			error(400, "Bad Request");
+		}
+		Item item = getItem();
+		if(item == null){
+			notFound("Item", item_id);
+		};
+		boolean saved = false;
+		String data = params.get("data");
+		if( data != null ){
+			String[] parts = data.split(":");
+			if( parts.length != 2 ){
+				error(400, "Bad Request");
+			}
+			String field = parts[0];
+			//Drag and Drop User
+			if( field.equals("user.id") ){
+				Long id = Long.parseLong(parts[1]); if(id == null){error(400, "Bad Request");}
+				item.user = User.findById(id);
+				if( item.user != null ){
+					item.save();
+					saved = true;				
+				}else{error(400, "Bad Request");}
+			}
+			//Drag and Drop Date
+			else if( field.equals("date") ){
+				SimpleDateFormat sdf = new SimpleDateFormat(getLoggedin().dateFormat);				
+				try {
+					Date d = sdf.parse(parts[1]);
+					item.date = d;
+					item.save();
+					saved = true;
+				} catch (ParseException e) { error(400, "Bad Request");	}				
+			}
+			//Drag and Drop Category
+			else if( field.equals("category") ){
+				item.category = parts[1];
+				item.save();
+				saved = true;				
+			}
+		}else{error(400, "Bad Request");}
+		
+		if(saved){
+			item.log(ActivityType.CHANGE);
+			if( request.isAjax() ){
+				render("items/item.html");
+			}else{
+				flash.put("success", "Item " + item.name + " updated!");	
+				show(project_id, listing_id, item_id);
+			}
+		}else{
+			Listings.dashboard(project_id, listing_id);
+		}
 	}
 	
 	public static void show(
@@ -58,30 +124,50 @@ public class Items extends AppController {
 			@Required Long project_id,
 			@Required Long listing_id, 			
 			@Required String input){
+		Item item = null;
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 		}else{
 			Listing l = getListing();
 			
-			Item item = Item.createFromSmartInput(input, l);
+			item = Item.createFromSmartInput(input, l);
 			item.creator = getLoggedin();
-			if(!item.validateAndSave()){
-				displayValidationMessage();
-			}else{
-				flash.put("success", "Item " + item.name + " created!");
-			}
-			item.log(ActivityType.CREATE);
+			try{
+				if(!item.validateAndSave()){
+					displayValidationMessage();
+				}else{					
+					item.log(ActivityType.CREATE);
+				}
+			}catch(Exception e){error();}
+			
 		}
 		
 		if( request.isAjax() ){
-			render("items/item.html");
+			render("items/item.html", item);
+		}else{			
+			flash.put("success", "Item " + item.name + " created!");
+			Listings.dashboard(project_id, listing_id);
+		}
+	}
+	
+	public static void doCreateFromForm(
+			@Required Long project_id,
+			@Required Long listing_id, 			
+			@Valid Item item){
+		if( Validation.hasErrors() ){
+			displayValidationMessage();
+			render("items/form.html", item);
+		}else{		
+			try{
+				item.create();
+				flash.put("success", "Item " + item.name + " created!");			
+				item.log(ActivityType.CREATE);
+			}catch(Exception e){error();}
+		}
+		if(params.get("redirectToCreate", Boolean.class)){	
+			create(project_id, listing_id);
 		}else{
-			String prevPath = params.get("prevPath"); 
-			if(prevPath != null){
-				redirect(prevPath);
-			}else{
-				Listings.dashboard(project_id, listing_id);
-			}
+			Listings.dashboard(project_id, listing_id);
 		}
 	}
 	
@@ -92,11 +178,16 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){
 			notFound();
 		}
-		Listing l = getListing();
 		Item item = getItem();		
 		if( item == null ){	notFound("Item", item_id);	}
 		
-		render("items/form.html", item, l);
+		render("items/form.html", item);
+	}
+	public static void create(
+			@Required Long project_id,
+			@Required Long listing_id){
+		Item item = new Item(getListing());		
+		render("items/form.html", item);
 	}
 	
 	public static void quickEdit(
@@ -108,11 +199,13 @@ public class Items extends AppController {
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
 		Listing l = getListing();
-		item.updateFromSmartInput(input);
-		item.log(ActivityType.CHANGE);
-		item.save();
-		flash.put("success", "Item " + item.name + " updated!");
-		Listings.dashboard(project_id, listing_id);
+		try{
+			item.updateFromSmartInput(input);		
+			item.save();
+			item.log(ActivityType.CHANGE);
+			flash.put("success", "Item " + item.name + " updated!");
+			Listings.dashboard(project_id, listing_id);
+		}catch(Exception e){ error(); }
 	}
 	
 	public static void doEdit(
@@ -122,9 +215,7 @@ public class Items extends AppController {
 			@Required Long item_id){
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
-			flash.keep();
-			Validation.keep();
-			edit(project_id, listing_id, item.id);
+			render("items/form.html", item);
 		}
 		item.log(ActivityType.CHANGE);
 		item.save();

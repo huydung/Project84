@@ -1,20 +1,35 @@
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+boolean isCreating = (item.id <= 0);
+}%
+
 #{if !ajax}
 
 #{extends 'main.html' /}
-#{set title:messages.get('labels.edit') + ' ' + messages.get('labels.item') /}
+#{set title: (isCreating ? messages.get('labels.create') : messages.get('labels.edit')) + ' ' + messages.get('labels.itemIn') + ' ' + l.listingName /}
 #{set pageTitle:title /}
 
 #{/}
 
-%{
-List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
-List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
-}%
-<form id="form-item" method="POST" class="horizontal-form" action="@{Items.doEdit(_project.id, l.id)}">
+<form id="form-item" method="POST" class="horizontal-form" 
+    #{if isCreating}
+    action="@{Items.doCreateFromForm(_project.id, l.id)}"
+    #{/}
+    #{else}
+    action="@{Items.doEdit(_project.id, l.id)}"
+    #{/}
+    >
+    #{if !isCreating}
     <input type="hidden" name="item.id" value="${item.id ?: 0}"/>
     <input type="hidden" name="item_id" value="${item.id ?: 0}"/>
+    
+    #{/}
+    <input type="hidden" name="item.listing.id" value="${l.id}"/>
+    <input type="hidden" name="project_id" value="${_project.id}"/>
+    <input type="hidden" name="listing_id" value="${l.id}"/>
     <input type="hidden" name="item.creator.id" value="${item?.creator?.id ?: loggedin.id}"/>
-    #{hdfield name:'item.name', value:item.name, label:l.getFieldName('name') /}
+    #{hdfield name:'item.name', value:item.name, label:l.getFieldName('name'), required:true /}
     <br />
     <div id="accordions" class="custom-fields">
 	    <h3 class="header">Fields of type <em>${l.listingName}</em></h3>
@@ -32,5 +47,10 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
            #{/}
 	    </div>    
     </div>
-    <button class="button" type="submit"><span>&{'labels.save'}</span></button>
+    <br/>
+    <button class="button nomargin" type="submit"><span>&{'labels.save'}</span></button>
+    #{if isCreating}
+    <input type="hidden" value="false" name="redirectToCreate" id="saveAndCreate"/>
+    <button class="button saveAndCreate " type="submit" style="margin:0 0 0 20px;clear: none;"><span>&{'labels.saveAndCreate'}</span></button>
+    #{/}
 </form>

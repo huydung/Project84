@@ -7,6 +7,9 @@
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
 .nofloat{float:none;}
+.draggable{
+	cursor: move;
+}
 .gototop{
 	position: fixed;
 	right: 10px;
@@ -36,6 +39,7 @@ a.icon-link, button.icon-link{
 	height: 16px;
 	line-height: 16px;
 	margin: 0 10px 0 0;
+	display: inline-block;
 }
 a.icon-link:hover, button.icon-link:hover{
 	color: #000;
@@ -60,6 +64,9 @@ h3.ui-accordion-header{
 	background-color: #FFFFAA;
 	border: solid 1px #AAAA66;
 }
+.item-drop-active,.item-drop-active a{
+	color: #ff0084 !important;
+}
 .box-table tr.used td{
 	background-color: #FFFFAA;
 }
@@ -76,6 +83,7 @@ h3.ui-accordion-header{
 .tcenter{
 	text-align: center;
 }
+.project_switcher{ color: #FFF; }
 
 /** Gravatar */
 .gravatar{
@@ -174,15 +182,34 @@ form.inline select{
 }
 
 /** MENU **/
+#menu{
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+	height: 60px;
+	
+}
 #menu ul.group{
 	margin: 0;
+	position: absolute;
+	height: 60px;
+	float:left;
+}
+#menu ul.group li{
+	position: relative;
+	z-index:1;
+}
+#menu ul.group li:hover{
+    z-index: 10;
 }
 #menu ul.group li a {
 	width: 116px;
 	height: 60px;
 }
 #menu ul.group li a span{
-    display: block; border-right: 1px solid #4985B2;
+    display: block; 
+    border-right: 1px solid #4985B2;
+    border-left: 1px solid #4985B2;
     height: 15px;
     padding-top: 45px; text-align: center;
     text-transform: uppercase;
@@ -191,6 +218,9 @@ form.inline select{
 }
 #menu ul.group li.last a span{
 	border-right:none;
+}
+#menu ul.group li.first a span{
+    border-left:none;
 }
 
 #menu ul.group li a:hover, #menu ul.group li a.hover {
@@ -287,6 +317,9 @@ h3.widget-title{
 /* Icon Links */
 .icon-link-add {
     background: url('../icons/plus.png') no-repeat left 0;
+}
+.icon-link-go {
+    background: url('../icons/arrow.png') no-repeat left 0;
 }
 .icon-link-list{
 	background: url('../icons/tables_stacks.png') no-repeat left 0;
@@ -530,9 +563,7 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 	margin:1px;
 	border: solid 2px #DD8;
 }
-.filter-box div.checked{
-    background-color: #FFA;
-}
+
 .filter-box-date input.date{
 	width: 75px;
 }

@@ -18,13 +18,13 @@
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
 
-    <form action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
+    <form id="quick-add-form" action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
-	    <input type="text" name="input" class="item-quick-add" value="${params.get('input')}"/>
+	    <input type="text" name="input" class="item-quick-add" required="required" value="${params.get('input')}"/>
 	    
 	    <div class="tright">
 	    <a href="#inputhelp" class="reveal-toggle">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-	    <a href="#" class="modal">&{'item.fullForm'}</a> 
+	    <a href="@{Items.create(_project.id, l.id)}">&{'item.fullForm'}</a> 
 	    
 	    </div>
 	    <div id="inputhelp" class="tleft reveal small" style="display:none;">

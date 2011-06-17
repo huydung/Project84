@@ -3,13 +3,13 @@ if( _labelKey == null ) String _labelKey = _name;
 String label = _label == null ? messages.get(_labelKey) : _label;
 if( _hasBody == null ) boolean _hasBody = false;
 }%
-<div class="form-field ${not_required ? 'required' : ''} #{ifError _name} error #{/}">
+<div class="form-field ${_not_required ? '' : 'required'} #{ifError _name} error #{/}">
     <label>${label}</label>
     #{if _hasBody}
         #{doBody /}        
     #{/if}
     #{else}
-        <input class="${_type != null ? _type : 'text'}" name="${_name}" value="${_value}" ${_type != null ? 'type="'+ _type +'"' : ''} />
+        <input ${_not_required ? '' : 'required="required"'} class="${_type != null ? _type : 'text'}" name="${_name}" value="${_value}" ${_type != null ? 'type="'+ _type +'"' : ''} />
     #{/else} 
     <span class="error">#{error _name /}</span> 
 </div>

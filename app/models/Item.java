@@ -158,7 +158,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	public String getClasses(){
 		String res =  "item";
 		res += " item-" + JavaExtensions.slugify(listing.listingName);
-		if( checkbox == true ){
+		if( checkbox != null && checkbox == true ){
 			res += " checked";
 		}
 		if( date != null ){
@@ -218,7 +218,7 @@ public class Item extends BasicItem implements IWidgetItem{
 			if( f.getName().equals(field) ){
 				try {
 					Object value = f.get(this);
-					return value != null && value.toString().length() > 0;
+					return value != null && !value.toString().isEmpty();
 				} catch (Exception e) {
 					return false;
 				}

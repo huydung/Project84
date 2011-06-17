@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:"Item in " + l.listingName /}
+#{set title:messages.get('labels.itemIn') + ' ' + l.listingName /}
 #{set pageTitle:title /}
 
 %{
@@ -19,10 +19,17 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
      </h1>  
      
      <ul class="subinfo clearfix">
-        
+        <li>
+            <span class="field-name">&{'labels.by'}:</span>
+            <span class="field-value">#{link-user u:item.creator, p:_project /}</span>
+        </li>
+        <li>
+            <span class="field-name">&{'labels.writtenOn'}</span>
+            <span class="field-value">${item.created.format( 'hh:mm ' + loggedin.dateFormat )}</span>
+        </li>
         #{if l.hasField('checkbox')}
-        <li><span class="field-name">${l.getFieldName('checkbox')}:</span><input type="checkbox" name="item.checkbox" value="checkbox"
-             ${item.checkbox == true ? 'checked="checked"' : ''} />
+        <li><span class="field-name">${l.getFieldName('checkbox')}:</span>
+            <span class="field-value">${ item.checkbox ? messages.get('labels.yes') : messages.get('labels.no') }</span>
         </li>
         #{/}
         #{list items:selected_fs, as:'f'}              

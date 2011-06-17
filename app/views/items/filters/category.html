@@ -12,7 +12,7 @@ def categories = filter.getCategories();
             #{list items:categories, as:'c'}
             #{if c != null}
             %{ boolean checked = params.get('filter_category_'+c.slugify()) == 'on' }%
-                <li>                    
+                <li class="draggable" data-drag="category:${c}">                    
                     <input type="checkbox" class="filter-field filter-category"
                     name="filter_category_${c.slugify()}" 
                     ${ checked ? 'checked="checked"' : '' }

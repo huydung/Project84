@@ -33,6 +33,7 @@ actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us<
 labels.send = Send
 labels.search = Search
 labels.save = Save
+labels.saveAndCreate = Save and create another
 labels.email = Email
 labels.emailAddress = Email Address
 labels.fullName = Full Name
@@ -95,6 +96,20 @@ labels.writtenBy = Written by
 labels.writtenOn = at
 labels.view = View
 labels.comments = Recent Comments
+labels.go = Go to
+labels.by = By
+labels.yes = Yes
+labels.no = No
+labels.itemIn = Item in
+labels.create = Create
+
+## Time Left ##
+left.seconds = %d seconds left
+left.minutes = %d minutes left
+left.hours = %d hours left
+left.days = %d days left
+left.months = %d months left
+left.years = %d years left
 
 ## MEMBERSHIP ##
 membership.created = An invitation to join the project has been sent to %s (%s).

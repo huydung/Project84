@@ -54,12 +54,15 @@
 #{if f.fieldName == 'category'}
     <div class="form-field field-category">
     <label>${l.getFieldName('category')}</label>
-    <input class="category text autocomplete" 
-         value="${item.category}" 
-         name="item.category"
-         type="text"
-         data-source="@{Listings.getCategories(l.id)}"          
-         />   
+    <select name="item.category" class="category editable-select" >
+        <option value="">-- select --</option>        
+    #{list items:l.getCategories(), as:'cat'}
+        <option value="${cat}" ${ cat == item.category ? 'selected="selected"' : '' }>${cat}</option>
+    #{/}    
+    </select>    
+    <a href="#" class="icon-link icon-link-add select-create-new" style="margin-top:16px;margin-left:5px;" data-attach="new-category">Create new</a>
+    <input id="new-category" style="margin-left:190px;display:none;" type="text" class="text" name="item.category" 
+    disabled="disabled"/>
     </div>
 #{/}
 

@@ -45,8 +45,21 @@
                 <a href="@{Users.profile(loggedin.id)}">${loggedin.fullName}</a>  |  
                 <a href="@{Security.logout()}">&{'interface.logout'}</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            </span>
+            </span>            
             #{/if}
+            #{if _projects != null }
+                <div class="project_switcher">
+                    <strong>&{'project.list'}:</strong>
+                    <select>
+                        #{list items:_projects, as:'p'}
+                        <option value="@{Projects.dashboard(p.id)}" ${p == _project ? 'selected="selected"' : ''}>
+                            ${ p.name }
+                        </option>
+                        #{/}
+                    </select>
+                    <a href="#" class="icon-link icon-link-go">&{'labels.go'}</a>
+                </div>                
+            #{/}
 	    </div>
     </div>
 <!-- USER TOOLS END -->    
@@ -123,6 +136,7 @@
 <script type="text/javascript">
 var hd = hd || {};
 hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
+hd.itemUpdateAction = #{jsAction @Items.updateField(':project_id', ':listing_id', ':item_id') /};
 </script>
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>

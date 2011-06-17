@@ -3,6 +3,17 @@
 #{set pageTitle: _project.name + ' - ' + messages.get('project.dashboard') /}
 
 #{if _project}
+#{if _project.deadline != null}
+<strong>&{'labels.project.deadline'}: ${_project.deadline.format()}</strong> 
+
+<em>${_project.deadline.after(new Date()) ? '(' + _project.deadline.timeLeft() + ')' : ''}</em>
+#{/}
+#{if _project.description}
+<p class="description">
+${_project.description}
+</p>
+#{/}
+
 <div id="portlets" class="clearfix">
 	#{list items:_project.getWidgets(), as:'widget'}
 	   #{widget widget:widget /}

@@ -27,7 +27,7 @@ boolean canCheck = controllers.Authorization.check( _project.id, loggedin.id,
 
 #{/}
 
-<li id="item-${item.id}" class="item clearfix ${ canEdit ? 'inline-editable' : '' } item-${item.getClasses()}" data-id="${item.id}">
+<li id="item-${item.id}" class="dropable item clearfix ${ canEdit ? 'inline-editable' : '' } item-${item.getClasses()}" data-id="${item.id}">
     #{if canEdit }
     <div class="inline-edit" style="display:none" >
     <form action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">

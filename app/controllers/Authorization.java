@@ -17,6 +17,7 @@ import com.huydung.utils.MiscUtil;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Finally;
+import play.templates.JavaExtensions;
 import sun.security.action.GetLongAction;
 
 public class Authorization extends Controller {
@@ -31,7 +32,7 @@ public class Authorization extends Controller {
 		){
 			MiscUtil.ConsoleLog("Clear Cache because may be there're changes in memberships permission");
 			perms.clear();
-		}		 
+		}
 	}
 	
 	public static boolean check( String cacheKey, Long project_id, Long user_id, String permKey){
@@ -152,7 +153,7 @@ public class Authorization extends Controller {
 				if( !p.allow(m, PermissionKey.CHECK_ITEM, l) ){
 					error(403, "Access Denied");
 				}
-			}else if( "doCreate".contains(method) ){
+			}else if( "create,doCreate,doCreateFromForm".contains(method) ){
 				if( !p.allow(m, PermissionKey.CREATE_ITEM, l) ){
 					error(403, "Access Denied");
 				}

@@ -225,7 +225,7 @@ public class Listing extends Model implements IWidget {
 	public Link getFirstLink() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("project_id", this.project.id);
-		args.put("id", this.id);
+		args.put("listing_id", this.id);
 		return new Link( 
 				Messages.get("labels.viewAll"),
 				Router.getFullUrl("Listings.dashboard", args),

@@ -74,11 +74,18 @@ public class AppController extends Controller {
             	}
             }
             
-            //get active projects of the logged in user, if she having it
+            List<Project> projects = Project.findByUser(user);
+            if( projects != null ){
+            	renderArgs.put("_projects", projects);
+            }            
+            
+            //get active project of the logged in user, if she having it
             Long project_id = params.get("project_id", Long.class);
     		if( project_id != null ){
-    			Project project = Project.findById(project_id);
-    			
+    			Project project = null;
+    			for(Project p : projects){
+    				if( p.id == project_id ){ project = p; }
+    			}    			
     			if( project != null ){
     				renderArgs.put("_project", project);
     				//MiscUtil.ConsoleLog(request.url + ": Saved project to renderArgs (" + project.name + ")");

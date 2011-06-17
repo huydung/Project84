@@ -136,6 +136,14 @@ public class Bootstrap extends Job {
 		guests.fields = "checkbox:Sent Invitation?,name:Name,category:Category,user:Guest of,phone1:Mobile,email1:Email,number:Age,address:Address";		
 		guests.save();
 		
+		ListTemplate contacts = new ListTemplate("Contacts", true, null);
+		contacts.hasPermissions = true;
+		contacts.iconPath = "/public/appicons/address-book-2.png";
+		contacts.mainField = "name";
+		contacts.subField = "phone1";		
+		contacts.fields = "checkbox:Sent Invitation?,name:Name,category:Category,user:Guest of,phone1:Mobile,email1:Email,number:Age,address:Address";		
+		contacts.save();
+		
 		ProjectTemplate blank = new ProjectTemplate(
 				"Blank Project", true, null, true);
 		blank.save();
@@ -144,8 +152,11 @@ public class Bootstrap extends Job {
 				"Software Development", true, null, true);
 		software.save();
 		software.addList(tasks, "Todos");
-		software.addList(files, "Documents");
 		software.addList(discussions, "Discussions");	
+		software.addList(guests, "Partners");
+		software.addList(costs, "Costs");
+		software.addList(contacts, "AddressBook");
+		software.addList(files, "Designs");
 		software.refresh();
 		
 		ProjectTemplate wedding = new ProjectTemplate(

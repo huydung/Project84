@@ -64,6 +64,7 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 labels.send = Gửi
 labels.search = Tìm kiếm
 labels.save = Lưu
+labels.saveAndCreate = Lưu và tạo mới tiếp
 labels.email = Email
 labels.emailAddress = Địa chỉ email
 labels.fullName = Họ và tên
@@ -130,6 +131,12 @@ labels.writtenOn = vào lúc
 labels.view = Xem
 labels.comments = Các bình luận gần đây
 labels.postComment = Gửi bình luận của bạn
+labels.go = Đi tới
+labels.by = Bởi
+labels.yes = Có
+labels.no = Không
+labels.itemIn = 1 mục trong
+labels.create = Tạo mới
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -178,6 +185,12 @@ since.minutes = %d phút trước
 since.hours = %d giờ trước
 since.days = %d ngày trước
 since.months = %d tháng trước
+left.seconds = còn %d giây nữa
+left.minutes = còn %d phút nữa
+left.hours = còn %d giờ nữa
+left.days = còn %d ngày nữa
+left.months = còn %d tháng nữa
+left.years = còn %d năm nữa
 
 # USER #
 user.lastLoggedIn = đăng nhập lần cuối

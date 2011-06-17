@@ -10,7 +10,7 @@
 	       <legend>${invite.project.name}</legend>
 	       <ul>
                 <!-- <li>&{'labels.invitation'} &{'labels.from'} ${invite.user.fullName}</li>  -->
-                #{if invite.project.description != null && invite.project.description.length() > 0}
+                #{if invite.project.description}
                 <li><em>${invite.project.description}</em></li>
                 #{/}
                 <li >

@@ -1,11 +1,14 @@
+#{if !ajax}
 #{extends 'main.html' /}
 #{set title:'Fatal System Error' /}
 #{set pageTitle:title /}
-
+#{/}
 <h3>Sorry, an unexpected error occurred.</h3>
+#{if !ajax}
 <em>This is certainly our fault. We've logged it and will fix it as soon as possible. 
 But we'll appreciate very much if you take your time to
  <a href="mailto:project84@huydung.com">email us</a> 
  and tell us in-details exactly what you're trying to do before this error.</em>
  <br/>
 <strong>Thank you for your interested in Project84 and wish you a productive day :)</strong>
+#{/}
