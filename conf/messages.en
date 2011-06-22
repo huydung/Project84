@@ -1,8 +1,10 @@
+keyword = Keyword
+
 
 ## INTERFACE ##
 interface.copyrighted= Project84 <super>&copy;</super> is a product of <a href="http://www.huydung.com/">Huy Dũng</a> at <a href="http://madeby84.com">MadeBy84</a>
-interface.slogan= Smart. Easy. Super Flexible. Really? Yes, <a href="#" class="modal">take a tour</a> and see for yourself.
-interface.define= Project Management, Redefined.
+interface.slogan= Smart. Make Sense. Super Flexible. Really? Yes, <a href="#" class="modal">take a tour</a> and see for yourself.
+interface.define= Manage Your Everything.
 interface.welcome = Welcome
 interface.logout = Log out
 
@@ -32,6 +34,9 @@ actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us<
 ## LABELS ##
 labels.send = Send
 labels.search = Search
+labels.advancedSearch = Advanced Search
+labels.searchResults = Search results for '%s'
+labels.searchNotFound = No results found
 labels.save = Save
 labels.saveAndCreate = Save and create another
 labels.email = Email
@@ -101,8 +106,8 @@ labels.by = By
 labels.yes = Yes
 labels.no = No
 labels.itemIn = Item in
-labels.create = Create
-
+labels.create = Create new
+labels.project = Project
 ## Time Left ##
 left.seconds = %d seconds left
 left.minutes = %d minutes left
@@ -142,12 +147,15 @@ project.members = Members
 project.manager = Manager
 project.list = Projects you involve
 project.active_projects = Active Projects
+project.projects = Projects
 project.inactive_projects = Inactive Projects
 project.dashboard = Dashboard
 project.people = People
 project.configuration = Configure
 project.configuration.long = %s - Configuration and Permissions
 project.addMember = Add Member/Client
+project.edit = Edit Project Info
+project.listings = Project Item-Lists
 labels.project.create.short = Create Project
 labels.project.name = Project Name
 labels.project.deadline = Deadline
@@ -159,6 +167,8 @@ labels.yourInvitations = Your current invitations
 labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
 projects.created = %s has created the project
 user.lastLoggedIn = Last Logged in
+
+project.status = Status
 
 project.permissions = Permissions
 

@@ -18,7 +18,7 @@ import models.validators.MustHaveUserIfNotSystem;
 import java.util.*;
 
 @Entity
-public class ProjectTemplate extends BaseTemplate {	
+public class ProjectTemplate extends Template {	
 	
 	public ProjectTemplate(String name, Boolean isSystem, User user,
 			Boolean needMembers) {

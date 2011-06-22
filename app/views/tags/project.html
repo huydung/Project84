@@ -1,7 +1,7 @@
-<div class="project project_${_project.doneStatus}">
-    #{if _project.getStatus() != models.enums.DoneStatus.ONGOING}
+<div class="project project_${_project.status}">
+    #{if _project.status != models.enums.DoneStatus.ONGOING}
         <strong class="project_name name">
-            <a href="@{Projects.show(_project.id)}">${_project.name}</a>
+            <a href="@{Projects.dashboard(_project.id)}">${_project.name}</a>
         </strong>        
     #{/}
     #{else}

@@ -11,7 +11,7 @@ public interface IWidget {
 	public String getHtmlClass();
 	public Link getFirstLink();
 	public Link getLastLink();
-	public List getItems(Long project_id);
+	public List getItems();
 	public String getHtml();
 	public int getColSpan();
 }

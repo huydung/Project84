@@ -83,8 +83,38 @@ h3.ui-accordion-header{
 .tcenter{
 	text-align: center;
 }
-.project_switcher{ color: #FFF; }
+img.fleft{
+	margin: 0 5px 5px 0;
+}
+img.fright{
+    margin: 0 0 5px 5px;
+}
+/** PROJECT TOOLS **/
+#projects_tools{
+	margin: 10px 0 5px 10px;
+	opacity: 0.4;
+}
+#projects_tools:hover{
+    opacity: 1;
+}
+#projects_tools input,#projects_tools select{
+	background-color: #CCC;
+}
+.project_switcher, .projects_tools, #projects_tools a, #projects_tools button,
+#projects_tools label{ 
+	color: #CCC ;
+}
 
+#project_search input.text{
+	width: 180px; border-left-width: 1px;
+}
+#project_search .form-field{float:left;}
+#projects_tools label, #projects_tools input{
+	margin-top: 0;
+}
+#projects_tools .icon-link{
+	margin-top:5px;
+}
 /** Gravatar */
 .gravatar{
 	display: block;
@@ -352,6 +382,13 @@ h3.widget-title{
 .icon-link-collapse{
     background: url('../icons/folder.png') no-repeat left 0;
 }
+.icon-link-search{
+    background: url('../icons/magnifier.png') no-repeat left 0;
+}
+.icon-link-settings{
+    background: url('../icons/gear.png') no-repeat left 0;
+}
+
 /** Membership **/
 .membercard{
 	margin: 20px 25px 10px 0;

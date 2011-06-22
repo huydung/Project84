@@ -46,23 +46,11 @@ public class Projects extends AppController {
 	}
 	
 	public static void overview(){
-		User user = getLoggedin();
-		List<Project> active_projects = Project.findByUser(user);
-		List<Project> inactive_projects = null;
-		if(active_projects != null){
-			inactive_projects = new ArrayList<Project>();
-			for(Iterator<Project> ite = active_projects.iterator(); ite.hasNext();){
-				Project p= ite.next();
-				if( p.getStatus() != DoneStatus.ONGOING ){
-					inactive_projects.add(p);
-					ite.remove();
-				}
-			}
+		if(renderArgs.get("_projects") != null || renderArgs.get("_inactive_projects") != null){
+			render();
 		} else {
 			create();
-		}
-		
-		render(active_projects, inactive_projects);
+		}		
 	}
 	
 	public static void dashboard(@Required Long project_id){
@@ -95,7 +83,7 @@ public class Projects extends AppController {
     	  
     	
     	ActionResult res;
-    	res = project.saveAndGetResult(user);
+    	res = project.createAndGetResult(user);
     	
     	if( !res.isSuccess() ){
     		displayError(res.getMessage(), "save-project");
@@ -111,10 +99,8 @@ public class Projects extends AppController {
     	
     	if( !res.isSuccess() ){
     		displayWarning(res.getMessage(), "save-activity-when-create-project");
-    	}
-    	
-    	//Projects.structure( project.id );    	
-    	dashboard(project.id);
+    	} 	
+    	structure(project.id);
     }
 	
 	public static void structure(Long project_id){
@@ -155,6 +141,26 @@ public class Projects extends AppController {
 		}
 		flash.put("success", "Permissions for Members of the Project have been saved");
 		permissions(project_id);
+	}
+	
+	public static void edit(@Required Long project_id){
+		render();
+	}
+	
+	public static void doEdit(Project project){
+		if( params.get("project.deadline") == "" ){
+    		project.deadline = null;
+    	}
+		project.save(getLoggedin());
+		flash.put("success", "Project Information has been saved");
+		dashboard(project.id);
+	}
+	
+	public static void delete(Long project_id){
+		Project p = getActiveProject();
+		if( p == null ){ notFound(); }
+		p.delete();
+		Application.homepage();
 	}
 	
 }

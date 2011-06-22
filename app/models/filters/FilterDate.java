@@ -25,11 +25,15 @@ public class FilterDate extends BasicFilter {
 	@Override
 	public void setDefault(Params params) {
 		//set Default to only display items from the last 3 days to the next 14 days
+		
 		Date d = new Date();
+		/*
 		d.setTime(d.getTime() - 3 * DateUtils.MILLIS_PER_DAY);
 		params.put("filter_date_from", JavaExtensions.format(d));
+		*/
 		d.setTime(d.getTime() + 17 * DateUtils.MILLIS_PER_DAY);
 		params.put("filter_date_to", JavaExtensions.format(d));
+		
 	}
 
 	@Override
@@ -41,7 +45,7 @@ public class FilterDate extends BasicFilter {
 		try {
 			dateStart = sdf.parse(params.get("filter_date_from"));
 			dateEnd = sdf.parse(params.get("filter_date_to"));
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// Nothing to do here, silently ignore error			
 		}
 			

@@ -12,7 +12,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class BaseTemplate extends Model{
+public class Template extends Model{
 	@Required
 	public String name;
 	@Required
@@ -25,14 +25,14 @@ public class BaseTemplate extends Model{
 	@Required
 	public Boolean isSystem;
 	
-	public BaseTemplate(String name, Boolean isSystem, User user) {
+	public Template(String name, Boolean isSystem, User user) {
 		super();
 		this.name = name;
 		this.user = user;
 		this.isSystem = isSystem;
 	}
 	
-	public BaseTemplate(String name, Boolean isSystem, User user, String description) {
+	public Template(String name, Boolean isSystem, User user, String description) {
 		this(name, isSystem, user);
 		this.description = description;
 	}

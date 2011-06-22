@@ -150,7 +150,7 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     public String generateInvitationKey(){
     	String d = new Date().toString();
     	String email = getEmail();
-    	return Crypto.encryptAES(email + "d");    	
+    	return Crypto.encryptAES(email + d.toString());    	
     }
     
     public String getInvitationDescription(){
@@ -270,7 +270,7 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	}
 
 	@Override
-	public List getItems(Long project_id) {
+	public List getItems() {
 		List<Membership> memberships = Membership.findByProject(this.project, 7);
 		return memberships;
 	}

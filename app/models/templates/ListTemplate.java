@@ -20,7 +20,7 @@ import play.data.validation.Required;
 import play.i18n.Messages;
 
 @Entity
-public class ListTemplate extends BaseTemplate {
+public class ListTemplate extends Template {
 
 	public ListTemplate(String name, Boolean isSystem, User user) {
 		super(name, isSystem, user);

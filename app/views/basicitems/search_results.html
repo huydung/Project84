@@ -1,0 +1,68 @@
+%{
+def keyword = params.get('keyword');
+}%
+#{if !ajax}
+
+#{extends 'main.html' /}
+#{set title: messages.get('labels.searchResults', keyword) /}
+#{set pageTitle:title /}
+
+#{/}
+
+<div class="search_results">
+    #{if results != null && results.size() > 0}
+    <table class="box-table">
+        <thead>
+            <th>&{'labels.type'}</th>
+            <th>&{'labels.title'}</th>
+            <th>&{'labels.writtenBy'}</th>
+            <th>&{'labels.writtenOn'}</th>
+        </thead>
+        <tbody>
+        #{list items:results, as:'item'}
+        <tr class="search_result">
+            <td>
+            #{if item instanceof models.Comment}
+                <span class="item_type item_type_comment">
+                    <img src="/public/assets/icons/balloons.png" class="fleft" width="16" height="16"/>
+                    &{'comment'}
+                </span>
+                
+            #{/}
+            #{if item instanceof models.Item}
+                <span class="item_type item_type_comment">
+                    <img src="${item.listing.iconPath}"  class="fleft" width="16" height="16"/>
+                    ${item.listing.listingName}
+                </span>
+            #{/}
+            </td>
+            <td>
+                
+                #{if item instanceof models.Comment}
+	                <a href="@{Items.show(item.project.id, item.parent.listing.id, item.parent.id)}#comment-${item.id}">
+                    <strong class="item_name">${item.name}</strong></a> on 
+                    <em> <a href="@{Items.show(item.project.id, item.parent.listing.id, item.parent.id)}">
+                    ${item.parent.name.abbr(50)}</a> </em>
+                    
+	            #{/}
+	            #{if item instanceof models.Item}
+	                <a href="@{Items.show(item.project.id, item.listing.id, item.id)}">
+                    <strong class="item_name">${item.name}</strong>
+                    </a>
+	            #{/}
+            </td>
+            <td>
+                <span class="user">${item.creator.fullName}</span>
+            </td>
+            <td>
+                <em class="date fright">${item.created.format('hh:mm ' + loggedin.dateFormat)}</em>
+            </td>
+        </tr>
+        #{/}
+        </tbody>
+    </table>
+    #{/}
+    #{else}
+        &{'labels.searchNotFound'}
+    #{/}
+</div>

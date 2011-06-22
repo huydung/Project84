@@ -1,5 +1,7 @@
 package notifiers;
 
+import models.Comment;
+import models.Item;
 import models.Membership;
 import models.Project;
 import models.User;
@@ -23,4 +25,15 @@ public class Emails extends Mailer {
 		send(email, from, project, m);		
 	}
 	
+	public static void sendDailyDigestEmail(){
+		
+	}
+	
+	public static void sendCommentNotifyEmail(Comment comment){
+		
+	}
+	
+	public static void sendAssignedToItemEmail(Item item){
+		
+	}	
 }

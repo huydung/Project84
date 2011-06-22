@@ -70,7 +70,7 @@ public class Items extends AppController {
 				Long id = Long.parseLong(parts[1]); if(id == null){error(400, "Bad Request");}
 				item.user = User.findById(id);
 				if( item.user != null ){
-					item.save();
+					item.update();
 					saved = true;				
 				}else{error(400, "Bad Request");}
 			}
@@ -80,20 +80,19 @@ public class Items extends AppController {
 				try {
 					Date d = sdf.parse(parts[1]);
 					item.date = d;
-					item.save();
+					item.update();
 					saved = true;
 				} catch (ParseException e) { error(400, "Bad Request");	}				
 			}
 			//Drag and Drop Category
 			else if( field.equals("category") ){
 				item.category = parts[1];
-				item.save();
+				item.update();
 				saved = true;				
 			}
 		}else{error(400, "Bad Request");}
 		
 		if(saved){
-			item.log(ActivityType.CHANGE);
 			if( request.isAjax() ){
 				render("items/item.html");
 			}else{
@@ -128,18 +127,12 @@ public class Items extends AppController {
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 		}else{
-			Listing l = getListing();
-			
+			Listing l = getListing();			
 			item = Item.createFromSmartInput(input, l);
 			item.creator = getLoggedin();
-			try{
-				if(!item.validateAndSave()){
-					displayValidationMessage();
-				}else{					
-					item.log(ActivityType.CREATE);
-				}
-			}catch(Exception e){error();}
-			
+			if(!item.create()){
+				displayValidationMessage();
+			}				
 		}
 		
 		if( request.isAjax() ){
@@ -161,7 +154,6 @@ public class Items extends AppController {
 			try{
 				item.create();
 				flash.put("success", "Item " + item.name + " created!");			
-				item.log(ActivityType.CREATE);
 			}catch(Exception e){error();}
 		}
 		if(params.get("redirectToCreate", Boolean.class)){	
@@ -179,10 +171,10 @@ public class Items extends AppController {
 			notFound();
 		}
 		Item item = getItem();		
-		if( item == null ){	notFound("Item", item_id);	}
-		
+		if( item == null ){	notFound("Item", item_id);	}		
 		render("items/form.html", item);
 	}
+	
 	public static void create(
 			@Required Long project_id,
 			@Required Long listing_id){
@@ -201,10 +193,13 @@ public class Items extends AppController {
 		Listing l = getListing();
 		try{
 			item.updateFromSmartInput(input);		
-			item.save();
-			item.log(ActivityType.CHANGE);
-			flash.put("success", "Item " + item.name + " updated!");
-			Listings.dashboard(project_id, listing_id);
+			item.update();
+			if( request.isAjax() ){
+				render("items/item.html", item);
+			}else{
+				flash.put("success", "Item " + item.name + " updated!");
+				Listings.dashboard(project_id, listing_id);
+			}
 		}catch(Exception e){ error(); }
 	}
 	
@@ -217,8 +212,7 @@ public class Items extends AppController {
 			displayValidationMessage();
 			render("items/form.html", item);
 		}
-		item.log(ActivityType.CHANGE);
-		item.save();
+		item.update();
 		Listings.dashboard(project_id, listing_id);
 	}
 	
@@ -233,9 +227,11 @@ public class Items extends AppController {
 		if( item == null ){
 			notFound("Item", item_id);
 		}
-		item.deleted = true;
-		item.save();
-		item.log(ActivityType.DELETE);
-		Listings.dashboard(project_id, listing_id);
+		item.delete();
+		if( request.isAjax() ){
+			renderText("Deleted");
+		}else{
+			Listings.dashboard(project_id, listing_id);
+		}
 	}
 }

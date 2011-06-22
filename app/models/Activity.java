@@ -36,7 +36,7 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	@Required
 	@ManyToOne
 	public Project project;
-	
+		
 	@Enumerated(EnumType.STRING)
 	@Required
 	public ActivityType type;
@@ -102,7 +102,7 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	}
 
 	@Override
-	public List getItems(Long project_id) {		
+	public List getItems() {		
 		return Activity.find("project = ? ORDER BY created DESC", project).fetch(20);
 	}
 

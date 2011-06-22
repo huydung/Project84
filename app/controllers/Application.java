@@ -142,7 +142,7 @@ public class Application extends Controller {
 			Application.homepage();
     	}
 	}
-    
+    /*
     public static void getLatLang(@Required String address){
     	if(Validation.hasErrors()){
     		notFound();
@@ -161,6 +161,7 @@ public class Application extends Controller {
     		notFound();
     	}
     }
+    */
     /*
     public static void upload(String qqfile) {
        if(request.isNew) {

@@ -3,12 +3,13 @@
 #{set pageTitle: _project.name + ' - ' + messages.get('project.dashboard') /}
 
 #{if _project}
-#{if _project.deadline != null}
+<strong>[${_project.status}]</strong><br/>
+#{if _project.deadline != null && _project.isActive()}
 <strong>&{'labels.project.deadline'}: ${_project.deadline.format()}</strong> 
 
 <em>${_project.deadline.after(new Date()) ? '(' + _project.deadline.timeLeft() + ')' : ''}</em>
 #{/}
-#{if _project.description}
+#{if _project.description != null}
 <p class="description">
 ${_project.description}
 </p>

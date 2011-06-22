@@ -123,15 +123,12 @@ public class Authorization extends Controller {
 				if( !p.allow(m, PermissionKey.VIEW_ITEMS, l) ){
 					error(403, "Access Denied");
 				}
-			}else if( "doEdit,doCreate".contains(method) ){
-				if( !p.allow(m, PermissionKey.LISTING_CONFIG, l) ){
-					error(403, "Access Denied");
-				}
-			}else if( "saveOrderings".contains(method) ){
+			}			
+			else if( "saveOrderings,doEdit,doCreate".contains(method) ){
 				if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO) ){
 					error(403, "Access Denied");
 				}
-			}
+			}			
 		}
 		//Items Controller
 		else if( request.controllerClass == Items.class ){

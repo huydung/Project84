@@ -33,7 +33,8 @@ public class Project extends BasicItem {
     public Boolean needMembers = true;
     //public Boolean needClients = false;
     
-    public String doneStatus = DoneStatus.ONGOING.getName();
+    @Enumerated( EnumType.STRING)
+    public DoneStatus status = DoneStatus.ONGOING;
     
     public Project() {
 		super();
@@ -60,14 +61,6 @@ public class Project extends BasicItem {
     
     @Override
     public String toString(){ return name; }   
-    
-    public DoneStatus getStatus(){
-    	return DoneStatus.parse(doneStatus);
-    }
-    
-    public void setStatus(DoneStatus d){
-    	doneStatus = d.getName();
-    }
     
     /**
      * This method MUST be called AFTER save() the project
@@ -151,7 +144,7 @@ public class Project extends BasicItem {
     	return allow(m, key.toString() + "_" + l.id);
     }
 
-    public ActionResult saveAndGetResult(User actor){
+    public ActionResult createAndGetResult(User actor){
     	if( this.validateAndSave() && this.id > 0 ){
     		Activity.track(Messages.get("projects.created", actor.fullName), this, ActivityType.CHANGE, actor);
     		return new ActionResult(true);
@@ -159,6 +152,13 @@ public class Project extends BasicItem {
     		return new ActionResult(false, 
     			Messages.get("error.project.save"));
     	}
+    }
+    
+
+    public Project save(User user){
+    	this.save();
+    	Activity.track("The project [" + this.name + "] has been updated by [" + user.nickName +"]", this, ActivityType.CHANGE, user);
+    	return this;
     }
     
     public ActionResult addMember(String userEmail, String title, boolean isClient, User actor){
@@ -238,7 +238,7 @@ public class Project extends BasicItem {
     }
     
     public static List<Project> findByUser(User user){    	
-    	return Project.find("SELECT DISTINCT p FROM Project p LEFT JOIN p.memberships m WHERE m.user = ? AND m.deleted = 0", user).fetch();
+    	return Project.find("SELECT DISTINCT p FROM Project p LEFT JOIN p.memberships m WHERE m.user = ? AND m.deleted = FALSE and p.deleted = FALSE", user).fetch();
     }
     
     public List<IWidget> getWidgets(User user){
@@ -273,4 +273,14 @@ public class Project extends BasicItem {
 		return l;
     }
     
+    @Override
+    public Project delete(){    	
+    	this.deleted = true;
+    	this.save();
+    	return this;
+    }
+    
+    public boolean isActive(){
+    	return status == DoneStatus.ONGOING;
+    }
 }

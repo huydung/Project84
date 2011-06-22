@@ -1,0 +1,42 @@
+#{extends 'main.html' /}
+#{set title:messages.get('labels.edit') + ' ' + _project.name /}
+#{set pageTitle:title /}
+
+#{if _project}
+
+#{set tab:'info'/}
+#{include 'projects/configtab.html' /}
+
+<form id="form-project" action="@{Projects.doEdit()}" method="POST"
+    class="horizontal-form">
+    <div class="grid_9 prefix_2">  
+            <input type="hidden" name="project.id" value="${_project.id}" />
+	        <input type="hidden" name="project.creator.id" value="${_project.creator.id}" />
+	        #{hdfield name:'project.name', value:_project.name, labelKey:'labels.project.name', hasBody:false /}
+	
+	        <div class="form-field">
+	            <label>&{'labels.project.deadline'}</label>
+	            <input class="text date" data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }" 
+	                value="${_project.deadline.format()}" name="project.deadline"
+	                />
+	        </div>
+	        
+	        <div class="form-field">
+	            <label>&{'labels.des'}</label>
+	            <textarea class="text" rows="4" name="project.description">${_project.description}</textarea>
+	        </div>
+            <div class="form-field">
+                <label>&{'project.status'}</label>
+                #{select 'project.status', value:_project.status, items:models.enums.DoneStatus.values() /}
+            </div>
+        <button type="submit" class="button">
+            <span>&{'labels.save'}</span>
+        </button>  
+        <a href="@{Projects.delete(_project.id)}" class="icon-link icon-link-delete need-confirm fright"
+        style="margin-top: 23px;">
+        &{'labels.delete'} &{'labels.project'}
+        </a>
+        
+    </div>
+</form>
+#{/if}

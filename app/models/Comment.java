@@ -25,6 +25,10 @@ public class Comment extends BasicItem {
 	@ManyToOne
 	public Item parent;
 	
+	@Required
+	@ManyToOne
+	public Project project;
+	
 	public Comment() {
 		super();
 	}	
@@ -35,5 +39,10 @@ public class Comment extends BasicItem {
      
 	public static List<Comment> getCommentsOfItem(Item item){
 		return Comment.find( "parent = ? ", item ).fetch();
+	}
+	
+	public void beforeSave(){
+		super.beforeSave();
+		this.project = this.parent.project;
 	}
 }

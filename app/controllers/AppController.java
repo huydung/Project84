@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -14,6 +16,7 @@ import models.Membership;
 import models.Project;
 import models.User;
 import models.enums.ApprovalStatus;
+import models.enums.DoneStatus;
 import play.Logger;
 import play.Play;
 import play.data.binding.types.DateBinder;
@@ -21,6 +24,7 @@ import play.db.jpa.JPA;
 import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Finally;
 import play.mvc.Router;
 import play.mvc.With;
 
@@ -29,6 +33,12 @@ public class AppController extends Controller {
 	
 	@Before(priority=1)
     static void prepare() {
+		//set up Hibernate filter for soft-delete mechanism
+		//@see: models.package-info.java
+		((Session)JPA.em().getDelegate())
+		.enableFilter("deleted")
+		.setParameter("deleted", false);
+		
 		//Check if user has been login. If she hasn't, redirect to homepage, 
         if(Security.isLoggedIn()) {
         	
@@ -74,9 +84,23 @@ public class AppController extends Controller {
             	}
             }
             
+            //Get list of projects with this user
             List<Project> projects = Project.findByUser(user);
+            List<Project> inactive_projects = null;
             if( projects != null ){
+    			inactive_projects = new ArrayList<Project>();
+    			for(Iterator<Project> ite = projects.iterator(); ite.hasNext();){
+    				Project p= ite.next();
+    				if( !p.isActive() ){
+    					inactive_projects.add(p);
+    					ite.remove();
+    				}
+    			}
+
             	renderArgs.put("_projects", projects);
+            	if( inactive_projects != null && inactive_projects.size() > 0){
+            		renderArgs.put("_inactive_projects", inactive_projects);
+            	}
             }            
             
             //get active project of the logged in user, if she having it
@@ -85,7 +109,10 @@ public class AppController extends Controller {
     			Project project = null;
     			for(Project p : projects){
     				if( p.id == project_id ){ project = p; }
-    			}    			
+    			}
+    			for(Project p : inactive_projects){
+    				if( p.id == project_id ){ project = p; }
+    			}   
     			if( project != null ){
     				renderArgs.put("_project", project);
     				//MiscUtil.ConsoleLog(request.url + ": Saved project to renderArgs (" + project.name + ")");
@@ -115,11 +142,7 @@ public class AppController extends Controller {
     		//set up paramater to tell is the current request is sent by AJAX
     		renderArgs.put("ajax", request.isAjax());
     		
-    		//set up Hibernate filter for soft-delete mechanism
-    		//@see: models.package-info.java
-    		((Session)JPA.em().getDelegate())
-			.enableFilter("deleted")
-			.setParameter("deleted", false);
+    		
         }else{
         	Application.homepage();
         }
@@ -173,5 +196,6 @@ public class AppController extends Controller {
 	
 	static void notFound(String object, Long id){
 		error(404, Messages.get("error.notFound", object, id));		
-	}
+	}	
+	
 }

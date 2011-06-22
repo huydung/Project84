@@ -7,6 +7,8 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.huydung.utils.MiscUtil;
+
 import net.sf.cglib.core.Local;
 
 import play.Logger;
@@ -25,8 +27,11 @@ public class Bootstrap extends Job {
 	public void doJob(){
 		TimeZone.setDefault(TimeZone.getTimeZone("GTM+7:00"));
 		Locale.setDefault(new Locale("vi"));
-		
-		createUserAndProjectData();
+		MiscUtil.ConsoleLog("Bootstrap being called");
+		if( User.count() <= 0 ){
+			createUserAndProjectData();
+			MiscUtil.ConsoleLog("Created data in Bootstrap");
+		}
 		
 	}	
 
@@ -177,11 +182,12 @@ public class Bootstrap extends Job {
 		ol.created = cal.getTime();
 		ol.creator = huydung;
 		cal.set(2011, 4, 31);
+		ol.needMembers = true;
 		ol.deadline = cal.getTime();
-		ol.setStatus( DoneStatus.ONGOING );
+		ol.status = DoneStatus.COMPLETED;
 		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
 		ol.updated = ol.created;
-		ol.saveAndGetResult(huydung);
+		ol.createAndGetResult(huydung);
 		ol.copyFromTemplate(software);
 		ol.assignCreator(huydung, "Manager");
 		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
@@ -191,12 +197,13 @@ public class Bootstrap extends Job {
 		cal.set(2011, 2, 10, 20, 22);
 		wd.created = cal.getTime();
 		wd.creator = huydung;
+		wd.needMembers = true;
 		cal.set(2012, 11, 8);
 		wd.deadline = cal.getTime();
-		wd.setStatus( DoneStatus.ONGOING );
-		wd.description = "Đám cưới mong chờ giữa Huy Dũng và Ngọc Hiền";
+		wd.status = DoneStatus.ONGOING;
+		wd.description = "Đám cưới mong chờ giữa Chú rể và Cô dâu";
 		wd.updated = ol.created;
-		wd.saveAndGetResult(huydung);		
+		wd.createAndGetResult(huydung);		
 		wd.copyFromTemplate(wedding);		
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);

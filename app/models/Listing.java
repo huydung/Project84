@@ -235,12 +235,18 @@ public class Listing extends Model implements IWidget {
 
 	@Override
 	public Link getLastLink() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("project_id", this.project.id);
+		args.put("listing_id", this.id);
+		return new Link( 
+				Messages.get("labels.create"),
+				Router.getFullUrl("Items.create", args),
+				"icon-link-add"
+		);
 	}
 
 	@Override
-	public List getItems(Long project_id) {		
+	public List getItems() {		
 		return Item.findByListing(this, "");
 	}
 

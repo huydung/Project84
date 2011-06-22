@@ -1,3 +1,5 @@
+keyword = Từ khóa
+
 ## Play ##
 # For use in JavaExtensions.since tag
 since.seconds = %s giây trước
@@ -30,8 +32,8 @@ validation.url=Đường link không hợp lệ
 
 ## INTERFACE ##
 interface.copyrighted = Project84 <super>&copy;</super> là một sản phẩm của <a href="http://www.huydung.com/">Huy Dũng</a> từ <a href="http://madeby84.com">MadeBy84</a>
-interface.slogan = Thông minh. Dễ dàng. Mềm dẻo. Thật sự? Phải, <a href="#" class="modal">hãy tự mình kiểm chứng</a>.
-interface.define = Định nghĩa lại "Quản lý công việc"
+interface.slogan = Thông minh. Hợp lý. Mềm dẻo. Thật sự? Phải, <a href="#" class="modal">hãy tự mình kiểm chứng</a>.
+interface.define = Quản lý Mọi thứ Bạn cần
 interface.welcome = Xin chào
 interface.logout = Thoát ra
 
@@ -63,6 +65,9 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 ## LABELS ##
 labels.send = Gửi
 labels.search = Tìm kiếm
+labels.advancedSearch = Tìm kiếm nâng cao
+labels.searchResults = Kết quả tìm kiếm cho '%s'
+labels.searchNotFound = Không tìm thấy kết quả nào
 labels.save = Lưu
 labels.saveAndCreate = Lưu và tạo mới tiếp
 labels.email = Email
@@ -137,7 +142,7 @@ labels.yes = Có
 labels.no = Không
 labels.itemIn = 1 mục trong
 labels.create = Tạo mới
-
+labels.project = Dự án
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
 membership.alreadyAccepted = %s đã đang là thành viên của dự án này rồi.
@@ -169,6 +174,10 @@ project.configuration.long = %s - Cài đặt và Phân quyền
 project.addMember = Thêm thành viên
 projects.created = %s đã khởi tạo dự án.
 project.permissions = Phân quyền
+project.edit = Sửa Thông tin cơ bản
+project.projects = Các dự án
+project.status = Trạng thái
+project.listings = Các danh mục trong dự án
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án
 labels.project.deadline = Hạn chót

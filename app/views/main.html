@@ -47,21 +47,51 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
             </span>            
             #{/if}
-            #{if _projects != null }
-                <div class="project_switcher">
-                    <strong>&{'project.list'}:</strong>
-                    <select>
-                        #{list items:_projects, as:'p'}
-                        <option value="@{Projects.dashboard(p.id)}" ${p == _project ? 'selected="selected"' : ''}>
-                            ${ p.name }
-                        </option>
-                        #{/}
-                    </select>
-                    <a href="#" class="icon-link icon-link-go">&{'labels.go'}</a>
-                </div>                
-            #{/}
+            
 	    </div>
     </div>
+    #{if _project != null && _projects != null}
+    <div class="grid_16 clearfix" id="projects_tools">
+    
+        <div id="project_switcher" class="project_switcher fleft">
+            <strong>&{'project.projects'}:</strong>
+            <select>                
+                <optgroup label="&{'project.active_projects'}">
+                #{list items:_projects, as:'p'}
+	                <option value="@{Projects.dashboard(p.id)}" ${p == _project ? 'selected="selected"' : ''}>
+	                    ${ p.name }
+	                </option>
+                #{/}
+                </optgroup>
+                #{if _inactive_projects != null}
+                <optgroup label="&{'project.inactive_projects'}">
+                #{list items:_inactive_projects, as:'p'}
+                    <option value="@{Projects.dashboard(p.id)}" ${p == _project ? 'selected="selected"' : ''}>
+                        ${ p.name }
+                    </option>
+                #{/}
+                </optgroup>
+                #{/}                
+            </select>
+            <a href="@{Projects.create}" class="icon-link icon-link-add">&{'labels.create'}</a>
+        </div>
+        #{if _project != null }
+        <div id="project_search" class="fright">
+            
+            <form action="@{BasicItems.search}" class="clearfix">
+                <input type="hidden" name="project_id" value="${_project.id}" />
+                <div class="form-field">
+                    <input class="text" name="keyword" required="required" value="${params.get('keyword')}" />
+                </div>
+                
+                <button class="icon-link icon-link-search fleft">&{'labels.search'}</button>
+                <a class="icon-link icon-link-settings fleft modal" href="@{BasicItems.advancedSearch}">&{'labels.advancedSearch'}</a>
+            </form>
+        </div>  
+        #{/}              
+    
+    </div>
+    #{/}
 <!-- USER TOOLS END -->    
 <div class="grid_16" id="header">
 <!-- MENU START -->
@@ -72,7 +102,7 @@
 </div>
 <div class="grid_16" id="page-title">
 <!-- TABS START -->
-     <h1 class="#{get 'titleClass' /}">#{get 'title' /}</h1>
+     <h1 class="#{get 'titleClass' /}">${title.raw()}</h1>
 <!-- TABS END -->    
 </div>
 <!-- CONTENT START -->

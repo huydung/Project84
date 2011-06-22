@@ -1,14 +1,14 @@
 var currencies = ["AED", "ANG", "ARS", "AUD", "BDT", "BGN", "BHD", "BND", "BOB", "BRL", "BWP", "CAD", "CHF", "CLP", "CNY", "COP", "CRC", "CZK", "DKK", "DOP", "DZD", "EEK", "EGP", "EUR", "FJD", "GBP", "HKD", "HNL", "HRK", "HUF", "IDR", "ILS", "INR", "ISK", "JMD", "JOD", "JPY", "KES", "KRW", "KWD", "KYD", "KZT", "LBP", "LKR", "LTL", "LVL", "MAD", "MDL", "MKD", "MUR", "MVR", "MXN", "MYR", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "SAR", "SCR", "SEK", "SGD", "SKK", "SLL", "SVC", "THB", "TND", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VEF", "VND", "XOF", "YER", "ZAR", "ZMK"];
-/** Go To Top Link Plugins **/
+/** Go To Top Link Plugins * */
 jQuery.fn.topLink = function(settings) {
   settings = jQuery.extend({
     min: 1,
     fadeSpeed: 200
   }, settings);
   return this.each(function() {
-    //listen for scroll
+    // listen for scroll
     var el = $(this);
-    el.hide(); //in case the user forgot
+    el.hide(); // in case the user forgot
     $(window).scroll(function() {
       if($(window).scrollTop() >= settings.min)
       {
@@ -24,7 +24,7 @@ jQuery.fn.topLink = function(settings) {
 
 $(document).ready(function(){
 	
-	/** default ajax callback **/
+	/** default ajax callback * */
 	var successAjax = function(data, status, xhr){
 		$.gritter.add({
 			title: 'Success',
@@ -34,7 +34,7 @@ $(document).ready(function(){
 	};
 	
 	function processListingConfigurationPage(){
-		/** sortable **/
+		/** sortable * */
 		var fixHelper = function(e, ui) {
 		    ui.children().each(function() {
 		        $(this).width($(this).width());
@@ -47,7 +47,7 @@ $(document).ready(function(){
 			placeholder: 'ui-sortable-placeholder'
 		}).disableSelection();
 		
-		/** PROJECT LISTINGS SORTING **/
+		/** PROJECT LISTINGS SORTING * */
 		$('.project_listings').sortable({
 			axis: "y",
 			handle: "h3.header",
@@ -74,8 +74,8 @@ $(document).ready(function(){
 			}
 		});
 		
-		/** Icon Chooser Components **/
-		//Fills Icons in the modal-dialog
+		/** Icon Chooser Components * */
+		// Fills Icons in the modal-dialog
 		var $modal = $('#modal-dialog');
 		if($modal.length <= 0){
 			$('body').append('<div id="modal-dialog"></div>');
@@ -112,7 +112,7 @@ $(document).ready(function(){
 			});
 		};
 		
-		/** Checkbox interactivity in Project Configuration page **/
+		/** Checkbox interactivity in Project Configuration page * */
 		$('.listing-fields-configuration input[type=checkbox]').click(function(){
 			var $this = $(this);
 			if( $this.is(':checked') ){
@@ -137,10 +137,10 @@ $(document).ready(function(){
 			});
 		});
 		
-		/** Default gritter options **/
+		/** Default gritter options * */
 		$.gritter.options = {position: 'bottom-right',time: 4000};
 				
-		/** Convert all flash messages to gritter **/
+		/** Convert all flash messages to gritter * */
 		$('#success,#warning,#info,#error').each(function(){
 			var id = $(this).attr('id');
 			$.gritter.add({
@@ -150,20 +150,20 @@ $(document).ready(function(){
 			});
 		}).remove();
 		
-		/** Project switcher **/
+		/** Project switcher * */
 		  $('.project_switcher select').change(function(){
 		  		window.location.href = $(this).val();
 		  });
 		  
-		  /** Enhance the menu in case of too many listings **/
+		  /** Enhance the menu in case of too many listings * */
 		  var $menu = $('#menu');
 		  var $menuul = $menu.find('ul.group');
 		  var $menulis = $menuul.find('li');
 		  
 		  $menuul.width( ($menulis.width()) * $menulis.length );
-		  //alert($menuul);
+		  // alert($menuul);
 		  var margin = (($menu.width() - $menuul.width()) / ($menulis.length - 1));
-		  //lay lis over each other to fit the room
+		  // lay lis over each other to fit the room
 		  if( margin < 0 ){ 
 			  $menulis.each(function(){
 				  if( !$(this).is('.first') ){
@@ -172,7 +172,7 @@ $(document).ready(function(){
 			  });
 		  };
 		
-		/** Date Picker **/
+		/** Date Picker * */
 		$('input.date').each(function(e){
 			var format = $(this).attr("data-format");
 			var $dp = $(this);
@@ -184,10 +184,10 @@ $(document).ready(function(){
 			})
 		});
 		
-		/** Fixed header of permissions table **/
+		/** Fixed header of permissions table * */
 		$('.permissions table').fixedtableheader();
 		  
-		/** Accordion & Tabs **/
+		/** Accordion & Tabs * */
 		var stop = false;
 		$( "#accordions .header" ).click(function( event ) {
 			if ( stop ) {
@@ -206,7 +206,7 @@ $(document).ready(function(){
 		$('#tabs').tabs();
 		
 		
-		/** Hide elements that will be enhanced or reveal by Javascript **/
+		/** Hide elements that will be enhanced or reveal by Javascript * */
 		$('.enhanced, .reveal').hide();
 		$('.reveal-toggle').click(function(){
 			$target = $($(this).attr('href'));
@@ -214,20 +214,20 @@ $(document).ready(function(){
 			return false;
 		});		
 		
-		/** Allow to click on label to select **/
+		/** Allow to click on label to select * */
 		$('label,.label').css({cursor:'pointer'}).click(function(){
 			$(this).next('input[type="checkbox"]').click().end()
 					.prev('input[type="checkbox"]').click();
 			return false;
 		});
 		
-		/** Convert delete action link to have confirmation **/
+		/** Convert delete action link to have confirmation * */
 		$('.need-confirm').confirm({
 			timeout:5000,
 			wrapper:'<span class="confirmation fright"></span>'
 		});		
 		
-		/** SHOW ALL/HIDE ALL **/
+		/** SHOW ALL/HIDE ALL * */
 		$('a.showhide').each(function(){
 			$this = $(this);
 			var showText = $this.attr('data-showText');
@@ -249,7 +249,7 @@ $(document).ready(function(){
 			return false;
 		});
 		
-		/** Convert modal actions in widget to use AJAX **/
+		/** Convert modal actions in widget to use AJAX * */
 		$('.modal').click(function(){
 			$this = $(this);
 			$('body').append('<div id="modal-dialog"></div>');
@@ -281,18 +281,37 @@ $(document).ready(function(){
 	};
 	
 	function processProjectDashboard(){
-		/** Make all portlets equal in height **/
+		/** Make all portlets equal in height * */
 		var portlet_max_height = 0;
-		$('#portlets .widget-container').each(function(){
+		$('#portlets .widget-column-1').each(function(){
 			var h = $(this).height();
 			portlet_max_height = portlet_max_height < h ? h : portlet_max_height;
-			//alert(portlet_max_height + 30);
+			// alert(portlet_max_height + 30);
 		}).height(portlet_max_height + 30);
 	};
 	
-	function bindEventToItem(el){
-		$item = $(el);
-		/** INLINE EDIT **/
+	function bindEventToItem(el, id){
+		var $item = $(el);
+		var id = id || $item.attr('id');
+		var item_id = id.substr(5);
+		var lid = $item.parents('ul.items').attr('data-listing-id');
+		var pid = $item.parents('ul.items').attr('data-project-id');
+		
+		var updateSuccess = function(response, status, xhr){
+			$('#' + id).replaceWith(response);
+			var $newel = $('#' + id);
+			$newel.addClass('item-drop-active', 2000, function(){
+				$(this).removeClass('item-drop-active', 2000);
+			});
+			$.gritter.add({
+				title: 'Success',
+				class_name: 'success',
+				text: "Item <em>" + $newel.find('.title').text() + "</em> has been updated!" 
+			});
+			bindEventToItem($newel.get());
+		 };		
+		
+		/** INLINE EDIT * */
 		$item.find('.inline-edit').hide().end()
 		.dblclick(function(){
 			$(this)
@@ -306,30 +325,31 @@ $(document).ready(function(){
 				});
 		});
 		
-		/** When item is checked **/
-		$('input[type=checkbox]', $item).click(function(){
+		/** INLINE EDIT SUBMIT * */
+		$('.inline-edit-form', $item).submit(function(){
+			 var $this = $(this); 
+			 $.post($this.attr('action'), $this.serialize(), updateSuccess);
+			 return false;			  
+		});
+		
+		/** When item is checked * */
+		var afterChecked = function(){
 			var $this = $(this);
-
-			//submit to server
-			var lid = $this.parents('ul.items').attr('data-listing-id');
-			var pid = $this.parents('ul.items').attr('data-project-id');
-			var id = $this.parents('li').attr('data-id');
 			var checked = $this.is(':checked');
 			$.post(
 				hd.itemCheckAction({
-					project_id: pid, listing_id: lid, item_id: id, checked: checked
+					project_id: pid, listing_id: lid, item_id: item_id, checked: checked
 				}), null,successAjax
 			);
-			//add/remove class on the wrapper
 			if( checked ){
-				$this.parents('li').addClass('checked');
+				$item.addClass('checked');
 			}else{
-				$this.parents('li').removeClass('checked');
-			};	
-
-		});
+				$item.removeClass('checked');
+			};
+		};
+		$('input[type=checkbox]', $item).click(afterChecked);
 		
-		/** CLICK TITLE TO TOGGLE SUBINFO **/
+		/** CLICK TITLE TO TOGGLE SUBINFO * */
 		$('.title', $item).click(function(){
 			var si = $(this).siblings('.subinfo');
 			if( si.is(':visible') ){
@@ -339,38 +359,23 @@ $(document).ready(function(){
 			}					
 		});
 		
-		/** DROPPABLE **/
+		/** DROPPABLE * */
+		var afterDrop = function( event, ui ) {
+			var data = $(ui.draggable).attr('data-drag');
+			var url = '' + hd.itemUpdateAction({
+				project_id: pid, listing_id: lid, item_id: item_id
+			});
+			$.post(url, {data: data}, updateSuccess);
+		};
+		
 		$item.droppable({
 		  	hoverClass: "item-drop-active",
-			drop: function( event, ui ) {
-				//console.log(ui);
-				var data = $(ui.draggable).attr('data-drag');
-				var $this = $(this);
-				var lid = $this.parents('ul.items').attr('data-listing-id');
-				var pid = $this.parents('ul.items').attr('data-project-id');
-				var id = $this.attr('data-id');
-				var url = '' + hd.itemUpdateAction({
-					project_id: pid, listing_id: lid, item_id: id
-				});
-				$.post(url, {data: data}, function(response, status, xhr){
-					var id = $this.attr('id');
-					$this.replaceWith(response);
-					var $newel = $('#'+id).addClass('item-drop-active', 2000, function(){
-						$(this).removeClass('item-drop-active', 2000);
-					});
-					$.gritter.add({
-						title: 'Success',
-						class_name: 'success',
-						text: "Item <em>" + $newel.find('.title').text() + "</em> has been updated!" 
-					});
-					bindEventToItem($newel.get());
-				});
-			}
+			drop: afterDrop
 	    });
 	};
 	
 	function processItemListings(){
-		/** Quick Add  **/
+		/** Quick Add * */
 		  $('form#quick-add-form').submit(function(){
 			 var $this = $(this);			 
 			 $.post($this.attr('action'), $this.serialize(), function(response, status, xhr){
@@ -393,7 +398,7 @@ $(document).ready(function(){
 	};
 	
 	function processFilterBoxes(){
-		/** CHECK-UNCHECK ALL **/
+		/** CHECK-UNCHECK ALL * */
 		$('.uncheck-all').click(function(){
 			$(this).parents('.checkboxs-holder')
 				.find('input[type="checkbox"]:checked')
@@ -407,12 +412,12 @@ $(document).ready(function(){
 			return false;
 		});
 		
-		/** Drag and Drop to change item field **/
+		/** Drag and Drop to change item field * */
 		$('.draggable').draggable({revert:"valid"});
 	};
 	
 	function processItemForm(){
-		/** CURRENCY AUTO COMPLETE **/
+		/** CURRENCY AUTO COMPLETE * */
 		$('.item_field_currency').autocomplete({
 			source: currencies
 		});
@@ -428,7 +433,7 @@ $(document).ready(function(){
 			});
 		};	
 		
-		/** WYM EDITOR **/
+		/** WYM EDITOR * */
 		$('.wymeditor').wymeditor({
 			skin: 'compact',
 			logoHtml: '',
@@ -456,7 +461,7 @@ $(document).ready(function(){
 	         containersHtml: ''
 		});
 		
-		/** Combo box **/
+		/** Combo box * */
 		$('.select-create-new').click(function(){
 			var $this = $(this).hide();
 			var $selected = $this.siblings('select.editable-select');
@@ -475,7 +480,7 @@ $(document).ready(function(){
 			};
 		});
 		
-		/** Save AND Create action **/
+		/** Save AND Create action * */
 		$('.saveAndCreate').click(function(){
 			$('#saveAndCreate').val('true');
 		});		

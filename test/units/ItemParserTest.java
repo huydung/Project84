@@ -94,6 +94,20 @@ public class ItemParserTest {
 		assertEquals("Buy hosting", item.name);
 		
 		item = Item.createFromSmartInput(
+				"Buy hosting 1250", l);
+		assertEquals(new BigDecimal(1250), item.cost);
+		assertEquals(new Integer(1), item.cost_amount);
+		assertEquals("VND", item.cost_currency);
+		assertEquals("Buy hosting", item.name);
+		
+		item = Item.createFromSmartInput(
+				"Buy hosting 1250x5", l);
+		assertEquals(new BigDecimal(1250), item.cost);
+		assertEquals(new Integer(5), item.cost_amount);
+		assertEquals("VND", item.cost_currency);
+		assertEquals("Buy hosting", item.name);
+		
+		item = Item.createFromSmartInput(
 				" SGD 125.25x15 Buy hosting", l);
 		assertEquals(new BigDecimal(125.25), item.cost);
 		assertEquals(new Integer(15), item.cost_amount);
@@ -162,6 +176,7 @@ public class ItemParserTest {
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeZone(TimeZone.getDefault());
 		cal.set(2011, 5, 14); //2011-06-14
+		cal.getTime();//Trigger the above setting to correct fields like WEEK_OF_MONTH
 		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 		sdf.setTimeZone(TimeZone.getDefault());
 				

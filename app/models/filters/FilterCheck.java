@@ -24,9 +24,9 @@ public class FilterCheck extends BasicFilter {
 		if( showChecked && showUnChecked || (!showChecked && !showUnChecked) ){
 			return "";			
 		} else if( showChecked ){
-			return " checkbox = 'TRUE'";
+			return " checkbox = 1";
 		} else{
-			return " checkbox = 'FALSE'";
+			return " checkbox = 0";
 		}
 	}
 	

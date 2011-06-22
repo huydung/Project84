@@ -78,6 +78,7 @@ public class Listings extends AppController {
 			displayValidationMessage();
 			Projects.structure(project_id);
 		}else{
+			flash.put("success", "Listing Configuration has been saved");
 			Projects.structure(project_id);
 		}
 	}

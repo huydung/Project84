@@ -3,21 +3,21 @@
 #{set pageTitle:messages.get('project.list') /}
 
 <a href="@{Projects.create()}" class="link_button button_add">&{'project.create'}</a>
-#{if active_projects}
+#{if _projects}
 <div class="fieldset">
     <h3 class="fieldset_title">&{'project.active_projects'}</h3>
     <ul>
-    #{list items:active_projects, as:'p'}
+    #{list items:_projects, as:'p'}
         <li>#{project project:p /}</li>
     #{/}
     </ul>    
 </div>    
 #{/}
-#{if inactive_projects}
+#{if _inactive_projects}
 <div class="fieldset">
     <h3 class="fieldset_title">&{'project.inactive_projects'}</h3>
     <ul>
-    #{list items:inactive_projects, as:'p'}
+    #{list items:_inactive_projects, as:'p'}
         <li>#{project project:p /}</li>
     #{/}
     </ul>

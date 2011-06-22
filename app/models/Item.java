@@ -33,7 +33,7 @@ import com.huydung.utils.MiscUtil;
 import controllers.AppController;
 
 import models.enums.ActivityType;
-import models.enums.ItemType;
+
 
 import play.Logger;
 import play.data.validation.MaxSize;
@@ -48,11 +48,15 @@ import sun.misc.Regexp;
 import sun.util.resources.CurrencyNames;
 
 @Entity
+@Filter(name="deleted")
 public class Item extends BasicItem implements IWidgetItem{
 		
 	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox,name";
-	public static final String FIELDS_REQUIRED = "deleted,listing,created,creator,updated,type,name,id,rawInput";
-
+	public static final String FIELDS_REQUIRED = "project,deleted,listing,created,creator,updated,type,name,id,rawInput";
+	
+	@ManyToOne
+	public Project project;
+	
 	@MaxSize(500)
 	public String description;
 	
@@ -136,6 +140,7 @@ public class Item extends BasicItem implements IWidgetItem{
 			this.file_name = null;
 			this.file_size = null;
 		}
+		this.project = this.listing.project;
 	}
 	
 	public static List<ItemField> getItemFields(){
@@ -176,11 +181,15 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public static List<Item> findByListing(Listing listing, String filter){
-		String query = "listing = ?";
+		return findByListing(listing, filter, listing.sort);
+	}
+	
+	public static List<Item> findByListing(Listing listing, String filter, String sort){
+		String query = "deleted = 0 AND listing = ?";
 		if( filter != null && filter.length() > 0 ){
 			query += " AND" + filter;
 		}
-		query +=  " ORDER BY " + listing.sort;
+		query +=  " ORDER BY " + sort;
 		MiscUtil.ConsoleLog(query);
 		return Item.find(query, listing).fetch();
 	}
@@ -285,12 +294,13 @@ public class Item extends BasicItem implements IWidgetItem{
 		return "";
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void createSmartInput(){
 		this.rawInput = this.name;
-		if( this.cost != null ){
+		if( this.hasData("cost") ){
 			this.rawInput += " " + this.cost_currency.toUpperCase() + ":" + this.cost + "x" + this.cost_amount;			
 		}
-		if( this.date != null ){
+		if( this.hasData("date") ){
 			Calendar cal = new GregorianCalendar();
 			cal.setTimeZone(TimeZone.getDefault());
 			cal.setTime(this.date);
@@ -300,26 +310,29 @@ public class Item extends BasicItem implements IWidgetItem{
 				this.rawInput += "/" + year;
 			}
 		}
-		if( this.email1 != null ){
+		if( this.hasData("email1") ){
 			this.rawInput += " " + this.email1;
 		}
-		if( this.email2 != null ){
+		if( this.hasData("email2") ){
 			this.rawInput += " " + this.email2;
 		}
-		if( this.phone1 != null ){
+		if( this.hasData("phone1") ){
 			this.rawInput += " " + this.phone1;
 		}
-		if( this.phone2 != null ){
+		if( this.hasData("phone2") ){
 			this.rawInput += " " + this.phone2;
 		}
-		if( this.number != null ){
+		if( this.hasData("number") ){
 			this.rawInput += " num:" + this.number;
 		}
-		if( this.user != null ){
+		if( this.hasData("user") ){
 			this.rawInput += " !" + this.user.nickName;
 		}
-		if( this.address != null ){
-			this.rawInput += " add:" + this.address;
+		if( this.hasData("address") ){
+			this.rawInput += " add:" + this.address + "#";
+		}
+		if( this.hasData("category") ){
+			this.rawInput += " <" + category + ">";
 		}
 		//this.save();
 	}
@@ -360,12 +373,12 @@ public class Item extends BasicItem implements IWidgetItem{
 		name = parseUser(name, item);
 		}
 		name = parseDate(name, item, basedDate);
-		name = parseNumber(name, item);
-		name = parseCost(name, item);
+		name = parseNumber(name, item);		
 		name = parseEmail(name, item);
 		name = parseTelephone(name, item);
 		name = parseAddress(name, item);
 		name = parseCategory(name, item);
+		name = parseCost(name, item);
 		
 		//Clean up the name after processing
 		name = Pattern.compile("\\s{2,}").matcher(name).replaceAll(" ");
@@ -410,6 +423,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 
 	private static String parseDate(String name, Item item, Calendar basedDate){
+		//MiscUtil.ConsoleLog("Based Date: " + basedDate.toString());
 		Calendar date = (Calendar)basedDate.clone();
 		if( name.contains("@today ")){
 			item.date = date.getTime();
@@ -492,7 +506,9 @@ public class Item extends BasicItem implements IWidgetItem{
 					date.set(Calendar.DAY_OF_WEEK, weekDays.get(weekday));
 					date.getTime(); //Trigger the above setting
 					if( DateUtils.isSameDay(date, basedDate) ){
-						if( goNext ){ date.add(Calendar.DAY_OF_YEAR, 7); }
+						if( goNext ){							
+							date.add(Calendar.DAY_OF_YEAR, 7); 
+						}
 						else{ date.add(Calendar.DAY_OF_YEAR, -7); }
 					}
 					while(( date.before(basedDate) && goNext )){
@@ -639,19 +655,22 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	private static String parseCost(String name, Item item) {
 		Matcher costMatcher = Pattern.compile(
-			"[\\s]([a-zA-Z]{3})[ ]?([\\d]+[\\.]?[\\d]+([xX][\\d]+)?)", Pattern.CASE_INSENSITIVE
+			"[\\s]([a-zA-Z]{3})?[ ]?([\\d]+[\\.]?[\\d]+([xX][\\d]+)?)", Pattern.CASE_INSENSITIVE
 		).matcher(name);
 		String costFound = "";
+		String currencyCode = "";
 		while( costMatcher.find() ){
-			costFound = costMatcher.group().trim();
+			costFound = costMatcher.group(2).trim();
+			currencyCode = costMatcher.group(1);
+			if( currencyCode == null ){ currencyCode = "VND"; }
+			currencyCode = currencyCode.toUpperCase();
 		};
-		if( costFound.length() > 0 ){
-			String currencyCode = costFound.substring(0, 3).toUpperCase();
+		if( costFound.length() > 0 ){			
 			try{
 				Currency c = Currency.getInstance(currencyCode);
 			
 				if( c!= null && c.getDefaultFractionDigits() > -1 ){
-					String priceAndAmount = costFound.substring(3).trim().toLowerCase();
+					String priceAndAmount = costFound.toLowerCase();
 					item.cost_currency = currencyCode;
 					if( priceAndAmount.contains("x") ){
 						String[] parts = priceAndAmount.split("x");					
@@ -732,5 +751,28 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	public List<Comment> getComments(){
 		return Comment.getCommentsOfItem(this);
+	}
+	
+	@Override
+	public boolean create(){
+		boolean res = super.create();
+		if( res ){
+			this.log(ActivityType.CREATE);
+		}
+		return res;
+	}
+	
+	@Override
+	public Item delete(){
+		this.deleted = true;
+		this.save();
+		this.log(ActivityType.DELETE);
+		return this;
+	}
+	
+	public Item update(){
+		this.save();
+		this.log(ActivityType.CHANGE);
+		return this;
 	}
 }

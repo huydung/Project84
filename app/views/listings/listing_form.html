@@ -44,7 +44,7 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
             int i = 1;
             }%
             
-            *{**** Display the seleccted fields first, with correct order ****}*
+            *{**** Display the selected fields first, with correct order ****}*
             #{list items:selected_fs, as:'f'}
                 #{itemfield f:f, used:true, _usedFieldName:l.getFieldName(f), i:i /}
                 %{ i++ }%
@@ -63,14 +63,47 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
             <legend>&{'labels.listing.widget'}</legend>
             <div class="grid_7 nomargin">                    
                 <div class="form-field">
-                    <label>&{'listing.mainField'}</label> 
-                    #{select 'listing.mainField', value:l.mainField,
-                        items:fs, valueProperty:'fieldName' /}
+                    <label>&{'listing.mainField'}</label>
+                    *{***** The selectbox code are duplicate because it's seem like multi-level include do not receive variable from parent template? *****}*
+                    <select name="listing.mainField">
+					    <optgroup label="Selected">
+					        #{list items:selected_fs, as:'f'}
+					            <option value="${f.fieldName}" ${l.mainField == f.fieldName ? 'selected="selected"' : ''}>
+					            ${l.getFieldName(f)}
+					            </option>
+					        #{/}
+					    </optgroup>
+					    <optgroup label="Others">
+					        #{list items:fs, as:'f'}
+					            #{if !requiredFields.contains(f.fieldName) && !l.hasField(f.fieldName)}
+					            <option value="${f.fieldName}" ${l.mainField == f.fieldName ? 'selected="selected"' : ''}>
+					            ${f.name}
+					            </option>    
+					            #{/}
+					        #{/}
+					    </optgroup>                     
+					</select>
                 </div>
                 <div class="form-field">
                     <label>&{'listing.subField'}</label> 
-                    #{select 'listing.subField', value:l.subField,
-                        items:fs, valueProperty:'fieldName' /}
+                    <select name="listing.subField">
+                        <optgroup label="Selected">
+                            #{list items:selected_fs, as:'f'}
+                                <option value="${f.fieldName}" ${l.subField == f.fieldName ? 'selected="selected"' : ''}>
+                                ${l.getFieldName(f)}
+                                </option>
+                            #{/}
+                        </optgroup>
+                        <optgroup label="Others">
+                            #{list items:fs, as:'f'}
+                                #{if !requiredFields.contains(f.fieldName) && !l.hasField(f.fieldName)}
+                                <option value="${f.fieldName}" ${l.subField == f.fieldName ? 'selected="selected"' : ''}>
+                                ${f.name}
+                                </option>    
+                                #{/}
+                            #{/}
+                        </optgroup>                     
+                    </select>
                 </div>
             </div>
             <div class="grid_7 nomargin">                    
@@ -87,8 +120,24 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
                     String[] parts = l.sort.split(' ');                        
                     }%
                     <label>&{'listing.sort'}</label>                        
-                    #{select 'listing.sort', value:parts[0],
-                        items:fs, valueProperty:'fieldName' /} 
+                    <select name="listing.sort">
+                        <optgroup label="Selected">
+                            #{list items:selected_fs, as:'f'}
+                                <option value="${f.fieldName}" ${parts[1] == f.fieldName ? 'selected="selected"' : ''}>
+                                ${l.getFieldName(f)}
+                                </option>
+                            #{/}
+                        </optgroup>
+                        <optgroup label="Others">
+                            #{list items:fs, as:'f'}
+                                #{if !requiredFields.contains(f.fieldName) && !l.hasField(f.fieldName)}
+                                <option value="${f.fieldName}" ${parts[1] == f.fieldName ? 'selected="selected"' : ''}>
+                                ${f.name}
+                                </option>    
+                                #{/}
+                            #{/}
+                        </optgroup>                     
+                    </select>
                         <div class="clearleft" style="padding-left:140px">
                         <input type="checkbox" name="isDesc" 
                             ${parts[1] == 'DESC' ? 'checked="checked"' : ''}
