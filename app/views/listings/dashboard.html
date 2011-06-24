@@ -2,19 +2,69 @@
 #{set title: _project.name + ' - ' + messages.get('listing.items', l.listingName)/}
 #{set pageTitle:title /}
 %{ boolean isEmpty = items.size() == 0 }%  
+%{
+List<com.huydung.utils.ItemField> fs = models.Item.getItemFields();
+List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
+def sort1 = params.get('sort_1');
+def sort2 = params.get('sort_2');
+}%
+#{set fs:fs /}
+#{set selected_fs:selected_fs /}
+#{set orderable_fs:orderable_fs /}
 <div style="position:relative">
 <div class="grid_4 listing_features">
-    <div class="listing_filters">
-    <h2 class="nomargin">&{'listing.filters'} &amp; &{'labels.search'}</h2>
-    <form action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
-    #{list items:filters, as:'filter'}
-        #{if filter != null}
-            #{include filter.getIncludeFile() /}
-        #{/}
-    #{/}
-    <button class="button nomargin" type="submit"><span>&{'labels.apply'}</span></button>
-    </form>
-    </div>
+<form class="clearfix" action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
+    <div id="accordions">
+	    <div class="listing_groups">
+	        <h3 class="header">&{'listing.grouping'}</h3>
+	        <div>
+	        <label>&{'labels.groupBy'}</label>
+	        <select name="sort_1">
+	           <option value="">-- default --</option>
+	           #{list items:orderable_fs, as:'f' }
+	           <option value="${f.fieldName} ASC" 
+	               ${(sort1 == f.fieldName + ' ASC') ? 'selected="selected"' : '' }>
+	               &uarr;&uarr; ${f.name} 
+	           </option>
+	           <option value="${f.fieldName} DESC" 
+                   ${(sort1 == f.fieldName + ' DESC') ? 'selected="selected"' : '' }>
+                   &darr;&darr; ${f.name} 
+               </option>
+	           #{/}	           
+	        </select>
+	        <label>&{'labels.thenBy'}</label>
+	        <select name="sort_2">
+	           <option value="">-- default --</option>
+               #{list items:orderable_fs, as:'f' }
+               <option value="${f.fieldName} ASC" 
+                   ${(sort2 == f.fieldName + ' ASC') ? 'selected="selected"' : '' }>
+                   &uarr;&uarr; ${f.name} 
+               </option>
+               <option value="${f.fieldName} DESC" 
+                   ${(sort2 == f.fieldName + ' DESC') ? 'selected="selected"' : '' }>
+                   &darr;&darr; ${f.name} 
+               </option>
+               #{/}
+	        </select>
+	        </div>
+	    </div>
+	    <div class="listing_filters">
+		    <h3 class="header">&{'listing.filters'} &amp; &{'labels.search'}</h3>
+		    <div>
+		    #{list items:filters, as:'filter'}
+		        #{if filter != null}
+		            #{include filter.getIncludeFile() /}
+		        #{/}
+		    #{/}
+	        </div>
+	    </div>
+	</div>
+	<button class="button" style="margin: 5px 0 0 0;" type="submit"><span>&{'labels.apply'}</span></button>
+	</form>    
+	#{if l.hasField('date')}
+	<div id="inline_date_picker" data-format="${ com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) }">
+	</div>
+	#{/}
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
 
@@ -51,15 +101,32 @@
         #{if !isEmpty}
         <div class="actions fright "><a href="#" class="showhide  icon-link icon-link-open" 
         data-class="subinfo" data-hideText="&{'labels.hideAll'} &{'item.subinfo'}" data-showText="&{'labels.showAll'} &{'item.subinfo'}">&{'labels.hideAll'} &{'item.subinfo'}</a></div>
-        <span class="clear" style="margin-top:5px;"></span>
         <br/>
 	    <ul class="clearfix items" data-project-id="${_project.id}" data-listing-id="${l.id}">	    
+		    %{
+		    String fieldSort1 = sort1 != null ? (sort1.split(' '))[0] : null;
+
+		    String lastestSort1 = "";
+
+            }%
 		    #{list items:items, as:'item'}
-		    #{include 'items/item.html' /}
+		      
+		      #{if (sort1 != null) }
+			      %{String valueSort1 = item.getValueOfField(fieldSort1); }%
+			      #{if !valueSort1.equals(lastestSort1) }		      
+				      <li class="main_category">
+				          ${valueSort1.raw()}
+				      </li>
+				      %{lastestSort1 = valueSort1;}%
+			      #{/} 
+		      #{/}      
+		      #{include 'items/item.html' /}
 		    #{/}
 		#{/}
 		#{else}
-		  &{'labels.noItems'}
+		  <span class="no-result">&{'labels.noItems'}</span>
+		  <ul class="clearfix items" data-project-id="${_project.id}" data-listing-id="${l.id}">  
+		  </ul>
 		#{/}
 		</ul>
     </div>

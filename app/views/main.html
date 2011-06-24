@@ -23,7 +23,7 @@
 <div class="container_16 ${loggedin != null ? 'loggedin' : 'anonymous'}" id="wrapper"> 
 
     <!--LOGO-->
-    <div class="grid_15" id="logo">
+    <div class="grid_16" id="logo">
     <a href="/" class="image"><img src="/public/assets/images/logo.png"  /></a>
     #{ifnot loggedin}
     <a href="/">&{'interface.define'}</a>
@@ -167,6 +167,11 @@
 var hd = hd || {};
 hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
 hd.itemUpdateAction = #{jsAction @Items.updateField(':project_id', ':listing_id', ':item_id') /};
+var d = new Date();
+hd.month = d.getMonth();
+hd.year = d.getFullYear();
+hd.dateFormat = '${loggedin != null ? com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) : "yy-mm-dd"}';
+console.log(hd);
 </script>
 <script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
     <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>

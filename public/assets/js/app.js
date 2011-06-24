@@ -184,6 +184,7 @@ $(document).ready(function(){
 			})
 		});
 		
+		
 		/** Fixed header of permissions table * */
 		$('.permissions table').fixedtableheader();
 		  
@@ -202,7 +203,7 @@ $(document).ready(function(){
 			active: false,
 			autoHeight: false
 		});
-		$('#form-item #accordions').accordion("activate", 0);
+		$('#form-item #accordions,.listing_features #accordions').accordion("activate", 0);
 		$('#tabs').tabs();
 		
 		
@@ -361,11 +362,25 @@ $(document).ready(function(){
 		
 		/** DROPPABLE * */
 		var afterDrop = function( event, ui ) {
-			var data = $(ui.draggable).attr('data-drag');
-			var url = '' + hd.itemUpdateAction({
-				project_id: pid, listing_id: lid, item_id: item_id
-			});
-			$.post(url, {data: data}, updateSuccess);
+			var $dropped = $(ui.draggable);
+			var data = $dropped.attr('data-drag');
+			if( !data ){
+				var classes = $dropped.parent('td').attr('class').split(' ');
+				console.log(classes);
+				for( var i = 0; i < classes.length; i++ ){					
+					if( classes[i].indexOf('draggable-data-') == 0 ){
+						data = classes[i].replace('draggable-data-', '');						
+						break;
+					}
+				};
+			};
+			alert(data);
+			if( data ){
+				var url = '' + hd.itemUpdateAction({
+					project_id: pid, listing_id: lid, item_id: item_id
+				});
+				$.post(url, {data: data}, updateSuccess);
+			};	
 		};
 		
 		$item.droppable({
@@ -380,6 +395,7 @@ $(document).ready(function(){
 			 var $this = $(this);			 
 			 $.post($this.attr('action'), $this.serialize(), function(response, status, xhr){
 				 $('ul.items').prepend(response);
+				 $('.no-result').remove();
 				 var $newel = $('ul.items li.item').eq(0);
 				 $.gritter.add({
 					title: 'Success',
@@ -395,6 +411,20 @@ $(document).ready(function(){
 		  $('ul.items li.item').each(function(){
 			  bindEventToItem(this); 
 		  });
+		  
+		 /** DRAG AND DROP DATE ON ITEM **/
+		$('#inline_date_picker').datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat: $('#inline_date_picker').attr("data-format"),
+			beforeShowDay: function(date){
+				return [true, 'draggable-date-cell draggable-data-date:' + $.datepicker.formatDate(hd.dateFormat, date) ,''];
+			}
+		});
+		
+		$('#inline_date_picker').delegate('.draggable-date-cell a', 'mouseenter', function(){
+			$(this).draggable({revert:true});
+		});
 	};
 	
 	function processFilterBoxes(){
@@ -413,7 +443,7 @@ $(document).ready(function(){
 		});
 		
 		/** Drag and Drop to change item field * */
-		$('.draggable').draggable({revert:"valid"});
+		$('.draggable').draggable({revert:true});
 	};
 	
 	function processItemForm(){

@@ -19,6 +19,8 @@ public class Security extends Controller {
 	
 	public static void logout(){
 		session.remove("identifier");
+		flash.keep();
+		flash.put("info", "You've been logged out");
 		Application.homepage();
 	}
 }

@@ -103,6 +103,7 @@ labels.view = View
 labels.comments = Recent Comments
 labels.go = Go to
 labels.by = By
+labels.postComment = Post your comment
 labels.yes = Yes
 labels.no = No
 labels.itemIn = Item in
@@ -167,12 +168,14 @@ labels.yourInvitations = Your current invitations
 labels.replyYourInvitation = Here are your current invitation(s). <br/>Please be kind and confirm your acceptance/denial with the inviter.
 projects.created = %s has created the project
 user.lastLoggedIn = Last Logged in
+labels.groupBy = Group (and Order) By
+labels.thenBy = Then By 
 
 project.status = Status
 
 project.permissions = Permissions
 
-message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s</span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
+message.invitation = Xin chào %s,<br/><br/><strong>%s</strong> (%s) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Please response to this invitation from %s:
@@ -249,8 +252,9 @@ listing.subField = Sub Field
 listing.numItems = Number of Items
 listing.sort = Sort Items on
 listing.items = Items in %s
-listing.filters = Item Filters
-
+listing.filters = Items Filters
+listing.grouping = Items Grouping
+listing.features = Listing Special Features
 
 ## HELPS ##
 help.dragToOrder = (Drag and drop to re-ordering)

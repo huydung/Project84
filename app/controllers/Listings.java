@@ -93,10 +93,10 @@ public class Listings extends AppController {
 		
 		Listing l = getListing();
 		
+		/** FILTERING **/
 		//Only set default parameters if in the params are currently have only 2 
 		//keys which is id and project_id
-		int size = params.all().size();
-		boolean setDefault = size <=3 ;
+		boolean setDefault = params.all().size() <=3 ;
 		
 		String filterString = "";
 		List<BasicFilter> filters = l.getFilters();
@@ -112,9 +112,47 @@ public class Listings extends AppController {
 		}
 		if( filterString.length() > 0 ){
 			filterString = filterString.substring(0, filterString.length() - 4);
-		}		
+		}	
 		
-		List<Item> items = Item.findByListing(l, filterString);
+		/** CATEGORIZING AND SORTING **/
+		List<ItemField> orderable_fs = l.getOrderingFields();
+		renderArgs.put("orderable_fs", orderable_fs);
+		
+		String sortString = "";
+		String sort1 = params.get("sort_1");
+		if( sort1 != null && !sort1.isEmpty() ){
+			sortString = sort1;
+		}else{
+			if( orderable_fs.size() > 0 ){
+				sort1 = orderable_fs.get(0).fieldName + " ASC";
+				sortString += sort1;
+				params.put("sort_1", sort1);
+			}
+		}
+		String sort2 = params.get("sort_2");
+		if( sort2 != null && !sort2.isEmpty() ){
+			if( sortString.length() > 0 ){
+				sortString += ", ";
+			}
+			sortString += sort2;
+		}else{
+			if( orderable_fs.size() > 1 ){
+				sort2 = orderable_fs.get(1).fieldName + " ASC";
+				sortString += ", " + sort2;
+				params.put("sort_2", sort2);
+			}
+		}
+
+		if(sortString.isEmpty()){ 
+			sortString = l.sort;
+		}else{
+			sortString += ", " + l.sort;
+		}
+		
+		/** FETCH THE ITEMS **/
+		List<Item> items = Item.findByListing(l, filterString, sortString);
+		
+		/** PARSE THE ITEMS TO MULTIPLE LISTING FUNCTIONS **/
 		
 		renderArgs.put("active", JavaExtensions.slugify(l.listingName, true));
 		render(filters, items, l);
@@ -130,5 +168,15 @@ public class Listings extends AppController {
 		}
 		List<String> categories = l.getCategories();
 		renderJSON(categories);
+	}
+	
+	public static void delete(@Required Long project_id, @Required Long listing_id){
+		if(Validation.hasErrors()){
+			error(400, "Bad Request");
+		}
+		Listing l = getListing();
+		l.delete();
+		flash.put("success", "Listing [" + l.listingName + "] and ALL its related items has been deleted");
+		Projects.structure(project_id);
 	}
 }

@@ -1,3 +1,4 @@
+package jobs;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +13,7 @@ import com.huydung.utils.MiscUtil;
 import net.sf.cglib.core.Local;
 
 import play.Logger;
+import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
@@ -21,6 +23,7 @@ import models.enums.DoneStatus;
 import models.templates.ListTemplate;
 import models.templates.ProjectListTemplate;
 import models.templates.ProjectTemplate;
+import models.templates.Template;
 
 @OnApplicationStart
 public class Bootstrap extends Job {
@@ -34,9 +37,12 @@ public class Bootstrap extends Job {
 		}
 		
 	}	
-
 	
-	protected void createUserAndProjectData(){
+	public static void deleteAllData(){
+		Fixtures.deleteDatabase();
+	}
+	
+	public static void createUserAndProjectData(){
 		//Create Users
 		Calendar cal = new GregorianCalendar(2011, 4, 11, 22, 0);
 		cal.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));

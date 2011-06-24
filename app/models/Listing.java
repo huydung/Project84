@@ -12,10 +12,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.hibernate.annotations.Filter;
+
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
 import com.huydung.utils.MiscUtil;
 
+import controllers.AppController;
+
+import models.enums.ActivityType;
 import models.filters.BasicFilter;
 import models.filters.FilterFactory;
 import models.templates.ListTemplate;
@@ -26,12 +31,14 @@ import play.cache.Cache;
 import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
+import play.db.jpa.JPA;
 import play.db.jpa.Model;
 import play.i18n.Messages;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
 
 @Entity
+@Filter(name="deleted")
 public class Listing extends Model implements IWidget {
 	@Required
 	public Integer ordering = -10;
@@ -48,6 +55,8 @@ public class Listing extends Model implements IWidget {
 	@ManyToOne
 	@Required
 	public Project project;
+	
+	public Boolean deleted = false;
 	
 	@Required
 	public Boolean hasTab = true;
@@ -67,6 +76,7 @@ public class Listing extends Model implements IWidget {
 	public String sort = "created DESC";
 	
 	@OneToMany(mappedBy="listing")
+	@Filter(name="deleted")
 	public List<Item> items;
 		
 	public Listing(String listingName) {
@@ -92,6 +102,25 @@ public class Listing extends Model implements IWidget {
 		}	
 	}	
 	
+	@Override
+	public Listing delete(){
+		return delete(true);
+	}
+	
+	public Listing delete(boolean log){
+		this.deleted = true;
+		this.save();
+		for( Item item : this.items ){
+			item.delete(false);
+		}
+		if(log){ 
+			User user = AppController.getLoggedin();
+			Activity.track("Listing [" + this.listingName + "] has been deleted by [" + user.nickName + "]", this.project, ActivityType.DELETE, user);
+			Activity.track("All Items in Listing [" +this.listingName+ "] has also be deleted.", project, ActivityType.DELETE, user);
+		}
+		return this;
+	}
+	
 	public void setItemFields(List<ItemField> fields){
 		this.fields = "";
 		for(ItemField f : fields){
@@ -114,12 +143,27 @@ public class Listing extends Model implements IWidget {
 		return fs;
 	}
 	
+	public List<ItemField> getOrderingFields(){
+		ArrayList<ItemField> fs = new ArrayList<ItemField>(); 		
+		if( this.fields.length() > 0 ){
+			String[] fieldStr = this.fields.split(",");
+			for(String f : fieldStr){
+				String[] parts = f.split(":");
+				if( Item.FIELDS_ORDERABLE.contains("," + parts[0] +",") ){
+					fs.add(new ItemField(parts[0], parts[1]));
+				}
+			}
+		}
+		return fs;
+	}
+	
 	public boolean hasField(String fName){
 		int index = fName.indexOf("_");
 		  if( index > 0 ){
 			fName = fName.substring(0, index);
 		  }
-		return this.fields.contains(fName + ":") || Item.FIELDS_REQUIRED.contains(fName);
+		boolean res = this.fields.contains(fName + ":") || Item.FIELDS_REQUIRED.contains("," + fName + ",");
+		return res;
 	}
 	
 	public String getFieldName(ItemField f){

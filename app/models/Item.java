@@ -50,9 +50,9 @@ import sun.util.resources.CurrencyNames;
 @Entity
 @Filter(name="deleted")
 public class Item extends BasicItem implements IWidgetItem{
-		
-	public static final String FIELDS_FILTERABLE = "date,number,user,category,checkbox,name";
-	public static final String FIELDS_REQUIRED = "project,deleted,listing,created,creator,updated,type,name,id,rawInput";
+	public static final String FIELDS_ORDERABLE = ",category,checkbox,date,user,";	
+	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
+	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
 	
 	@ManyToOne
 	public Project project;
@@ -186,10 +186,12 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	public static List<Item> findByListing(Listing listing, String filter, String sort){
 		String query = "deleted = 0 AND listing = ?";
-		if( filter != null && filter.length() > 0 ){
+		if( filter != null && !filter.isEmpty() ){
 			query += " AND" + filter;
 		}
-		query +=  " ORDER BY " + sort;
+		if( sort != null && !sort.isEmpty() ){
+			query +=  " ORDER BY " + sort;
+		}
 		MiscUtil.ConsoleLog(query);
 		return Item.find(query, listing).fetch();
 	}
@@ -213,7 +215,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public boolean hasData(String field){
-		if( Item.FIELDS_REQUIRED.contains(field) ){
+		if( Item.FIELDS_REQUIRED.contains("," + field + ",") ){
 			return false;
 		}
 		if(field.equals("rawInput")){
@@ -722,7 +724,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	public String getCostDisplay(){
 		if( cost_amount > 1 ){
-			return JavaExtensions.formatCurrency(cost, cost_currency) + " x " + cost_amount + " = " + JavaExtensions.formatCurrency(cost_total, cost_currency);
+			return JavaExtensions.formatCurrency(cost_total, cost_currency) + " (" + JavaExtensions.formatCurrency(cost, cost_currency) + " x " + cost_amount + ")";
 		}else{
 			return JavaExtensions.formatCurrency(cost, cost_currency);
 		}
@@ -764,9 +766,13 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	@Override
 	public Item delete(){
+		return delete(true);
+	}
+	
+	public Item delete(boolean log){
 		this.deleted = true;
 		this.save();
-		this.log(ActivityType.DELETE);
+		if(log){this.log(ActivityType.DELETE);}
 		return this;
 	}
 	

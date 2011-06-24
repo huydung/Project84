@@ -7,13 +7,23 @@ scrolling="no" frameBorder="no" allowtransparency="true" style="width:400px;heig
 </iframe>
 
 </div>
+
 #{if play.mode.isDev()}
+%{
+def huydung = models.User.find("email = ?", "contact.huydung@gmail.com").first();
+def oakman = models.User.find("email = ?", "oakman.hd@gmail.com").first();
+def thuyha = models.User.find("email = ?", "vannessars@yahoo.com").first();
+def manhduc = models.User.find("email = ?", "contact@huydung.com").first();
+}%
 <form action="@{Application.devLogin}" method="POST" style="margin: 0 auto; width:600px;">
 <select name="id">
-    <option value="1">contact.huydung@gmail.com</option>
-    <option value="2">oakman.hd@gmail.com</option>
+    <option value="${huydung.id}">${huydung.fullName}</option>
+    <option value="${oakman.id}">${oakman.fullName}</option>
+    <option value="${thuyha.id}">${thuyha.fullName}</option>
+    <option value="${manhduc.id}">${manhduc.fullName}</option>
 </select>
 <button class="button" type="submit"><span>Dev Login</span></button>
 </form>
 #{/}
+
 

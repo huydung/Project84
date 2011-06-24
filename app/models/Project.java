@@ -8,6 +8,8 @@ import play.i18n.Messages;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Filter;
+
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.MiscUtil;
 import com.huydung.utils.PermConfig;
@@ -46,6 +48,7 @@ public class Project extends BasicItem {
     
     
     @OneToMany(mappedBy = "project")
+    @Filter(name="deleted")
     public List<Membership> memberships;
     
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
@@ -53,6 +56,7 @@ public class Project extends BasicItem {
     
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     @OrderBy("ordering ASC")
+    @Filter(name="deleted")
     public List<Listing> listings;   
      
     

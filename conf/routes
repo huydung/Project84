@@ -26,7 +26,7 @@ GET     /project/{project_id}/listings/{listing_id}                 Listings.das
 POST    /project/{project_id}/listings/{listing_id}/create  Items.doCreate
 GET     /project/{project_id}/listings/{listing_id}/{item_id} Items.show
 POST    /project/{project_id}/listings/{listing_id}/{item_id}/quickEdit  Items.quickEdit                      
-
+GET     /admin                                              Admin.admin
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 

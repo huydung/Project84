@@ -188,6 +188,8 @@ labels.project.needMembers = Làm việc nhóm hoặc với khách hàng?
 labels.project.needFiles = Cần quản lý Files?
 labels.yourInvitations = Các lời mời dành cho bạn
 labels.replyYourInvitation = Dưới đây là các lời mời dành cho bạn. <br/>Xin hãy xác nhận sự đồng ý/không đồng ý của bạn để người mời được biết..
+labels.groupBy = Nhóm (và sắp xếp) theo
+labels.thenBy = Sau đó theo
 
 since.seconds = %d giây trước
 since.minutes = %d phút trước
@@ -209,7 +211,7 @@ members.clientLong = Khách hàng của dự án
 members.title = Chức danh
 members.invite.subject = Lời mời tham gia dự án [%s] từ [%s]
 
-message.invitation = Xin chào <span style="color:#62B6EE">%s</span>,<br/><br/><strong>%s</strong> (<span style="color:#62B6EE">%s<span>) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
+message.invitation = Xin chào %s,<br/><br/><strong>%s</strong> (%s) muốn gửi tới bạn lời mời tham gia vào dự án <em>%s</em> trên
 message.asMember = với tư cách là một Thành viên của dự án
 message.asClient = với tư cách là Khách hàng của dự án
 message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:
@@ -283,6 +285,8 @@ listing.numItems = Số lượng kết quả
 listing.sort = Sắp thứ tự theo
 listing.items = Các mục nằm trong %s
 listing.filters = Các bộ lọc
+listing.grouping = Nhóm các Đầu mục
+listing.features = Các Chức năng bổ trợ
 
 ## HELPS ##
 help.dragToOrder = (Kéo-thả để thay đổi trình tự sắp xếp)

@@ -35,6 +35,7 @@ public enum PermissionKey {
 	/** LISTING **/
 	VIEW_ITEMS,
 	LISTING_CONFIG,
+	DELETE_LISTING,
 	CREATE_ITEM,
 	EDIT_ITEM,
 	EDIT_OWN_ITEM,
@@ -75,6 +76,7 @@ public enum PermissionKey {
 			case ADMIN:{
 				keys.add(VIEW_ITEMS + "_" + id);
 				keys.add(LISTING_CONFIG + "_" + id);
+				keys.add(DELETE_LISTING + "_" + id);
 				keys.add(CREATE_ITEM + "_" + id);
 				keys.add(EDIT_ITEM + "_" + id);
 				keys.add(DELETE_ITEM + "_" + id);
@@ -153,6 +155,7 @@ public enum PermissionKey {
         	l.add(new PermConfig(PermissionKey.DELETE_COMMENT, listing.id, p));
         	l.add(new PermConfig(PermissionKey.DELETE_OWN_COMMENT, listing.id, p));
         	l.add(new PermConfig(PermissionKey.UPLOAD_FILE, listing.id, p));
+        	l.add(new PermConfig(PermissionKey.DELETE_LISTING, listing.id, p));
         	perms.put("Listing " + listing.listingName , l);
     	}
    	

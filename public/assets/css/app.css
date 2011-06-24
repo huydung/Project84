@@ -478,7 +478,6 @@ li:hover .drag-handler{
 right: 0;
 }
 .listing_items{
-	border-left: groove 4px #235E8b;
 	margin-left: -5px;
 	margin-top: 70px;	
 	position: relative;
@@ -489,6 +488,16 @@ right: 0;
 	list-style: none;
 	border-top: dotted 1px #235E8b;
 	padding-left: 10px;
+}
+.listing_items li.main_category{
+	border-top: 0;
+	padding-top: 15px;
+	text-transform: uppercase;
+	font: bold 16px "Palatino linotype", "Times New Roman", serif;
+	color: #033E6B;
+}
+.listing_items li.main_category:first-child{
+	padding-top: 0;
 }
 .item.checked{
 	font-weight: normal;
@@ -559,7 +568,7 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 }
 /** FILTER BOXES **/
 #textcontent .listing_features{
-	width:230px;margin-left:0;
+	width:245px;margin-left:-10px;
 }
 .listing_filters{
 	font-size:0.9em !important;
@@ -574,11 +583,30 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 	padding:0;
 	margin: 3px;
 }
-.listing_filters form .text,
-.listing_filters form select{
+.listing_features form .text,
+.listing_features form select{
 	max-width:215px;
 }
-
+.listing_groups label{
+	float:left;margin:10px 0 0; 
+}
+.listing_groups select{
+	margin-top:0;
+}
+.listing_features #accordions .ui-accordion-content{
+	padding: 0 2px 15px;
+}
+.listing_features #accordions .ui-accordion-header{
+	padding: 5px 2px 5px 24px
+}
+.listing_features .ui-datepicker select.ui-datepicker-month, 
+.listing_features .ui-datepicker select.ui-datepicker-year{
+	width: auto;
+}
+.listing_features #inline_date_picker{
+	clear: both;
+	margin-top: 20px;
+}
 /** FILTER BOX FOR USER **/
 
 .filter-box-user li{

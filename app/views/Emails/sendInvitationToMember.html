@@ -5,7 +5,7 @@
     <tr><td height="10"></td></tr>
 </table>
 <p style="font-family: Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0px; margin-bottom: 0px; padding: 0px; color: #EEEEEE">
-&{'message.invitation', email, from.fullName, from.email, project.name } <a style="color:#62B6EE"  href="@{Application.app()}">Project84</a> 
+&{'message.invitation', '<a href="mailto:' + email + '" style="color:#62B6EE">' + email + '</a>', from.fullName, '<a href="mailto:' + from.email + '" style="color:#62B6EE">' + from.email + '</a>', project.name } <a style="color:#62B6EE"  href="@{Application.app()}">Project84</a> 
 &{isClient? 'message.asClient':'message.asMember'}. 
 
 </p>

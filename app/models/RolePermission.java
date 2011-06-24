@@ -32,7 +32,7 @@ public class RolePermission extends Model {
 
 	public boolean check(Role role, String key){
 		if( this.role.equals(role) ){
-			return this.permissions.toLowerCase().contains(key.toLowerCase());
+			return ("," + this.permissions + ",").toLowerCase().contains("," + key.toLowerCase() + ",");
 		}
 		return false;
 	}
