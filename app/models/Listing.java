@@ -30,6 +30,7 @@ import play.Play;
 import play.cache.Cache;
 import play.data.validation.Check;
 import play.data.validation.CheckWith;
+import play.data.validation.Min;
 import play.data.validation.Required;
 import play.db.jpa.JPA;
 import play.db.jpa.Model;
@@ -65,11 +66,12 @@ public class Listing extends Model implements IWidget {
 	public Boolean hasPermissions = true;
 	
 	@CheckWith(MustInFields.class)
-	public String mainField;
+	public String mainField = "name";
 	
 	@CheckWith(MustInFields.class)
 	public String subField;
-
+	
+	@Min(1)
 	public Integer numItems = 5;
 	
 	@Required
@@ -291,7 +293,7 @@ public class Listing extends Model implements IWidget {
 
 	@Override
 	public List getItems() {		
-		return Item.findByListing(this, "");
+		return Item.findByListing(this, "", sort, numItems);
 	}
 
 	@Override
@@ -302,5 +304,15 @@ public class Listing extends Model implements IWidget {
 	@Override
 	public int getColSpan() {		
 		return 1;
+	}
+	
+	public String getDescription(){
+		String des = Messages.get("labels.listing.fieldsShort") + " ";
+		List<ItemField> fields = getItemFields();
+		for( ItemField f : fields ){
+			des += " " + f.name + " (" + f.fieldName + "),";
+		};
+		des = des.substring(0, des.length());
+		return des;
 	}
 }

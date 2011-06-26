@@ -107,6 +107,15 @@ public class Bootstrap extends Job {
 		blanks.fields = "name:Name";		
 		blanks.save();	
 		
+		ListTemplate milestones = new ListTemplate("MileStones", true, null);
+		milestones.hasPermissions = true;
+		milestones.iconPath = "/public/appicons/flag.png";
+		milestones.mainField = "name";
+		milestones.subField = "date";
+		milestones.sort = "date ASC";
+		milestones.fields = "name:Name,date:Date,checkbox:Completed?";
+		milestones.save();
+		
 		ListTemplate tasks = new ListTemplate("Tasks", true, null);
 		tasks.hasPermissions = true;
 		tasks.iconPath = "/public/appicons/note-2.png";

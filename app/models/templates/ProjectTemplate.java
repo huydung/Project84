@@ -36,9 +36,14 @@ public class ProjectTemplate extends Template {
 		return (isSystem ? "[" +  Messages.get("labels.system") + "] " : "") + name;
 	}
 	
-	public static List<ProjectTemplate> getTemplates(User user){
-		return ProjectTemplate.find(
-				"isSystem = ? OR (isSystem = ? AND user = ?)", true, false, user).fetch();
+	public static List<ProjectTemplate> getTemplates(User user, Boolean userOnly){
+		if( userOnly ){
+			return ProjectTemplate.find(
+					"(isSystem = ? AND user = ?)", false, user).fetch();
+		}else{
+			return ProjectTemplate.find(
+					"isSystem = ? OR (isSystem = ? AND user = ?)", true, false, user).fetch();
+		}
 	}
 	
 	public void addList(ListTemplate lt, String name){

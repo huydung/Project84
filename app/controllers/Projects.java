@@ -63,14 +63,14 @@ public class Projects extends AppController {
 		
     public static void create(){
     	Project project = new Project();
-    	List<ProjectTemplate> templates = ProjectTemplate.getTemplates(getLoggedin());
+    	List<ProjectTemplate> templates = ProjectTemplate.getTemplates(getLoggedin(), false);
     	render(project, templates);
     }
 	
 	//@Post("/projects/create")
     public static void doCreate(Project project){
     	User user = getLoggedin();
-    	List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user);
+    	List<ProjectTemplate> templates = ProjectTemplate.getTemplates(user, false);
     	if( params.get("project.deadline") == "" ){
     		project.deadline = null;
     	}
@@ -163,4 +163,12 @@ public class Projects extends AppController {
 		Application.homepage();
 	}
 	
+	public static void templates(Long project_id){
+		List<ProjectTemplate> templates = ProjectTemplate.getTemplates(getLoggedin(), true);
+		render(templates);
+	}
+	
+	public static void createTemplate(Long project_id){
+		
+	}
 }

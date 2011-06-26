@@ -64,7 +64,9 @@ public class Project extends BasicItem {
     private List<IWidget> widgets = null;
     
     @Override
-    public String toString(){ return name; }   
+    public String toString(){ return name; }  
+    
+    public String lang = "vi";
     
     /**
      * This method MUST be called AFTER save() the project

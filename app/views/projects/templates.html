@@ -1,0 +1,41 @@
+#{extends 'main.html' /}
+#{set title:messages.get('project.configuration.long', _project.name) /}
+#{set pageTitle:title /}
+
+<div class="grid_10">
+    <h2>&{'project.template.create', _project.name}</h2>
+    <form action="@{Projects.createTemplate(_project.id)}" method="POST" class="horizontal-form">
+        #{hdfield name:'template.name', value:_project.name, labelKey:'project.template.name' /}
+        <br/><em>&{'project.template.listings'}</em>
+        #{list items:_project.listings, as:'l'}
+        <div class="form-field">
+            <div>
+	            <input type="checkbox" checked="checked" value="${l.id}" />
+	            <strong>${l.listingName}</strong>
+	            <div class="fright small show-hide-with-checked">
+	                <strong>&{'project.template.includeItems',l.listingName}</strong>
+	                <input type="radio" checked="checked" value="true" name="template.listing-${l.id}.includeItems" />
+	                <span>&{'labels.yes'}</span>
+	                <input type="radio" value="true"  name="template.listing-${l.id}.includeItems" />
+	                <span>&{'labels.no'}</span>
+	            </div>
+            </div>
+            <div class="description small"  style="margin-left: 20px;">${l.getDescription()}</div>
+        </div>
+        #{/}
+        <button type="submit nomargin" style="margin-top:10px !important">&{'project.template.craeteAction'}</button>
+    </form>
+</div>
+<div class="grid_5">
+    <h2>&{'project.template.current'}</h2>
+    #{if templates && templates.size() > 0}
+    <ul>
+	    #{list items:templates, as:'t'}
+	    <li>
+	    <strong><a href="#">${t.name}</a></strong>
+	    <a href="#" class="icon-link icon-link-delete need-confirm faded fright">&{'labels.delete'}</a>
+	    </li>
+	    #{/}
+    </ul>
+    #{/}
+</div>

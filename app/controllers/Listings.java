@@ -55,11 +55,18 @@ public class Listings extends AppController {
 			Boolean isDesc, String[] fields, 
 			@Required Long project_id,
 			@Required Long listing_id){
+		
 		//Correcting format of sorting string
 		if(isDesc == null || isDesc == false){
 			listing.sort += " ASC";
 		}else{
 			listing.sort += " DESC";
+		}
+		
+		if( fields == null || fields.length < 1 ){
+			displayValidationMessage();
+			flash.put("info", "You must use at least 01 field");
+			Projects.structure(project_id);
 		}
 		
 		//Get fields configuration

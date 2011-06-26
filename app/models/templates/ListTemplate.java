@@ -49,13 +49,13 @@ public class ListTemplate extends Template {
 	@OneToMany(mappedBy = "listTemplate")
 	public List<ProjectListTemplate> projectList;
 	
-	public static List<ListTemplate> getTemplates(User user){
+	public static List<ListTemplate> getSystemTemplates(){
 		return ListTemplate.find(
-				"isSystem = ? OR (isSystem = ? AND user = ?)", true, false, user).fetch();
+				"isSystem = ?", true).fetch();
 	}
 	
 	@Override
 	public String toString(){
-		return (isSystem ? "[" +  Messages.get("labels.system") + "] " : "") + this.name;
+		return this.name;
 	}
 }

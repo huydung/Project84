@@ -185,6 +185,10 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public static List<Item> findByListing(Listing listing, String filter, String sort){
+		return findByListing(listing, filter, sort, 200);
+	}
+	
+	public static List<Item> findByListing(Listing listing, String filter, String sort, int limit){
 		String query = "deleted = 0 AND listing = ?";
 		if( filter != null && !filter.isEmpty() ){
 			query += " AND" + filter;
@@ -192,6 +196,7 @@ public class Item extends BasicItem implements IWidgetItem{
 		if( sort != null && !sort.isEmpty() ){
 			query +=  " ORDER BY " + sort;
 		}
+		query += " LIMIT " + limit;
 		MiscUtil.ConsoleLog(query);
 		return Item.find(query, listing).fetch();
 	}

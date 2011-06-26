@@ -1,11 +1,8 @@
 ﻿<template>
 	<name>Wedding template</name>
-  <created_by>contact.huydung@gmail.com</created_by>
-  <create_on>2011-04-14 18:00:00</create_on>
-  <rate>
-    <rated_by>1500</rated_by>
-    <rated>5</rated>
-  </rate>
+  <user id="" email="contact.huydung@gmail.com">Nguyễn Huy Dũng</user>
+  <created>2011-04-14 18:00:00</created>
+
   <project>
     <info>
       <name>Đám cưới mẫu</name>

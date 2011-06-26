@@ -16,7 +16,7 @@
         placeholder="&{'labels.listing.name'}" value="&{flash.get('name') ?: '' }"/>      
         <span>&{'labels.baseOn'}</span>       
         #{select 'template_id', value:flash.get('template_id'), 
-                items:models.templates.ListTemplate.getTemplates(loggedin), 
+                items:models.templates.ListTemplate.getSystemTemplates(), 
                 valueProperty:'id' /}
        <button class="icon-link icon-link-add" type="submit">&{'labels.doit'}</button>
     </form>
