@@ -2,6 +2,17 @@
 #{set title:messages.get('project.configuration.long', _project.name) /}
 #{set pageTitle:title /}
 
+#{set tab:'templates'/}
+#{include 'projects/configtab.html' /}
+<div class="grid_15" style="margin-bottom: 30px;">
+    <h2>&{'project.export'}</h2>
+    <div class="clearfix">
+        <p><em>&{'project.export.help'}</em></p>
+        <a href="@{Projects.export(_project.id)}" class="button" style="margin-top:-10px;">
+            <span>&{'project.export.action'}</span>
+        </a>
+    </div>
+</div>
 <div class="grid_10">
     <h2>&{'project.template.create', _project.name}</h2>
     <form action="@{Projects.createTemplate(_project.id)}" method="POST" class="horizontal-form">
@@ -42,5 +53,8 @@
 	    </li>
 	    #{/}
     </ul>
+    #{/}
+    #{else}
+    <em>You have No templates yet</em>
     #{/}
 </div>

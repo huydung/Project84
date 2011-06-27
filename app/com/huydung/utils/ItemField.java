@@ -1,9 +1,12 @@
 package com.huydung.utils;
 
+import java.io.Serializable;
+
 import models.Item;
 import play.i18n.Messages;
 
-public class ItemField {
+public class ItemField implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public String name;
 	public String fieldName;
 	public String description;

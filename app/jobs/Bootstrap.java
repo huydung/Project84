@@ -117,19 +117,19 @@ public class Bootstrap extends Job {
 		milestones.save();
 		
 		Item it1 = Item.createFromSmartInput("Chốt Sketch và Design, thanh toán 40%", null);
-		it1.save();it1.creator = null;
+		it1.creator = null; it1.save();
 		milestones.addItem(it1);
 		
 		Item it2 = Item.createFromSmartInput("Hoàn thiện và chạy phần Website", null);
-		it2.save();
+		it2.creator = null; it2.save();
 		milestones.addItem(it2);
 		
 		Item it3 = Item.createFromSmartInput("Hoàn thiện phần back-end & Quản lý", null);
-		it3.save();
+		it3.creator = null; it3.save();
 		milestones.addItem(it3);
 		
 		Item it4 = Item.createFromSmartInput("Hướng dẫn sử dụng & Tài liệu. Thanh toán 100%.", null);
-		it4.save();
+		it4.creator = null; it4.save();
 		milestones.addItem(it4);
 		
 		ListTemplate tasks = new ListTemplate("Tasks", true, null);
@@ -153,7 +153,7 @@ public class Bootstrap extends Job {
 		discussions.iconPath = "/public/appicons/__discussions.png";
 		discussions.mainField = "name";
 		discussions.subField = "user";		
-		discussions.fields = "name:Title,body:Content,user:Author,category:Category";		
+		discussions.fields = "name:Title,body:Content,category:Category,user:Author";		
 		discussions.save();
 		
 		ListTemplate costs = new ListTemplate("Shopping List", true, null);
@@ -202,7 +202,7 @@ public class Bootstrap extends Job {
 		
 		ListTemplate discussions2 = new ListTemplate("discussions2", true, null);
 		discussions2.hasPermissions = true;
-		discussions2.iconPath = "/public/appicons/__discussions2.png";
+		discussions2.iconPath = "/public/appicons/__discussions.png";
 		discussions2.mainField = "name";
 		discussions2.subField = "user";		
 		discussions2.fields = "name:Title,body:Content,user:Author,category:Category";		

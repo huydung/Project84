@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
+import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 
 import org.bouncycastle.asn1.x509.qualified.TypeOfBiometricData;
@@ -44,7 +45,7 @@ public class BasicItem extends Model {
 		super();
 	}	
 	
-	@PostPersist
+	@PrePersist
 	public void beforeSave(){
 		if(this.created == null){
 			this.created = new Date();			
@@ -52,7 +53,7 @@ public class BasicItem extends Model {
 		this.updated = new Date();
 	}
 	
-	@PostRemove
+	@PreRemove
 	public void deleteComments(){		
 		JPA.em().createQuery("DELETE Comment WHERE parent_id = " + this.id).executeUpdate();
 	}

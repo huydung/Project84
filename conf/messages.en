@@ -164,7 +164,12 @@ project.template.name = Name of template
 project.template.listings = Below are the current listings of this project. Check all that you want to be included in the template
 project.template.includeItems = Include Items of %s?
 project.template.craeteAction = Create Template
-project.templates = Project Templates
+project.templates = Project Templates & Export
+
+project.export.action = Download File
+project.export.help = Great news here: You can download an excel file contains all items in this project for offline reference! Please note that we do not support import from excel at the moment, so if you changed data in the excel file, you should repeat your action here on Project84 so everyone in the team can be updated.
+project.export = Export your project to Excel
+
 labels.project.create.short = Create Project
 labels.project.name = Project Name
 labels.project.deadline = Deadline

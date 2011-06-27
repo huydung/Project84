@@ -38,7 +38,7 @@ public class Authorization extends Controller {
 	
 	public static boolean check( String cacheKey, Long project_id, Long user_id, String permKey){
 		if( perms.containsKey(cacheKey) ){
-			MiscUtil.ConsoleLog("Get from permissions cache: " + cacheKey );
+			//MiscUtil.ConsoleLog("Get from permissions cache: " + cacheKey );
 			return perms.get(cacheKey);
 		}else{
 			Project p = AppController.getActiveProject();
@@ -56,7 +56,7 @@ public class Authorization extends Controller {
 			
 			boolean isAllow = p.allow(m, permKey);
 			perms.put(cacheKey, isAllow);
-			MiscUtil.ConsoleLog("Added to permissions cache: " + cacheKey + " - " + isAllow);
+			//MiscUtil.ConsoleLog("Added to permissions cache: " + cacheKey + " - " + isAllow);
 			return isAllow;
 		}
 	}

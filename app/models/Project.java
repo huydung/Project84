@@ -28,7 +28,9 @@ import java.util.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Project extends BasicItem {
-
+	
+	private static final long serialVersionUID = 1L;
+	
     public String description;    
 
     public Date deadline;
@@ -266,10 +268,13 @@ public class Project extends BasicItem {
     	this.fromTemplate = pt;
     	this.needMembers = pt.needMembers;
     	this.save();
-    	for( ListTemplate lt : pt.getListTemplates() ){    		
+    	//refresh();
+    	List<ListTemplate> lts = pt.getListTemplates();
+    	for( ListTemplate lt : lts ){    		
     		Listing l = addListing(lt, lt.name);
-    		List<ItemListTemplate> itls = ItemListTemplate.find("lt", lt).fetch();
-    		l.addItems(itls);
+    		MiscUtil.ConsoleLog("New Listing ID : "+l.id);
+    		l.refresh();
+    		l.addItems(lt.items);
     	}  	
     	
     }

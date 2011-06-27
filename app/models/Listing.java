@@ -3,6 +3,7 @@ package models;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ import play.templates.JavaExtensions;
 @Entity
 @Filter(name="deleted")
 public class Listing extends Model implements IWidget {
+	private static final long serialVersionUID = 1L;
+	
 	@Required
 	public Integer ordering = -10;
 
@@ -140,7 +143,9 @@ public class Listing extends Model implements IWidget {
 			String[] fieldStr = this.fields.split(",");
 			for(String f : fieldStr){
 				String[] parts = f.split(":");
-				fs.add(new ItemField(parts[0], parts[1]));
+				if( !parts[0].equals("name") ){
+					fs.add(new ItemField(parts[0], parts[1]));
+				}
 			}
 		}
 		return fs;
@@ -318,12 +323,25 @@ public class Listing extends Model implements IWidget {
 	}
 	
 	public boolean addItems(List<ItemListTemplate> itls){
-		for( ItemListTemplate itl : itls ){
-			Item item = new Item(this);
-			item.copyProperties(itl.item);
-			item.creator = AppController.getLoggedin();
-			item.save();
-		}		
+		if(itls!=null){
+			for( ItemListTemplate itl : itls ){
+				Item item = new Item(this);
+				item.copyProperties(itl.item);
+				//Make sure the constrained fields are respected
+				item.creator = AppController.getLoggedin();
+				item.project = this.project;
+				item.listing = this;
+				//Make sure user is null, because this is a new project
+				item.user = null;
+				//Reset timestamp
+				item.created = new Date();
+				item.updated = new Date();
+				//Make sure the item is in active state even if the original item is marked to be deleted
+				item.deleted = false;
+				item.save();
+				MiscUtil.ConsoleLog("Saved item " + item.id + ".");
+			}		
+		}
 		return true;
 	}
 }

@@ -634,10 +634,13 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 }
 
 /** ITEM FORM AND FULL DISPLAY **/
-.horizontal-form .wym_box{
+.horizontal-form .wysiwyg{
 	width:620px !important;
 	margin: 10px 0 0 190px;
 	
+}
+body.wysiwyg{
+	width: 600px;
 }
 .wym_skin_compact .wym_iframe iframe{
 	height: 300px;

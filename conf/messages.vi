@@ -186,7 +186,11 @@ project.template.name = Tên của Mẫu dự án
 project.template.listings = Dưới đây là những danh mục hiện tại của dự án. Đánh dấu vào tất cả những danh mục nào bạn muốn cho vào Mẫu dự án.
 project.template.includeItems = Đưa vào mẫu Dự án các Đầu mục của %s?
 project.template.craeteAction = Tạo Mẫu dự án
-project.templates = Các Mẫu Dự án
+project.templates = Mẫu Dự án & Xuất File 
+
+project.export.action = Nhận File
+project.export.help = Đặc biệt: Bạn có thể xuất toàn bộ các đầu mục trong dự án này thành 1 file excel để tiện tra cứu mà không cần kết nối Internet. Xin lưu ý rằng chúng tôi tạm thời chưa hỗ trợ nhập dữ liệu vào từ Excel, nên nếu bạn có chỉnh sửa gì trong file đã tải về, xin vui lòng lặp lại thao tác trên Project84 để tất cả thành viên trong nhóm đều được cập nhật.
+project.export = Xuất Dự án thành Bảng tính
 
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án

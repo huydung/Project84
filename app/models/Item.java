@@ -21,8 +21,15 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.Transient;
 
+import net.sf.jxls.transformer.XLSTransformer;
+
+import org.apache.commons.jexl2.parser.StringParser;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.annotations.Filter;
 import org.w3c.dom.Node;
@@ -57,7 +64,11 @@ public class Item extends BasicItem implements IWidgetItem{
 	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
 	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
 	
+	private static final long serialVersionUID = 1L;
 	private static List<ItemField> _itemFields = null;
+	
+	@Transient
+	private Map<String, String> fields_data = null;
 	
 	@ManyToOne
 	public Project project;
@@ -116,8 +127,24 @@ public class Item extends BasicItem implements IWidgetItem{
 	public Item(){
 		super();
 	}
+	@PostLoad
+	public void prepareData(){
+		fields_data = new HashMap<String, String>();
+		Class itemClass = Item.class;
+		
+		Field[] fields = itemClass.getFields();
+		for( Field f : fields ){
+			try {
+				Object value = f.get(this);
+				String res = value != null ? value.toString() : "";				
+				fields_data.put(f.getName(), res);				
+			} catch (Exception e) {
+				MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+			}
+		}
+	}
 	
-	@PostPersist
+	@PrePersist
 	public void beforeSave(){
 		super.beforeSave();
 		if(this.rawInput == null){
@@ -259,10 +286,10 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public String getValueOfField(String field){
-		return getValueOfField(field, false);
+		return getValueOfField(field, false, false);
 	}
 	
-	public String getValueOfField(String field, Boolean raw){
+	public String getValueOfField(String field, Boolean raw, Boolean excelEscape){
 		if( !raw ){
 			if( field.equals("date") ){
 				if( this.date != null ){return JavaExtensions.format(this.date);}
@@ -303,23 +330,27 @@ public class Item extends BasicItem implements IWidgetItem{
 				}
 			}
 		}
-
 		
-		Class itemClass = Item.class;
-		
-		Field[] fields = itemClass.getFields();
-		for( Field f : fields ){			
-			if( f.getName().equals(field) ){
-				try {
-					Object value = f.get(this);
-					return value != null ? value.toString() : "";
-				} catch (Exception e) {
-					MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+		if( field.equals("cost")  ){
+			if( this.cost != null ){
+				if( this.cost_amount == 1 ){
+					return JavaExtensions.formatCurrency(this.cost, this.cost_currency);
+				}else{
+					return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
 				}
+			}else{
+				return "";
 			}
 		}
-		
-		return "";
+		if( field.equals("file") ){
+			return file_name == null ? "" : file_name;
+		}
+
+		String res = fields_data.get(field);
+		if(excelEscape){
+			res = res.replace("//", "/ /");							
+		}
+		return res;
 	}
 	
 	@SuppressWarnings("deprecation")

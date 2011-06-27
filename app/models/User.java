@@ -26,6 +26,8 @@ import java.util.*;
 @Filter(name="deleted")
 public class User extends Model {
 	
+	private static final long serialVersionUID = 1L;
+	
 	/** Attributes **/
 	@Required	
     public String fullName; 

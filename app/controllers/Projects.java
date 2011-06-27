@@ -1,22 +1,32 @@
 package controllers;
 
+import java.io.File;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jxls.transformer.XLSTransformer;
+
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.varia.DenyAllFilter;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.ItemField;
+import com.huydung.utils.MiscUtil;
 import com.huydung.utils.PermConfig;
 
 import models.Activity;
+import models.Item;
 import models.Listing;
 import models.Membership;
 import models.Project;
@@ -29,6 +39,9 @@ import models.enums.PermissionKey;
 import models.enums.Role;
 import models.templates.ListTemplate;
 import models.templates.ProjectTemplate;
+import models.vos.VProject;
+import play.Logger;
+import play.Play;
 import play.data.binding.As;
 import play.data.validation.Required;
 import play.data.validation.Valid;
@@ -36,6 +49,7 @@ import play.data.validation.Validation;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.*;
+import play.vfs.VirtualFile;
 import play.data.binding.*;
 import play.data.binding.types.DateBinder;
 
@@ -183,5 +197,69 @@ public class Projects extends AppController {
 		pt.save();
 		flash.put("success", "Project Template created!");		
 		templates(project_id);
+	}
+	
+	public static void export(Long project_id){
+		//Prepare data
+		Project p = getActiveProject();
+		if( p == null ){ notFound("Project", project_id); }
+		List<Listing> listings = p.listings;
+		List<String> sheetNames = new ArrayList();
+		List maps = new ArrayList();
+		for(Listing l : listings){
+			Map map = new HashMap();
+			map.put("project", VProject.createFromProject(p));
+			
+			sheetNames.add("(" + l.id + ") " + l.listingName);
+			
+			//l.items = Item.findByListing(l, "", l.sort, 1000);
+			map.put("listing", l.listingName);
+			map.put("items", Item.findByListing(l, "", l.sort, 1000));
+			List<ItemField> selected_fields = l.getItemFields();
+			List<ItemField> all_fields = Item.getItemFields();
+			List<ItemField> other_fields = new ArrayList<ItemField>();
+
+			for(ItemField i : all_fields){
+				if( !l.hasField(i.fieldName) ){
+					other_fields.add(i);
+				}
+			};
+			
+			map.put("selected_fields", selected_fields);			
+			map.put("other_fields", other_fields);
+
+			maps.add(map);
+		}
+		
+		//Prepare template and data for excel export
+    	String filepath = Play.applicationPath + File.separator + 
+    		"app" + File.separator + "views" + File.separator + "projects"
+    		+ File.separator + "export.xls";
+    	VirtualFile templateFile = VirtualFile.open(filepath);
+    	InputStream inputStream = templateFile.inputstream();
+    	
+    	MiscUtil.ConsoleLog("use sync excel rendering");
+        long start = System.currentTimeMillis();
+    	try {
+    		Workbook workbook = new XLSTransformer().transformMultipleSheetsList(
+    				inputStream, maps, sheetNames, "map", new HashMap(), 0);
+    		workbook.write(response.out);
+    		inputStream.close();
+			MiscUtil.ConsoleLog("Excel sync render takes " + (System.currentTimeMillis() - start));
+		} catch (Exception e) {
+			MiscUtil.ConsoleLog("ERROR: " + e.getMessage());
+			error();
+		} 
+		
+		//Set correct response header
+    	try {
+			response.setHeader("Content-Disposition",
+			        "attachment; filename=" + (new URLCodec("utf-8").encode(p.name)) + ".xls");
+		} catch (EncoderException e) {
+			response.setHeader("Content-Disposition",
+			        "attachment; filename=exported.xls");
+		}
+    	response.setContentTypeIfNotSet("application/vnd.ms-excel");
+    	
 	}
 }

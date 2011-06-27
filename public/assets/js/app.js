@@ -464,6 +464,7 @@ $(document).ready(function(){
 		};	
 		
 		/** WYM EDITOR * */
+		/*
 		$('.wymeditor').wymeditor({
 			skin: 'compact',
 			logoHtml: '',
@@ -487,10 +488,19 @@ $(document).ready(function(){
 	             {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
 	             {'name': 'Preview', 'title': 'Preview', 'css': 'wym_tools_preview'}
 	         ],
-	         classesHtml: '',
-	         containersHtml: ''
 		});
-		
+		*/
+		$('.wymeditor').wysiwyg({
+			resizeOptions: {},
+			controls: {
+				h1: { visible: false },
+				h2: { visible: false },
+				h3: { visible: false }
+			},
+			autoGrow: true,
+			maxHeight: 500,
+			formWidth: 600
+		});
 		/** Combo box * */
 		$('.select-create-new').click(function(){
 			var $this = $(this).hide();

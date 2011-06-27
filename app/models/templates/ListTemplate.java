@@ -87,13 +87,15 @@ public class ListTemplate extends Template {
 	}
 	
 	public boolean addItems(List<Item> items){
-		String insertQuery = "INSERT INTO ItemListTemplate(item_id, lt_id) VALUES ";
-		for(Item item : items){
-			insertQuery += "("+ item.id + "," + this.id +"),";												
+		if( items != null && items.size() > 0 ){
+			String insertQuery = "INSERT INTO ItemListTemplate(item_id, lt_id) VALUES ";
+			for(Item item : items){
+				insertQuery += "("+ item.id + "," + this.id +"),";												
+			}
+			insertQuery = insertQuery.substring(0, insertQuery.length() - 1);
+			MiscUtil.ConsoleLog(insertQuery);
+			JPA.em().createNativeQuery(insertQuery).executeUpdate();
 		}
-		insertQuery = insertQuery.substring(0, insertQuery.length() - 1);
-		MiscUtil.ConsoleLog(insertQuery);
-		JPA.em().createNativeQuery(insertQuery).executeUpdate();
 		return true;
 	}
 	
