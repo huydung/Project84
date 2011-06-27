@@ -2,6 +2,7 @@ package models;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import javax.persistence.PostPersist;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.annotations.Filter;
+import org.w3c.dom.Node;
 
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
@@ -33,6 +35,7 @@ import com.huydung.utils.MiscUtil;
 import controllers.AppController;
 
 import models.enums.ActivityType;
+import models.templates.ListTemplate;
 
 
 import play.Logger;
@@ -53,6 +56,8 @@ public class Item extends BasicItem implements IWidgetItem{
 	public static final String FIELDS_ORDERABLE = ",category,checkbox,date,user,";	
 	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
 	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
+	
+	private static List<ItemField> _itemFields = null;
 	
 	@ManyToOne
 	public Project project;
@@ -108,6 +113,10 @@ public class Item extends BasicItem implements IWidgetItem{
 		this.listing = listing;
 	}
 	
+	public Item(){
+		super();
+	}
+	
 	@PostPersist
 	public void beforeSave(){
 		super.beforeSave();
@@ -128,9 +137,11 @@ public class Item extends BasicItem implements IWidgetItem{
 		}else{
 			//Fetch Google LatLan
 		}
-		if( this.file != null && this.file.getFile() == null ){
+		//TODO: Do wome work to check the file Field
+		/*
+		if( this.file != null && this.file.getFile() != null){
 			File f = file.getFile();
-			if( f.isFile() ){
+			if( f != null && f.isFile() ){
 				this.file_size = f.length();
 				this.file_name = f.getName();
 				this.file_mimeType = file_name.substring(file_name.length() - 3);
@@ -140,24 +151,28 @@ public class Item extends BasicItem implements IWidgetItem{
 			this.file_name = null;
 			this.file_size = null;
 		}
-		this.project = this.listing.project;
+		*/
+		if( this.listing != null ){
+			this.project = this.listing.project;
+		}
 	}
 	
 	public static List<ItemField> getItemFields(){
-		ArrayList<ItemField> iFields = new ArrayList<ItemField>();
-		Class itemClass = Item.class;
-		
-		Field[] fields = itemClass.getFields();
-		for( Field f : fields ){			
-			String fName = f.getName();
-			if(!"willBeSaved".contains(fName)){
-				if( !fName.contains("_") ){
-					iFields.add(new ItemField(fName));
+		if(_itemFields == null){
+		_itemFields = new ArrayList<ItemField>();
+		Class itemClass = Item.class;		
+			Field[] fields = itemClass.getFields();
+			for( Field f : fields ){			
+				String fName = f.getName();
+				if(!"willBeSaved".contains(fName)){
+					if( !fName.contains("_") ){
+						_itemFields.add(new ItemField(fName));
+					}
 				}
 			}
 		}
 		
-		return iFields;
+		return _itemFields;
 	}
 	
 	public String getClasses(){
@@ -244,60 +259,66 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	
 	public String getValueOfField(String field){
-		
-		if( field.equals("date") ){
-			if( this.date != null ){return JavaExtensions.format(this.date);}
-		}else if( field.equals("created") ){
-			if( this.created != null ){	return JavaExtensions.since(this.created);	}
-		}else if( field.equals("cost") ){
-			if( this.cost != null ){
-				return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
-			}
-		}else if( field.equals("user") ){
-			if( this.user != null ){
-				Map<String, Object> args = new HashMap<String, Object>();
-				args.put("project_id", this.listing.project.id);
-				args.put("id", this.user.id);
-				String url = Router.getFullUrl("Memberships.show", args);
-				return "<a href=\""+url+"\" class=\"modal\">" + this.user.fullName + "</a>";
-			}else{
-				return "";
-			}
-		} else if( field.equals("address") ){
-			if( this.address != null ){
-				return MiscExtensions.abbr(this.address, 30);
-			}
-		}else if( field.equals("description") ){
-			if( this.description != null ){
-				return MiscExtensions.abbr(this.description, 30);
-			}
-		}else if( field.equals("body") ){
-			if( this.body != null ){
-				return MiscExtensions.abbr(MiscExtensions.textOnly(this.body), 30);
-			}
-		}else if( field.equals("checkbox") ){
-			if( this.checkbox != null ){
-				return this.listing.getFieldName("checkbox") + 
-					" <input type=\"checkbox\" " + 
-					(this.checkbox ? "checked=\"checked\"" : "") 
-					+ "/>";
-			}
-		}else{
-		
-			Class itemClass = Item.class;
-			
-			Field[] fields = itemClass.getFields();
-			for( Field f : fields ){			
-				if( f.getName().equals(field) ){
-					try {
-						Object value = f.get(this);
-						return value != null ? value.toString() : "";
-					} catch (Exception e) {
-						MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
-					}
+		return getValueOfField(field, false);
+	}
+	
+	public String getValueOfField(String field, Boolean raw){
+		if( !raw ){
+			if( field.equals("date") ){
+				if( this.date != null ){return JavaExtensions.format(this.date);}
+			}else if( field.equals("created") ){
+				if( this.created != null ){	return JavaExtensions.since(this.created);	}
+			}else if( field.equals("cost") ){
+				if( this.cost != null ){
+					return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
+				}
+			}else if( field.equals("user") ){
+				if( this.user != null ){
+					Map<String, Object> args = new HashMap<String, Object>();
+					args.put("project_id", this.listing.project.id);
+					args.put("id", this.user.id);
+					String url = Router.getFullUrl("Memberships.show", args);
+					return "<a href=\""+url+"\" class=\"modal\">" + this.user.fullName + "</a>";
+				}else{
+					return "";
+				}
+			} else if( field.equals("address") ){
+				if( this.address != null ){
+					return MiscExtensions.abbr(this.address, 30);
+				}
+			}else if( field.equals("description") ){
+				if( this.description != null ){
+					return MiscExtensions.abbr(this.description, 30);
+				}
+			}else if( field.equals("body") ){
+				if( this.body != null ){
+					return MiscExtensions.abbr(MiscExtensions.textOnly(this.body), 30);
+				}
+			}else if ( field.equals("checkbox") ){
+				if( this.checkbox != null ){
+					return this.listing.getFieldName("checkbox") + 
+						" <input type=\"checkbox\" " + 
+						(this.checkbox ? "checked=\"checked\"" : "") 
+						+ "/>";
 				}
 			}
 		}
+
+		
+		Class itemClass = Item.class;
+		
+		Field[] fields = itemClass.getFields();
+		for( Field f : fields ){			
+			if( f.getName().equals(field) ){
+				try {
+					Object value = f.get(this);
+					return value != null ? value.toString() : "";
+				} catch (Exception e) {
+					MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
+				}
+			}
+		}
+		
 		return "";
 	}
 	
@@ -347,24 +368,33 @@ public class Item extends BasicItem implements IWidgetItem{
 	public void updateFromSmartInput(String input){
 		Item item2 = Item.createFromSmartInput(input, this.listing);
 		//Loop non-null field in item2 and copy to this item		
+		copyProperties(item2);		
+	}
+	
+	public void copyProperties(Item item2){
 		Field[] fields = Item.class.getFields();
 		for( Field f : fields ){			
 			try {
-				Object value = f.get(item2);
-				if( value != null ){
-					try {
-						f.set(this, value);
-					} catch (Exception e) {
-						Logger.error("Error when setting Item field [%s] with value [%s]", f.getName(), value.toString());
+				String name = f.getName();
+				if( name != "id" ){
+					int modifier = f.getModifiers();
+					if(Modifier.isPublic(modifier) && !Modifier.isStatic(modifier)){
+						Object value = f.get(item2);
+						if( value != null ){
+							try {
+								f.set(this, value);
+							} catch (Exception e) {
+								Logger.error("Error when setting Item field [%s] with value [%s]", f.getName(), value.toString());
+							}
+						}
 					}
 				}
 			} catch (Exception e) {
 				MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
 			}			
 		}
-		
 	}
-	
+
 	public static Item createFromSmartInput(String input, Listing l){
 		Calendar now = new GregorianCalendar();
 		return createFromSmartInput(input, l, now);
@@ -376,8 +406,10 @@ public class Item extends BasicItem implements IWidgetItem{
 		String name = " " + input + " ";		
 		Item item = new Item(l);
 		item.rawInput = input;
-		if( l.project != null ){
-		name = parseUser(name, item);
+		if( l!= null ){
+			if( l.project != null ){
+			name = parseUser(name, item);
+			}
 		}
 		name = parseDate(name, item, basedDate);
 		name = parseNumber(name, item);		
@@ -668,8 +700,15 @@ public class Item extends BasicItem implements IWidgetItem{
 		String currencyCode = "";
 		while( costMatcher.find() ){
 			costFound = costMatcher.group(2).trim();
-			currencyCode = costMatcher.group(1);
-			if( currencyCode == null ){ currencyCode = "VND"; }
+			currencyCode = costMatcher.group(1);			
+			if( currencyCode == null ){
+				if(costFound.contains("x")){
+					currencyCode = "VND";
+				}else{
+					costFound = "";
+					currencyCode = "";
+				}
+			}
 			currencyCode = currencyCode.toUpperCase();
 		};
 		if( costFound.length() > 0 ){			
@@ -785,5 +824,17 @@ public class Item extends BasicItem implements IWidgetItem{
 		this.save();
 		this.log(ActivityType.CHANGE);
 		return this;
+	}	
+
+	public String toXML(){
+		String xml = "<item>";
+		List<ItemField> itemFields = Item.getItemFields();
+		for(ItemField f : itemFields){
+			if( this.hasData(f.fieldName) ){
+				xml += "<" + f.fieldName + ">" + this.getValueOfField(f.fieldName) +"</" + f.fieldName + ">";
+			}
+		}
+		xml += "</item>";
+		return xml;
 	}
 }

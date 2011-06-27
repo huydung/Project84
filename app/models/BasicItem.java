@@ -33,8 +33,7 @@ public class BasicItem extends Model {
 	
 	public Date created = null;
 	@ManyToOne
-	@Required
-	public User creator;
+	public User creator = null;
 	public Date updated;
 	@Required
 	public String name;

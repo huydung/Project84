@@ -20,6 +20,8 @@ import models.enums.DoneStatus;
 import play.Logger;
 import play.Play;
 import play.data.binding.types.DateBinder;
+import play.data.validation.Error;
+import play.data.validation.Validation;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
 import play.mvc.Before;
@@ -191,7 +193,14 @@ public class AppController extends Controller {
 	}
 	
 	static void displayValidationMessage(){
-		flash.put("error", Messages.get("error.validation") );
+		String m = Messages.get("error.validation");
+		for( Error e : Validation.errors() ){
+			String mes = e.message();
+			if( mes != null && !mes.isEmpty() ){
+				m += "<br/>" + mes;
+			}
+		}
+		flash.put("error", m );
 	}
 	
 	static void notFound(String object, Long id){

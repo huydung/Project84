@@ -374,7 +374,7 @@ $(document).ready(function(){
 					}
 				};
 			};
-			alert(data);
+			//alert(data);
 			if( data ){
 				var url = '' + hd.itemUpdateAction({
 					project_id: pid, listing_id: lid, item_id: item_id

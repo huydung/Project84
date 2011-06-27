@@ -5,25 +5,30 @@
 <div class="grid_10">
     <h2>&{'project.template.create', _project.name}</h2>
     <form action="@{Projects.createTemplate(_project.id)}" method="POST" class="horizontal-form">
-        #{hdfield name:'template.name', value:_project.name, labelKey:'project.template.name' /}
+        %{
+        String name = params.get('name');
+        if( name == null ) { name = _project.name; }
+        }%
+        #{hdfield name:'name', value:name, labelKey:'project.template.name' /}
         <br/><em>&{'project.template.listings'}</em>
         #{list items:_project.listings, as:'l'}
         <div class="form-field">
             <div>
-	            <input type="checkbox" checked="checked" value="${l.id}" />
+	            <input type="checkbox" checked="checked" name="listings[]" value="${l.id}" />
 	            <strong>${l.listingName}</strong>
 	            <div class="fright small show-hide-with-checked">
 	                <strong>&{'project.template.includeItems',l.listingName}</strong>
-	                <input type="radio" checked="checked" value="true" name="template.listing-${l.id}.includeItems" />
+	                <input type="radio" checked="checked" value="true" name="listing-${l.id}.includeItems" />
 	                <span>&{'labels.yes'}</span>
-	                <input type="radio" value="true"  name="template.listing-${l.id}.includeItems" />
+	                <input type="radio" value="false"  name="listing-${l.id}.includeItems" />
 	                <span>&{'labels.no'}</span>
 	            </div>
             </div>
             <div class="description small"  style="margin-left: 20px;">${l.getDescription()}</div>
         </div>
         #{/}
-        <button type="submit nomargin" style="margin-top:10px !important">&{'project.template.craeteAction'}</button>
+        <button type="submit" class="nomargin button" style="margin-top:10px !important;margin-left: 20px !important;">
+        <span>&{'project.template.craeteAction'}</span></button>
     </form>
 </div>
 <div class="grid_5">

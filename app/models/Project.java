@@ -19,6 +19,7 @@ import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.PermissionKey;
 import models.enums.Role;
+import models.templates.ItemListTemplate;
 import models.templates.ListTemplate;
 import models.templates.ProjectTemplate;
 
@@ -266,7 +267,9 @@ public class Project extends BasicItem {
     	this.needMembers = pt.needMembers;
     	this.save();
     	for( ListTemplate lt : pt.getListTemplates() ){    		
-    		addListing(lt, lt.name);    		
+    		Listing l = addListing(lt, lt.name);
+    		List<ItemListTemplate> itls = ItemListTemplate.find("lt", lt).fetch();
+    		l.addItems(itls);
     	}  	
     	
     }

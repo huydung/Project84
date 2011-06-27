@@ -98,7 +98,7 @@ public class Bootstrap extends Job {
 		minhduc.nickName = "minhduc";
 		minhduc.save();
 						
-		//Create Project Template and List Template
+		//ListTemplate for Software Development
 		ListTemplate blanks = new ListTemplate("Blank List", true, null);
 		blanks.hasPermissions = true;
 		blanks.iconPath = "/public/appicons/text.png";
@@ -115,6 +115,22 @@ public class Bootstrap extends Job {
 		milestones.sort = "date ASC";
 		milestones.fields = "name:Name,date:Date,checkbox:Completed?";
 		milestones.save();
+		
+		Item it1 = Item.createFromSmartInput("Chốt Sketch và Design, thanh toán 40%", null);
+		it1.save();it1.creator = null;
+		milestones.addItem(it1);
+		
+		Item it2 = Item.createFromSmartInput("Hoàn thiện và chạy phần Website", null);
+		it2.save();
+		milestones.addItem(it2);
+		
+		Item it3 = Item.createFromSmartInput("Hoàn thiện phần back-end & Quản lý", null);
+		it3.save();
+		milestones.addItem(it3);
+		
+		Item it4 = Item.createFromSmartInput("Hướng dẫn sử dụng & Tài liệu. Thanh toán 100%.", null);
+		it4.save();
+		milestones.addItem(it4);
 		
 		ListTemplate tasks = new ListTemplate("Tasks", true, null);
 		tasks.hasPermissions = true;
@@ -148,21 +164,7 @@ public class Bootstrap extends Job {
 		costs.fields = "checkbox:Bought?,category:Category,name:Item,cost:Price,user:Buyer,url:Reference,date:Plan to Buy on";		
 		costs.save();
 		
-		ListTemplate guests = new ListTemplate("Guests", true, null);
-		guests.hasPermissions = true;
-		guests.iconPath = "/public/appicons/address-book-2.png";
-		guests.mainField = "name";
-		guests.subField = "phone1";		
-		guests.fields = "checkbox:Sent Invitation?,name:Name,category:Category,user:Guest of,phone1:Mobile,email1:Email,number:Age,address:Address";		
-		guests.save();
 		
-		ListTemplate contacts = new ListTemplate("Contacts", true, null);
-		contacts.hasPermissions = true;
-		contacts.iconPath = "/public/appicons/address-book-2.png";
-		contacts.mainField = "name";
-		contacts.subField = "phone1";		
-		contacts.fields = "checkbox:Sent Invitation?,name:Name,category:Category,user:Guest of,phone1:Mobile,email1:Email,number:Age,address:Address";		
-		contacts.save();
 		
 		ProjectTemplate blank = new ProjectTemplate(
 				"Blank Project", true, null, true);
@@ -171,42 +173,57 @@ public class Bootstrap extends Job {
 		ProjectTemplate software = new ProjectTemplate(
 				"Software Development", true, null, true);
 		software.save();
-		software.addList(tasks, "Todos");
-		software.addList(discussions, "Discussions");	
-		software.addList(guests, "Partners");
-		software.addList(costs, "Costs");
-		software.addList(contacts, "AddressBook");
-		software.addList(files, "Designs");
+		software.addListTemplate(milestones, "MileStones");
+		software.addListTemplate(files, "Designs");
+		software.addListTemplate(discussions, "Docs & Messages");
+		software.addListTemplate(tasks, "Todos");	
+		software.addListTemplate(costs, "Costs");
 		software.refresh();
 		
 		ProjectTemplate wedding = new ProjectTemplate(
 				"Wedding", true, null, true);
 		wedding.save();
-		wedding.addList(tasks, "To-Do");
-		wedding.addList(costs, "To-Buy");		
-		wedding.addList(guests, "Guests");
-		wedding.addList(discussions, "Discussions");
+		
+		ListTemplate guests = new ListTemplate("Guests", true, null);
+		guests.hasPermissions = true;
+		guests.iconPath = "/public/appicons/address-book-2.png";
+		guests.mainField = "name";
+		guests.subField = "phone1";		
+		guests.fields = "checkbox:Sent Invitation?,name:Name,category:Category,user:Guest of,phone1:Mobile,email1:Email,number:Age,address:Address";		
+		guests.save();
+		
+		ListTemplate tasks2 = new ListTemplate("tasks2", true, null);
+		tasks2.hasPermissions = true;
+		tasks2.iconPath = "/public/appicons/note-2.png";
+		tasks2.mainField = "name";
+		tasks2.subField = "date";		
+		tasks2.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,checkbox:Completed?,category:Todo List";		
+		tasks2.save();		
+		
+		ListTemplate discussions2 = new ListTemplate("discussions2", true, null);
+		discussions2.hasPermissions = true;
+		discussions2.iconPath = "/public/appicons/__discussions2.png";
+		discussions2.mainField = "name";
+		discussions2.subField = "user";		
+		discussions2.fields = "name:Title,body:Content,user:Author,category:Category";		
+		discussions2.save();
+		
+		ListTemplate costs2 = new ListTemplate("Shopping List", true, null);
+		costs2.hasPermissions = true;
+		costs2.iconPath = "/public/appicons/shop.png";
+		costs2.mainField = "name";
+		costs2.subField = "cost";		
+		costs2.fields = "checkbox:Bought?,category:Category,name:Item,cost:Price,user:Buyer,url:Reference,date:Plan to Buy on";		
+		costs2.save();
+		
+		wedding.addListTemplate(tasks2, "To-Do");
+		wedding.addListTemplate(costs2, "To-Buy");		
+		wedding.addListTemplate(guests, "Guests");
+		wedding.addListTemplate(discussions2, "Discussions");
 		
 		wedding.refresh();
 		
-		//Create 2 Projects
-		Project ol = new Project();
-		
-		ol.name = "OrangeLife";
-		cal.set(2011, 4, 10, 20, 22);
-		ol.created = cal.getTime();
-		ol.creator = huydung;
-		cal.set(2011, 4, 31);
-		ol.needMembers = true;
-		ol.deadline = cal.getTime();
-		ol.status = DoneStatus.COMPLETED;
-		ol.description = "Dự án xây dựng website cho doanh nghiệp nước trái cây phục vụ tận nơi OrangeLife.com.vn";
-		ol.updated = ol.created;
-		ol.createAndGetResult(huydung);
-		ol.copyFromTemplate(software);
-		ol.assignCreator(huydung, "Manager");
-		ol.addMember("havu.hrc@gmail.com", "Client", true, huydung);
-		
+		//Create HD Wedding Project		
 		Project wd = new Project();
 		wd.name = "HD Wedding";
 		cal.set(2011, 2, 10, 20, 22);
@@ -217,7 +234,7 @@ public class Bootstrap extends Job {
 		wd.deadline = cal.getTime();
 		wd.status = DoneStatus.ONGOING;
 		wd.description = "Đám cưới mong chờ giữa Chú rể và Cô dâu";
-		wd.updated = ol.created;
+		wd.updated = wd.created;
 		wd.createAndGetResult(huydung);		
 		wd.copyFromTemplate(wedding);		
 		wd.assignCreator(huydung, "Broom");
@@ -235,7 +252,8 @@ public class Bootstrap extends Job {
 		
 		Item item1 = new Item(taskList);
 		item1.name = "Tìm hiểu và lựa chọn studio chụp ảnh cưới";
-		item1.user = hanguyen;		item1.number = 5;
+		item1.user = hanguyen;		
+		item1.number = 5;
 		item1.checkbox = false;		item1.category = "Ảnh cưới";
 		cal.set(2011, 5, 14);		item1.date = cal.getTime();
 		item1.creator = huydung;
@@ -243,7 +261,8 @@ public class Bootstrap extends Job {
 		
 		Item item2 = new Item(taskList);
 		item2.name = "Tìm hiểu và chốt địa điểm chụp ảnh cưới";
-		item2.user = huydung;		item2.number = 4;
+		item2.user = huydung;		
+		item2.number = 4;
 		item2.checkbox = false;		item2.category = "Ảnh cưới";
 		cal.set(2011, 5, 14);		item2.date = cal.getTime();
 		item2.creator = huydung;
@@ -389,6 +408,8 @@ public class Bootstrap extends Job {
 		item13.user = hanguyen;
 		item13.body = "<div id=\"entry\"><p>Đám cưới ngày nay mà Người xưa gọi là Hôn-Lễ, theo lễ tục xưa người  ta làm lễ cưới vào buổi chiều  tối. Buổi chiều tối là lúc Dương qua Âm  lại, âm dương giao hoán với nhau  được thuần, cho nên dùng giờ này để  làm Hôn-Lễ, tức là thuận theo lẽ  tuần hoàn của trời đất.Theo xưa thì có 6 lễ, phân ra như sau :</p><h2>1.- Lễ Nạp Thái</h2>Theo  tục lệ Trung Hoa thì sau khi nghị hôn rồi, nhà trai mang sang  nhà gái  một cặp “nhạn”. Sở dĩ đem chim nhạn là vì chim nhạn là loài  chim rất  chung tình, không sánh đôi hai lần. Tương truyền rằng loài  chim nhạn rất  thảo ăn, khi chúng nó gặp mồi thì kêu nhau ăn chung, vừa  lúc đẻ trứng  thì khi nở thế nào cũng có một con trống và con mái mà  thôi. Khác với  các loại chim khác, chim nhạn khi có một con chết thì  một con còn lại  cũng buồn rầu mà chết theo. Sau này, người Trung Hoa  nào còn theo cổ lễ  thì chỉ dùng ngỗng thay thế cho chim nhạn. (Loài  ngỗng tuy ngông nghênh,  nhưng rất chung tình).<h2>2.- Lễ Vấn Danh</h2>Là hỏi tên và họ của cô gái là gì, được bao nhiêu tuổi, đã có hứa hôn với ai chưa.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-van-danh.jpg\"><img title=\"Cuoi-le-van-danh\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-van-danh.jpg\" alt=\"Cuoi le van danh Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"328\" width=\"448\"></a><h2><br></h2><h2>3.- Lễ Nạp Cát</h2>Là sắm sửa lễ phẩm đem sang nhà gái cầu hôn. Tùy theo nhà giàu thì lễ quí, còn nghèo thì chút đỉnh gọi là.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-vat.jpg\"><img title=\"Cuoi-le-vat\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-vat.jpg\" alt=\"Cuoi le vat Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"300\" width=\"500\"></a><h2><br></h2><h2>4.- Lễ Nạp Chưng</h2>Lễ  Nạp Chưng hay là Lễ Nạp Tệ (“chưng” nghĩa là chứng, “Tệ” nghĩa là  lụa)  là lễ đem hàng lụa hay vật phẩm quí giá đến nhà gái làm tang  chứng cho  sự hứa hôn chắc chắn, rồi chỉ chờ ngày cưới dâu.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-nap-tai.jpg\"><img title=\"Cuoi-le-nap-tai\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-nap-tai.jpg\" alt=\"Cuoi le nap tai Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"405\" width=\"540\"></a><h2><br></h2><h2>5.- Lễ Thỉnh Kỳ</h2>Là  Lễ xin định ngày giờ làm Lễ Cưới, nhưng ngày giờ cũng do bên trai  định,  rồi hỏi lại ý kiến bên gái mà thôi, song thế nào nhà gái cũng  tùy ý bên  trai.<h2>6.- Lễ Thân Nghinh</h2>Là đã được nhà gái ưng thuận, ngày giờ đã định của bên trai.Bên nhà trai đem lễ vật sang làm lễ rước dâu về.<br><a href=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-don-dau.jpg\"><img title=\"Cuoi-le-don-dau\" src=\"http://cdn.vnwordpress.com/cuoi/wp-content/uploads/2011/06/Cuoi-le-don-dau.jpg\" alt=\"Cuoi le don dau Trình Tự Một Đám Cưới ở Việt Nam   cưới 360\" height=\"328\" width=\"500\"></a><br><p></p></div>";		
 		item13.save();
+		
+		//Create sample Items for Website Project Template 
 		
 		Membership bride = Membership.findByProjectAndUser(wd, hanguyen);
 		bride.status = ApprovalStatus.ACCEPTED;

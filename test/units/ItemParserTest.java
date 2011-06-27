@@ -94,11 +94,11 @@ public class ItemParserTest {
 		assertEquals("Buy hosting", item.name);
 		
 		item = Item.createFromSmartInput(
-				"Buy hosting 1250", l);
-		assertEquals(new BigDecimal(1250), item.cost);
-		assertEquals(new Integer(1), item.cost_amount);
-		assertEquals("VND", item.cost_currency);
-		assertEquals("Buy hosting", item.name);
+				"Buy hosting 50%", l);
+		assertEquals(null, item.cost);
+		assertEquals(null, item.cost_amount);
+		assertEquals(null, item.cost_currency);
+		assertEquals("Buy hosting 50%", item.name);
 		
 		item = Item.createFromSmartInput(
 				"Buy hosting 1250x5", l);

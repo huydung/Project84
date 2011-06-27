@@ -7,9 +7,14 @@ import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.*;
 import play.i18n.Messages;
+import play.mvc.Scope.Params;
 
 import javax.persistence.*;
 
+import com.huydung.utils.MiscUtil;
+
+import models.Item;
+import models.Listing;
 import models.Project;
 import models.User;
 import models.validators.MustHaveUserIfNotSystem;
@@ -46,7 +51,7 @@ public class ProjectTemplate extends Template {
 		}
 	}
 	
-	public void addList(ListTemplate lt, String name){
+	public void addListTemplate(ListTemplate lt, String name){
 		ProjectListTemplate plt = ProjectListTemplate.findByProjectAndListTemplate(this, lt);
 		if( plt != null ){
 			plt.name = name;			
@@ -67,5 +72,27 @@ public class ProjectTemplate extends Template {
 			}
 		}
 		return lts;
+	}
+	
+	public static ProjectTemplate createFromProject(Project p, String name, Long[] listings, User u, Params params){
+		ProjectTemplate pt = new ProjectTemplate(name, false, u, p.needMembers);
+		pt.save();
+		
+		for( Long id : listings ){
+			Listing l = Listing.findById(id);
+			if( l != null ){
+				ListTemplate lt = ListTemplate.createFromListing(l, u);
+				lt.save();
+				pt.addListTemplate(lt, l.listingName);
+				String key = "listing-" + l.id + ".includeItems";
+				Boolean includeItems = params.get(key, Boolean.class);
+				
+				if( includeItems ){
+					lt.addItems(l.items);
+				}
+				
+			}			
+		}
+		return pt;
 	}
 }

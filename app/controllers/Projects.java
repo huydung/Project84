@@ -27,6 +27,7 @@ import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.PermissionKey;
 import models.enums.Role;
+import models.templates.ListTemplate;
 import models.templates.ProjectTemplate;
 import play.data.binding.As;
 import play.data.validation.Required;
@@ -168,7 +169,19 @@ public class Projects extends AppController {
 		render(templates);
 	}
 	
-	public static void createTemplate(Long project_id){
-		
+	public static void createTemplate(Long project_id, 
+			@Required(message="A Project template need at least 1 listing") Long[] listings, 
+			@Required(message="Template Name is required") String name){
+		if(Validation.hasErrors()){
+			displayValidationMessage();
+			List<ProjectTemplate> templates = ProjectTemplate.getTemplates(getLoggedin(), true);
+			render("projects/templates.html", templates);
+		}
+		User u = getLoggedin();
+		ProjectTemplate pt = ProjectTemplate.createFromProject(
+				getActiveProject(), name, listings, u, params);
+		pt.save();
+		flash.put("success", "Project Template created!");		
+		templates(project_id);
 	}
 }

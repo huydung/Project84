@@ -23,6 +23,7 @@ import controllers.AppController;
 import models.enums.ActivityType;
 import models.filters.BasicFilter;
 import models.filters.FilterFactory;
+import models.templates.ItemListTemplate;
 import models.templates.ListTemplate;
 import models.templates.ProjectListTemplate;
 
@@ -314,5 +315,15 @@ public class Listing extends Model implements IWidget {
 		};
 		des = des.substring(0, des.length());
 		return des;
+	}
+	
+	public boolean addItems(List<ItemListTemplate> itls){
+		for( ItemListTemplate itl : itls ){
+			Item item = new Item(this);
+			item.copyProperties(itl.item);
+			item.creator = AppController.getLoggedin();
+			item.save();
+		}		
+		return true;
 	}
 }
