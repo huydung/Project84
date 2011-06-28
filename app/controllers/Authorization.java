@@ -203,14 +203,19 @@ public class Authorization extends Controller {
 				error(403, "Access Denied");
 			}
 		}			
-		else if( "saveOrderings,doEdit,doCreate".contains(method) ){
-			if( p == null || l == null || m == null){ error(403, "Access Denied"); };			
+		else if( "doEdit".contains(method) ){
+			if( p == null ){ error(403, "Access Denied"); };			
 			if( !p.allow(m, PermissionKey.LISTING_CONFIG, l) ){
 				error(403, "Access Denied");
 			}
 		}else if( "delete".contains(method) ){
 			if( p == null || l == null || m == null){ error(403, "Access Denied"); };			
 			if( !p.allow(m, PermissionKey.DELETE_LISTING, l) ){
+				error(403, "Access Denied");
+			}
+		}else if( "doCreate,saveOrderings".contains(method) ){
+			if( p == null ){ error(403, "Access Denied"); }
+			if( !p.allow(m, PermissionKey.EDIT_PROJECT_INFO) ){
 				error(403, "Access Denied");
 			}
 		}

@@ -3,17 +3,24 @@ package controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.huydung.utils.MiscUtil;
 
 import models.Item;
 import models.Listing;
 import models.User;
 import models.enums.ActivityType;
+import play.data.Upload;
 import play.data.validation.Required;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.db.jpa.Blob;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Util;
 import play.mvc.With;
+import play.mvc.Http.Request;
 import play.templates.JavaExtensions;
 
 @With(Authorization.class)
@@ -21,9 +28,11 @@ public class Items extends AppController {
 	
 	@Before(priority=2)
 	protected static void setupListing(){
-		Listing l = getListing();
-		if( l == null ){ error(400, "Bad Request"); }
-		renderArgs.put("active", JavaExtensions.slugify(l.listingName));
+		if( !request.actionMethod.toLowerCase().contains("displayfile") ){
+			Listing l = getListing();
+			if( l == null ){ error(400, "Bad Request"); }
+			renderArgs.put("active", JavaExtensions.slugify(l.listingName));
+		}
 	}	
 
 	public static void updateCheck(
@@ -151,6 +160,7 @@ public class Items extends AppController {
 			displayValidationMessage();
 			render("items/form.html", item);
 		}else{		
+			handleFile(item);
 			try{
 				item.create();
 				flash.put("success", "Item " + item.name + " created!");			
@@ -212,9 +222,34 @@ public class Items extends AppController {
 			displayValidationMessage();
 			render("items/form.html", item);
 		}
+		handleFile(item);
 		item.update();
 		Listings.dashboard(project_id, listing_id);
 	}
+	
+	@Util
+	private static void handleFile(Item item){
+		List<Upload> uploads = (List<Upload>) Request.current().args.get("__UPLOADS");
+		//TODO: Need to rethink
+		if( uploads != null && uploads.size() > 0 ){
+			Upload upload = uploads.get(0);
+			if(upload.getSize() > 0){
+				if( item.file != null && item.file.exists() ){
+					MiscUtil.ConsoleLog("Delete old file");
+					if( !item.file.getFile().delete() ){
+						flash.put("warning", "The old file can not be deleted!");
+					}
+				}
+				item.file_name = upload.getFileName();
+				item.file_size = upload.getSize();
+				item.file_mimeType = upload.getContentType();
+				item.file = new Blob();
+				item.file.set( upload.asStream() , upload.getContentType());
+				MiscUtil.ConsoleLog("set new file");
+			}			
+		}
+	}
+	
 	
 	public static void delete(
 			@Required Long project_id,
@@ -232,6 +267,17 @@ public class Items extends AppController {
 			renderText("Deleted");
 		}else{
 			Listings.dashboard(project_id, listing_id);
+		}
+	}
+	
+	public static void displayFile(Long item_id){
+		Item item = Item.findById(item_id);
+		if( item == null ){ notFound("Item", item_id); }
+		if( item.file.exists() ){
+			response.setContentTypeIfNotSet(item.file.type());
+			renderBinary(item.file.get());
+		}else{
+			notFound();
 		}
 	}
 }

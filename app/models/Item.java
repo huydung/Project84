@@ -53,6 +53,7 @@ import play.db.jpa.Blob;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Router;
+import play.mvc.Util;
 import play.templates.JavaExtensions;
 import sun.misc.Regexp;
 import sun.util.resources.CurrencyNames;
@@ -68,7 +69,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	private static List<ItemField> _itemFields = null;
 	
 	@Transient
-	private Map<String, String> fields_data = null;
+	public Map<String, String> fields_data = null;
 	
 	@ManyToOne
 	public Project project;
@@ -129,6 +130,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	}
 	@PostLoad
 	public void prepareData(){
+		//Generate Map of Field and Value
 		fields_data = new HashMap<String, String>();
 		Class itemClass = Item.class;
 		
@@ -141,12 +143,24 @@ public class Item extends BasicItem implements IWidgetItem{
 			} catch (Exception e) {
 				MiscUtil.ConsoleLog("Error occured in Item.getValueOfField()");
 			}
-		}
-	}
+		};
+		String c = this.cost != null ? 
+				(this.cost_amount == 1 ? 
+					JavaExtensions.formatCurrency(this.cost, this.cost_currency)
+					: JavaExtensions.formatCurrency(this.cost_total, this.cost_currency))
+				: "";		
+
+		fields_data.put("cost", c);
+		fields_data.put("file", this.file_name != null ? this.file_name : "");
+
+	}	
 	
 	@PrePersist
 	public void beforeSave(){
 		super.beforeSave();
+		if( this.body.equals("<p>Initial content</p>") ){
+			this.body = null;
+		}
 		if(this.rawInput == null){
 			this.createSmartInput();
 		}
@@ -163,24 +177,17 @@ public class Item extends BasicItem implements IWidgetItem{
 			this.address_lan = null; this.address_lat = null;
 		}else{
 			//Fetch Google LatLan
-		}
-		//TODO: Do wome work to check the file Field
-		/*
-		if( this.file != null && this.file.getFile() != null){
-			File f = file.getFile();
-			if( f != null && f.isFile() ){
-				this.file_size = f.length();
-				this.file_name = f.getName();
-				this.file_mimeType = file_name.substring(file_name.length() - 3);
-			}
-		}else{
-			this.file_mimeType = null;
-			this.file_name = null;
-			this.file_size = null;
-		}
-		*/
+		}		
 		if( this.listing != null ){
 			this.project = this.listing.project;
+		}
+		if( this.file != null && this.file.exists() ){
+			
+		}else{
+			this.file = null;
+			this.file_name = null;
+			this.file_size = null;
+			this.file_mimeType = null;
 		}
 	}
 	
@@ -329,26 +336,10 @@ public class Item extends BasicItem implements IWidgetItem{
 						+ "/>";
 				}
 			}
-		}
-		
-		if( field.equals("cost")  ){
-			if( this.cost != null ){
-				if( this.cost_amount == 1 ){
-					return JavaExtensions.formatCurrency(this.cost, this.cost_currency);
-				}else{
-					return JavaExtensions.formatCurrency(this.cost_total, this.cost_currency);
-				}
-			}else{
-				return "";
-			}
-		}
-		if( field.equals("file") ){
-			return file_name == null ? "" : file_name;
-		}
-
+		}		
 		String res = fields_data.get(field);
 		if(excelEscape){
-			res = res.replace("//", "/ /");							
+			res = res.replace("http://", "");							
 		}
 		return res;
 	}
@@ -846,12 +837,14 @@ public class Item extends BasicItem implements IWidgetItem{
 	
 	public Item delete(boolean log){
 		this.deleted = true;
+		//Do not need to delete file here, because this is just a soft delete
 		this.save();
 		if(log){this.log(ActivityType.DELETE);}
 		return this;
 	}
 	
 	public Item update(){
+		this.createSmartInput();
 		this.save();
 		this.log(ActivityType.CHANGE);
 		return this;

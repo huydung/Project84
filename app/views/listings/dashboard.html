@@ -16,8 +16,30 @@ def sort2 = params.get('sort_2');
 <form class="clearfix" action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
     <div id="accordions">
 	    <div class="listing_groups">
-	        <h3 class="header">&{'listing.grouping'}</h3>
+	    #{if features.size() > 0}
+	        <h3 class="header">&{'listing.features'}</h3>
 	        <div>
+	           <select name="listing_feature">
+	               <option>-- select --</option>
+	               #{list items:features, as:'feature'}
+	               <option value="${feature.getIdentifier()}"
+	                   ${ feature.isActive() ? 'selected="selected"' : '' }
+	               >${feature.getName()}</option>
+	               #{/}
+	           </select>	         
+	           #{if params.get('listing_feature') != null}
+		           <div class="feature_result highlight fleft">
+		           #{list items:features, as:'feature'}
+	                   #{if feature.isActive()}
+	                   ${ feature.getResult().raw() }
+	                   #{/}
+	               #{/}
+		           </div>  
+	           #{/}
+	        </div>
+	    #{/}
+	        <h3 class="header">&{'listing.grouping'}</h3>
+	        <div>        
 	        <label>&{'labels.groupBy'}</label>
 	        <select name="sort_1">
 	           <option value="">-- default --</option>
@@ -96,7 +118,11 @@ def sort2 = params.get('sort_2');
  
 </div>
 <div class="grid_11 listing_items">
-     
+    #{if l.hasField('file')}
+        <div class="file-uploader"> 
+        Drag Files here to upload and create multiple Item at once 
+        </div>
+    #{/} 
     <div class="items">
         #{if !isEmpty}
         <div class="actions fright "><a href="#" class="showhide  icon-link icon-link-open" 

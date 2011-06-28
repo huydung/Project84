@@ -22,6 +22,9 @@ import com.huydung.utils.MiscUtil;
 import controllers.AppController;
 
 import models.enums.ActivityType;
+import models.features.BasicFeature;
+import models.features.CalculateFeature;
+import models.features.CalculateMethod;
 import models.filters.BasicFilter;
 import models.filters.FilterFactory;
 import models.templates.ItemListTemplate;
@@ -179,16 +182,20 @@ public class Listing extends Model implements IWidget {
 	}
 	
 	public String getFieldName(String fieldName){
+		String fn = fieldName;
+		if(fn.contains("_")){
+			fn = fn.substring(0, fn.indexOf("_"));
+		}
 		if( this.fields.length() > 0 ){
 			String[] fieldStr = this.fields.split(",");
 			for(String fs : fieldStr){
 				String[] parts = fs.split(":");
-				if( parts[0].equals(fieldName) ){
+				if( parts[0].equals(fn) ){
 					return parts[1];
 				}
 			}
 		}
-		return Messages.get("f."+fieldName);
+		return Messages.get("f."+fn);
 	}
 	
 	public static Listing createFromTemplate(ListTemplate lt){
@@ -248,6 +255,19 @@ public class Listing extends Model implements IWidget {
 			}
 		}
 		return filters;
+	}
+	
+	public List<BasicFeature> getFeatures(){
+		List<BasicFeature> features = new ArrayList<BasicFeature>();
+		if( this.hasField("cost") ){
+			features.add( new CalculateFeature(CalculateMethod.SUM, "cost_total", this) );
+			features.add( new CalculateFeature(CalculateMethod.AVERAGE, "cost_total", this) );
+		}
+		if( this.hasField("number") ){
+			features.add( new CalculateFeature(CalculateMethod.SUM, "number", this) );
+			features.add( new CalculateFeature(CalculateMethod.AVERAGE, "number", this) );		
+		}
+		return features;
 	}
 	
 	public List<String> getCategories(){

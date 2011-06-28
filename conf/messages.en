@@ -268,6 +268,10 @@ listing.items = Items in %s
 listing.filters = Items Filters
 listing.grouping = Items Grouping
 listing.features = Listing Special Features
+listing.feature.SUM = Calculate total value of %s
+listing.feature.AVERAGE = Calculate average value of %s
+listing.feature.SUM.result = Total value of %s from selected items is <strong>%s</strong>
+listing.feature.AVERAGE.result = Average value of %s from selected items is <strong>%s</strong>
 
 ## HELPS ##
 help.dragToOrder = (Drag and drop to re-ordering)

@@ -1,5 +1,7 @@
 package com.huydung.utils;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -16,6 +18,14 @@ public class MiscExtensions extends JavaExtensions {
 	
 	public static String textOnly(String input){
 		return input.replaceAll("\\<.*?\\>", "");
+	}
+	
+	public static String format(BigDecimal number){
+		NumberFormat nf = NumberFormat.getNumberInstance();
+		nf.setMaximumFractionDigits(2);
+		nf.setGroupingUsed(false);
+		
+		return nf.format(number);
 	}
 	
 	public static String html(String input){		

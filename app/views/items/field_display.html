@@ -52,12 +52,16 @@ String fn = f.fieldName;
         <a href="http://maps.google.com/?q=${item.address}" target="_blank">${item.address}</a>
     #{/}
     
-    #{if fn == 'body' && item.body != null}
+    #{if fn == 'body' && item.body != null && !item.body.isEmpty()}
         <br/><em>${item.body.textOnly().abbr(360)}</em> &nbsp;&raquo;<a href="@{Items.show(_project.id, l.id, item.id)}">&{'labels.readmore'}</a>
 
     #{/}
     #{if fn == 'description' && item.description != null}
         <em>${item.description}</em> 
+
+    #{/}
+    #{if fn == 'file' && item.file_name != null}
+        <strong>#{link-file id:item.id, name:item.file_name/}</strong> 
 
     #{/}
     </span>

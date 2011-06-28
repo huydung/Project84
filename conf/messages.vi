@@ -301,6 +301,11 @@ listing.items = Các mục nằm trong %s
 listing.filters = Các bộ lọc
 listing.grouping = Nhóm các Đầu mục
 listing.features = Các Chức năng bổ trợ
+listing.feature.SUM = Tính tổng số của %s
+listing.feature.AVERAGE = Tính trung bình của %s
+listing.feature.SUM.result = Tổng %s của các mục được chọn là <strong>%s</strong>
+listing.feature.AVERAGE.result = Trung bình %s của các mục được chọn là <strong>%s</strong>
+
 
 ## HELPS ##
 help.dragToOrder = (Kéo-thả để thay đổi trình tự sắp xếp)

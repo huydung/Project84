@@ -9,6 +9,7 @@ import com.huydung.utils.MiscUtil;
 import models.Item;
 import models.Listing;
 import models.Project;
+import models.features.BasicFeature;
 import models.filters.BasicFilter;
 import models.templates.ListTemplate;
 import play.data.validation.Required;
@@ -160,9 +161,21 @@ public class Listings extends AppController {
 		List<Item> items = Item.findByListing(l, filterString, sortString);
 		
 		/** PARSE THE ITEMS TO MULTIPLE LISTING FUNCTIONS **/
+		List<BasicFeature> features = l.getFeatures();
+		String active_feature = params.get("listing_feature");
+		if( active_feature != null ){
+			for(BasicFeature bf : features){
+				if( bf.getIdentifier().toLowerCase().equals(active_feature.toLowerCase()) ){
+					bf.setItems(items);
+					bf.setFilterString(filterString);
+					bf.process();					
+					bf.setActive(true);
+				}
+			}
+		}
 		
 		renderArgs.put("active", JavaExtensions.slugify(l.listingName, true));
-		render(filters, items, l);
+		render(filters, items, l, features);
 	}
 	
 	public static void getCategories(@Required Long listing_id){

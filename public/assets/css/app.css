@@ -574,7 +574,10 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 	font-size:0.9em !important;
 	
 }
-
+.listing_features form select,
+.listing_features form label{
+	font-size: 11px;
+}
 .filter-box{
 	clear:both;margin:5px 0 15px;
 }
