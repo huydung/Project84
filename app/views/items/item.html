@@ -30,14 +30,14 @@ boolean canCheck = controllers.Authorization.check( _project.id, loggedin.id,
 <li id="item-${item.id}" class="droppable item clearfix ${ canEdit ? 'inline-editable' : '' } item-${item.getClasses()}" data-id="${item.id}">
     #{if canEdit }
     <div class="inline-edit" style="display:none" >
-    <form class="inline-edit-form" action="@{Items.quickEdit(_project.id, l.id, item.id)}" method="POST">
+    <form class="inline-edit-form" action="@{Items.quickEdit(item.id)}" method="POST">
         <label>&{'item.quickEdit'}</label>
 	    <input name="input" value="${item.rawInput}" class="item-quick-edit" type="text" 
 	    style="width:550px"/>
 	    <div style="padding-top:5px;padding-left:100px;" class="clearfix" >
 	       <button class="icon-link icon-link-save fleft" type="submit">&{'labels.save'}</button>
 	       <a class="icon-link icon-link-cancel fleft">&{'labels.cancel'}</a>
-	       <a class="icon-link icon-link-full fleft" href="@{Items.edit(_project.id, l.id, item.id)}">&{'item.fullForm'}</a>
+	       <a class="icon-link icon-link-full fleft" href="@{Items.edit(item.id)}">&{'item.fullForm'}</a>
         </div>
 	</form>
 	
@@ -70,12 +70,12 @@ boolean canCheck = controllers.Authorization.check( _project.id, loggedin.id,
 	        <strong class="title">${item.name}</strong>
 	    #{/}
 	    <div class="actions fright">
-	        <a href="@{Items.show(_project.id, l.id, item.id)}" class="icon-link icon-link-full">&{'labels.view'}</a>
+	        <a href="@{Items.show(item.id)}" class="icon-link icon-link-full">&{'labels.view'}</a>
 	        #{if canEdit}
-	        <a href="@{Items.edit(_project.id, l.id, item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+	        <a href="@{Items.edit(item.id)}" class="icon-link icon-link-edit">&{'labels.edit'}</a>
 	        #{/}
 	        #{if canDelete}
-	        <a href="@{Items.delete(_project.id, l.id, item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+	        <a href="@{Items.delete(item.id)}" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
 	        #{/}
 	    </div>
 	    <ul class="subinfo">

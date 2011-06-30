@@ -19,6 +19,7 @@ import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.With;
 
+import models.Activity;
 import models.Membership;
 import models.Project;
 import models.User;
@@ -33,7 +34,7 @@ public class Memberships extends AppController {
 		renderArgs.put("active", "people");
 	}
 	
-	public static void show(@Required Long project_id, @Required Long id){
+	public static void show(@Required Long membership_id){
 		render();
 	}
 	
@@ -62,20 +63,12 @@ public class Memberships extends AppController {
 	}
 	
 	public static void create(Long project_id){
-		if( !getActiveProject().allow(getActiveMembership(), 
-			PermissionKey.CREATE_INVITATIONS) 
-		){  error(403, "Access Denied");	};
-		
 		render("memberships/form_add.html");
 	}
 	
 	public static void doCreate(
 			@Required String email, @Required String member_title,
 			@Required Long project_id, @Required Boolean isClient){	
-		if( !getActiveProject().allow(getActiveMembership(), 
-				PermissionKey.CREATE_INVITATIONS) 
-		){	error(403, "Access Denied");}
-				
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 			params.flash();			
@@ -123,9 +116,10 @@ public class Memberships extends AppController {
 			m.title = title;
 			if( getActiveProject().allow(
 					getActiveMembership(), PermissionKey.EDIT_USERS_PERMISSIONS) ){
-				m.roleNames = StringUtils.join(roles, ",");
+				m.setRoles(roles);
 			}			
-			m.save();
+			m.update();
+			flash.put("success", "Membership has been updated");	
 			dashboard(project_id);
 		}
 	}
@@ -136,8 +130,7 @@ public class Memberships extends AppController {
 		}else{
 			Membership m = Membership.findById(id);
 			if( m != null ){
-				m.deleted = true;
-				m.save();
+				m.delete();
 				flash.put("success", "Membership deleted");			
 			}
 		}		

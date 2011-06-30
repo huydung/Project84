@@ -103,9 +103,30 @@ public class AppController extends Controller {
             	if( inactive_projects != null && inactive_projects.size() > 0){
             		renderArgs.put("_inactive_projects", inactive_projects);
             	}
-            }            
-            
-            //get active project of the logged in user, if she having it
+            }   
+    		
+    		//get active listing, if having it
+            Long item_id = params.get("item_id", Long.class);
+    		if( item_id != null ){  			
+    			Item item = Item.findById(item_id);
+    			if( item != null ) { 
+    				renderArgs.put("item", item);
+    				renderArgs.put("listing_id", item.listing.id);
+    				renderArgs.put("project_id", item.project.id); 
+    			};    			
+    		}
+			
+    		//get active listing, if having it
+            Long listing_id = params.get("listing_id", Long.class);
+    		if( listing_id != null ){  			
+    			Listing l = Listing.findById(listing_id);
+    			if( l != null ) { 
+    				renderArgs.put("l", l);
+    				renderArgs.put("project_id", l.project.id); 
+    			};    			
+    		}
+    		
+    		//get active project of the logged in user, if she having it
             Long project_id = params.get("project_id", Long.class);
     		if( project_id != null ){
     			Project project = null;
@@ -121,24 +142,6 @@ public class AppController extends Controller {
     				Membership m = Membership.findByProjectAndUser(project, user);
     				renderArgs.put("_membership", m);
     			}
-    		}
-    		
-    		//get active listing, if having it
-            Long listing_id = params.get("listing_id", Long.class);
-    		if( listing_id != null ){  			
-    			Listing l = Listing.findById(listing_id);
-    			if( l != null ) { 
-    				renderArgs.put("l", l);
-    			};    			
-    		}
-    		
-    		//get active listing, if having it
-            Long item_id = params.get("item_id", Long.class);
-    		if( item_id != null ){  			
-    			Item item = Item.findById(item_id);
-    			if( item != null ) { 
-    				renderArgs.put("item", item);
-    			};    			
     		}
     		
     		//set up paramater to tell is the current request is sent by AJAX

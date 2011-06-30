@@ -158,9 +158,9 @@
 <a href="#wrapper" class="gototop"><img src="@{'/public/assets/images/top.png'}" width="48" height="48" alt="Go to Top"/></a>
 <script type="text/javascript">
 var hd = hd || {};
-hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
-hd.itemUpdateAction = #{jsAction @Items.updateField(':project_id', ':listing_id', ':item_id') /};
-hd.itemDeleteAction = #{jsAction @Items.delete(':project_id', ':listing_id', ':item_id') /};
+hd.itemCheckAction = #{jsAction @Items.updateCheck(':item_id', ':checked') /};
+hd.itemUpdateAction = #{jsAction @Items.updateField(':item_id') /};
+hd.itemDeleteAction = #{jsAction @Items.delete(':item_id') /};
 var d = new Date();
 hd.month = d.getMonth();
 hd.year = d.getFullYear();

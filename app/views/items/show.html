@@ -12,8 +12,8 @@ List<com.huydung.utils.ItemField> selected_fs = l.getItemFields();
     <div class="grid_10  full-item">   
      <h1>${item.name}
      <span class="actions fright">
-        <a href="@{Items.edit(_project.id, l.id, item.id)}" style="font-size:12px;" class="icon-link icon-link-edit">&{'labels.edit'}</a>
-        <a href="@{Items.delete(_project.id, l.id, item.id)}" style="font-size:12px;" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
+        <a href="@{Items.edit(item.id)}" style="font-size:12px;" class="icon-link icon-link-edit">&{'labels.edit'}</a>
+        <a href="@{Items.delete(item.id)}" style="font-size:12px;" class="icon-link icon-link-delete need-confirm">&{'labels.delete'}</a>
      
      </span>   
      </h1>  

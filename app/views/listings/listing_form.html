@@ -7,7 +7,6 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
 <h3 class="header">${l.listingName} </h3>
 <div>
     <form action="@{Listings.doEdit}" method="POST" class="ajaxify">
-        <input name="project_id" type="hidden" value="${_project.id}" />
         <input name="listing.id" type="hidden" value="${l.id}" />
         <input name="listing_id" type="hidden" value="${l.id}" />
         <fieldset>
@@ -150,7 +149,7 @@ String requiredFields = models.Item.FIELDS_REQUIRED;
         <button class="button nomargin" type="submit">
         <span>&{'labels.save'}</span>
         </button>
-        <a href="@{Listings.delete(_project.id, l.id)}" class="need-confirm icon-link icon-link-delete fright small">&{'labels.delete'}</a>
+        <a href="@{Listings.delete(l.id)}" class="need-confirm icon-link icon-link-delete fright small">&{'labels.delete'}</a>
     </form>
 </div>
 </div>

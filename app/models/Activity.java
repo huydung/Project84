@@ -9,14 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+
+import org.apache.poi.openxml4j.opc.TargetMode;
 
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.Link;
 
-import models.enums.ActivityType;
+import models.enums.ActivityAction;
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
@@ -34,30 +38,61 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	public User creator;
 	
 	@Required
+	public Long targetId;
+	
+	@Required
 	@ManyToOne
 	public Project project;
 		
 	@Enumerated(EnumType.STRING)
 	@Required
-	public ActivityType type;
-	
-	public Activity(Project project){
+	public ActivityAction action;
+
+	public Activity(Project project, User user, ActivityAction action, Long targetId){
 		super();
+		this.creator = user;
 		this.project = project;
+		this.action = action;
+		this.targetId = targetId;
 	}
 	
-	public static ActionResult track( String message, Project project, ActivityType type, User user ){
-		Activity activity = new Activity(project);
-		activity.type = type;
-		activity.message = message;		
-		activity.creator = user;
-		activity.created = new Date();
-		if( activity.validateAndSave() && activity.id > 0 ){
-			return new ActionResult(true);
+	@PrePersist
+	public void beforeSave(){
+		this.created = new Date();
+	};
+	
+	
+	/** LOGGING UTILITY **/
+	public static Activity track(IActivityLoggabe obj, User user, ActivityAction action){
+		return track(obj, user, action, null);
+	}
+	
+	public static Activity track(IActivityLoggabe obj, User user, ActivityAction action, String message){
+		Activity a = new Activity(obj.getProject(), user, action, obj.getId());
+		if( message == null ){
+			a.message = buildMessage(a.project.lang, obj.getType(), obj.getName(), user.nickName, action.toString());
 		}else{
-			return new ActionResult(false, 
-				Messages.get("warning.activity.save"));
+			a.message = message;
 		}
+		a.save();
+		return a;
+	}
+
+	protected static String buildMessage(
+			String lang, String type, String name, String userName, String action
+		){
+		String userLang = null;
+		if( !lang.equals(Lang.get()) ){
+			userLang = Lang.get();
+			Lang.set(lang);
+		}
+		String msg = "[" + type.toUpperCase() + ": " + name + "] " 
+			+ Messages.get("labels.haveBeen") + " " + Messages.get("labels." + action.toLowerCase()) + " " + Messages.get("labels.by")
+			+ "[" + userName + "]";
+		if( userLang != null ){
+			Lang.set(userLang);
+		}
+		return msg;
 	}
 	
 	@Override

@@ -1,31 +1,40 @@
 package models;
 
-import play.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+
+import models.enums.ActivityAction;
+import models.enums.ApprovalStatus;
+import models.enums.Role;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Filter;
+
 import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
-import play.db.jpa.*;
+import play.db.jpa.Model;
 import play.i18n.Messages;
 import play.libs.Crypto;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
 
-import javax.persistence.*;
-
-import org.hibernate.annotations.Filter;
-import org.joda.time.JodaTimePermission;
-
 import com.huydung.utils.Link;
 
-import models.enums.ActivityType;
-import models.enums.ApprovalStatus;
-import models.enums.Role;
-
-import java.util.*;
+import controllers.AppController;
 
 @Entity
 @Filter(name="deleted")
-public class Membership extends Model implements IWidget, IWidgetItem {
+public class Membership extends Model implements IWidget, IWidgetItem, IActivityLoggabe {
 	
 	@Required
 	public String title = Messages.get("project.member");
@@ -78,7 +87,20 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	  return true;
 		}	
 	}
+	
+	public void update(){
+		this.save();
+		Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+	}
     
+	@Override
+	public Membership delete(){
+		this.deleted = true;
+		this.save();
+		Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+		return this;
+	}
+	
     public List<Role> getRoles(){
     	if( this.roleNames != null && this.roleNames.length() > 0 ){
 	    	ArrayList<Role> results = new ArrayList<Role>();
@@ -105,15 +127,8 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	}
     }
     
-    public void setRoles(List<Role> roles){
-
-    	this.roleNames = "";
-    	for(Role role : roles){
-    		this.roleNames += role.toString() + ",";
-    	}
-    	if(this.roleNames.length() > 0){
-    		this.roleNames.substring(this.roleNames.length() - 1);
-    	} 
+    public void setRoles(Role[] roles){
+    	this.roleNames = StringUtils.join(roles, ",");
     }
     
     public void setRole(Role role){
@@ -185,15 +200,13 @@ public class Membership extends Model implements IWidget, IWidgetItem {
     	this.userEmail = "";
     	this.save();
     	
-    	Activity.track(message,this.project, ActivityType.ITEM, user);
+    	Activity.track(this, user, ActivityAction.CHANGE, message);
     }
     
     public void deny(){
     	this.status = ApprovalStatus.DENIED;
     	this.save();
-    	Activity.track(
-    		Messages.get("members.invite.description.DENIED.log", this.userEmail),
-    		this.project, ActivityType.ITEM, user);
+    	Activity.track(this, user, ActivityAction.CHANGE, Messages.get("members.invite.description.DENIED.log", this.userEmail));
     }
     
     public static Membership findByProjectAndUser(Project project, User user){
@@ -303,5 +316,22 @@ public class Membership extends Model implements IWidget, IWidgetItem {
 	@Override
 	public int getColSpan(){
 		return 1;
+	}
+
+	@Override
+	public String getType() {
+		return "Membership";
+	}
+
+	@Override
+	public Project getProject() {
+		return project;
+	}
+
+	@Override
+	public String getActivityShowLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("membership_id", id);
+		return Router.getFullUrl("Memberships.show", args);
 	}
 }

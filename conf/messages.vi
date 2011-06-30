@@ -63,6 +63,8 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 
 
 ## LABELS ##
+labels.mainLang = Ngôn ngữ chính
+labels.hasBeen = đã được
 labels.send = Gửi
 labels.search = Tìm kiếm
 labels.advancedSearch = Tìm kiếm nâng cao
@@ -93,6 +95,7 @@ labels.add = Thêm
 labels.edit = Sửa
 labels.membership = Nhân sự
 labels.delete = Xóa
+labels.change = Cập nhật
 labels.invitation = Lời mời
 labels.roles = Vai trò
 labels.resendEmail = Gửi lại email
@@ -118,6 +121,8 @@ labels.asName = với tên
 labels.ordering = Thứ tự
 labels.readmore = xem thêm
 labels.checked = Được chọn
+labels.check = Đánh dấu chọn
+labels.uncheck = Bỏ dấu chọn
 labels.notChecked = Không được chọn
 labels.showItems = Hiển thị các mục có <strong>%s</strong> là/bằng
 labels.filterBy = Lọc theo

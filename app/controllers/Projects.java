@@ -32,7 +32,7 @@ import models.Membership;
 import models.Project;
 import models.RolePermission;
 import models.User;
-import models.enums.ActivityType;
+import models.enums.ActivityAction;
 import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.PermissionKey;

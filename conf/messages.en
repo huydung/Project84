@@ -32,6 +32,8 @@ actions.contactWarning = This is not critical, but please <a href="/contact?acti
 actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us</a> so we can fix it for you. Thank you!
 
 ## LABELS ##
+labels.mainLang = Main language
+labels.hasBeen = has been
 labels.send = Send
 labels.search = Search
 labels.advancedSearch = Advanced Search
@@ -62,6 +64,9 @@ labels.add = Add
 labels.edit = Edit
 labels.membership = Membership
 labels.delete = Delete
+labels.change = updated
+labels.check = checked
+labels.uncheck = unchecked
 labels.invitation = Invitation
 labels.roles = Roles 
 labels.resendEmail = Resend Email

@@ -54,7 +54,6 @@ public class Listings extends AppController {
 	
 	public static void doEdit(Listing listing,
 			Boolean isDesc, String[] fields, 
-			@Required Long project_id,
 			@Required Long listing_id){
 		
 		//Correcting format of sorting string
@@ -67,7 +66,7 @@ public class Listings extends AppController {
 		if( fields == null || fields.length < 1 ){
 			displayValidationMessage();
 			flash.put("info", "You must use at least 01 field");
-			Projects.structure(project_id);
+			Projects.structure(listing.project.id);
 		}
 		
 		//Get fields configuration
@@ -84,15 +83,14 @@ public class Listings extends AppController {
 		
 		if (!listing.validateAndSave()){
 			displayValidationMessage();
-			Projects.structure(project_id);
+			Projects.structure(listing.project.id);
 		}else{
 			flash.put("success", "Listing Configuration has been saved");
-			Projects.structure(project_id);
+			Projects.structure(listing.project.id);
 		}
 	}
 	
 	public static void dashboard(
-			@Required Long project_id, 
 			@Required Long listing_id){
 		
 		if( Validation.hasErrors() ){
@@ -190,7 +188,7 @@ public class Listings extends AppController {
 		renderJSON(categories);
 	}
 	
-	public static void delete(@Required Long project_id, @Required Long listing_id){
+	public static void delete(@Required Long listing_id){
 		if(Validation.hasErrors()){
 			error(400, "Bad Request");
 		}
@@ -198,10 +196,10 @@ public class Listings extends AppController {
 		if( l == null ){notFound();};
 		l.delete();
 		flash.put("success", "Listing [" + l.listingName + "] and ALL its related items has been deleted");
-		Projects.structure(project_id);
+		Projects.structure(l.project.id);
 	}
 	
-	public static void uploadFiles(Long project_id, Long listing_id){
+	public static void uploadFiles(@Required Long listing_id){
 		Listing l = getActiveListing();
 		if( l == null ){notFound();};
 		Item item = new Item(l);

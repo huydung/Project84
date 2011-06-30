@@ -19,8 +19,14 @@
             #{select 'project.fromTemplate.id', value:tid, 
                 items:templates, 
                 valueProperty:'id' /}
-        #{/}       
-        
+        #{/}    
+        <div class="form-field">   
+            <label>&{'labels.mainLang'}</label>
+            <select name="project.lang">
+                <option ${ 'vi'.equals(project.lang) ? : 'selected="selected"' : '' } value="vi">Tiếng Việt</option>
+                <option ${ 'en'.equals(project.lang) ? : 'selected="selected"' : '' } value="en">English</option>
+            </select>
+        </div>
         <hr />
         <div class="form-field">
             <label>&{'labels.project.deadline'}</label>

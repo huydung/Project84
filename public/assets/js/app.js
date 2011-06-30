@@ -297,9 +297,7 @@ $(document).ready(function(){
 		var $item = $(el);
 		var id = id || $item.attr('id');
 		var item_id = id.substr(5);
-		var lid = $item.parents('ul.items').attr('data-listing-id');
-		var pid = $item.parents('ul.items').attr('data-project-id');
-		
+
 		var updateSuccess = function(response, status, xhr){
 			$('#' + id).replaceWith(response);
 			var $newel = $('#' + id);
@@ -341,7 +339,7 @@ $(document).ready(function(){
 			var checked = $this.is(':checked');
 			$.post(
 				hd.itemCheckAction({
-					project_id: pid, listing_id: lid, item_id: item_id, checked: checked
+					item_id: item_id, checked: checked
 				}), null,successAjax
 			);
 			if( checked ){
@@ -379,7 +377,7 @@ $(document).ready(function(){
 			//alert(data);
 			if( data ){
 				var url = '' + hd.itemUpdateAction({
-					project_id: pid, listing_id: lid, item_id: item_id
+					item_id: item_id
 				});
 				$.post(url, {data: data}, updateSuccess);
 			};	
@@ -478,8 +476,6 @@ $(document).ready(function(){
 		
 		/** Drag and Drop to delete **/
 		$recyclebin = $('#recycle_bin');
-		var pid = $recyclebin.attr('data-project');
-		var lid = $recyclebin.attr('data-listing');
 		$recyclebin.droppable({
 			hoverClass: "item-drop-active",
 			accept: 'li.item',
@@ -488,7 +484,7 @@ $(document).ready(function(){
 				var id = $dropped.attr('data-id');
 				if( id ){
 					var url = '' + hd.itemDeleteAction({
-						project_id: pid, listing_id: lid, item_id: id
+						item_id: id
 					});
 					alert(url);
 					$.post(url, null, function(response, status, xhr){

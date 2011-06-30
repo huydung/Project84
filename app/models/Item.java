@@ -1,6 +1,5 @@
 package models;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -20,20 +19,23 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
-import net.sf.jxls.transformer.XLSTransformer;
+import models.enums.ActivityAction;
 
-import org.apache.commons.jexl2.parser.StringParser;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.Session;
 import org.hibernate.annotations.Filter;
-import org.w3c.dom.Node;
+
+import play.Logger;
+import play.data.validation.MaxSize;
+import play.data.validation.URL;
+import play.db.jpa.Blob;
+import play.db.jpa.JPA;
+import play.mvc.Router;
+import play.templates.JavaExtensions;
 
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
@@ -42,27 +44,9 @@ import com.huydung.utils.MiscUtil;
 
 import controllers.AppController;
 
-import models.enums.ActivityType;
-import models.templates.ListTemplate;
-
-
-import play.Logger;
-import play.data.validation.MaxSize;
-import play.data.validation.Required;
-import play.data.validation.URL;
-import play.db.jpa.Blob;
-import play.db.jpa.JPA;
-import play.i18n.Lang;
-import play.i18n.Messages;
-import play.mvc.Router;
-import play.mvc.Util;
-import play.templates.JavaExtensions;
-import sun.misc.Regexp;
-import sun.util.resources.CurrencyNames;
-
 @Entity
 @Filter(name="deleted")
-public class Item extends BasicItem implements IWidgetItem{
+public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 	public static final String FIELDS_ORDERABLE = ",category,checkbox,date,user,";	
 	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
 	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
@@ -258,8 +242,6 @@ public class Item extends BasicItem implements IWidgetItem{
 	@Override
 	public Link getInfo() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("project_id", this.listing.project.id);
-		args.put("listing_id", this.listing.id);
 		args.put("item_id", this.id);
 		return new Link(
 			getValueOfField(this.listing.mainField), 
@@ -797,26 +779,6 @@ public class Item extends BasicItem implements IWidgetItem{
 
 	}
 	
-	public void log(ActivityType type){
-		String message = "";
-		User user = AppController.getLoggedin();
-		if( type == ActivityType.CREATE ){
-			message = "[" + user.nickName + "] has created [" + this.name + "] in [" + this.listing.listingName + "]";
-		}else if( type == ActivityType.COMMENT ){
-			message = "[" + this.listing.listingName + ": "+ this.name + "]" + " has received new comment from [" + user.nickName +"]";
-		}else {
-			message = "[" + this.listing.listingName + ": "+ this.name + "]" + " has been " + 
-			( type == ActivityType.CHANGE ? "updated" : (
-				type == ActivityType.CHECK ? "checked" : (
-					type == ActivityType.UNCHECK ? "unchecked" : "deleted" 
-				)
-			) ) +
-			" by [" + user.nickName + "]";
-		}
-		
-		Activity.track(message, this.listing.project, type, user);
-	}
-	
 	public List<Comment> getComments(){
 		return Comment.getCommentsOfItem(this);
 	}
@@ -825,7 +787,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	public boolean create(){
 		boolean res = super.create();
 		if( res ){
-			this.log(ActivityType.CREATE);
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.CREATE);
 		}
 		return res;
 	}
@@ -839,7 +801,9 @@ public class Item extends BasicItem implements IWidgetItem{
 		this.deleted = true;
 		//Do not need to delete file here, because this is just a soft delete
 		this.save();
-		if(log){this.log(ActivityType.DELETE);}
+		if(log){
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+		}
 		return this;
 	}
 	
@@ -850,14 +814,20 @@ public class Item extends BasicItem implements IWidgetItem{
 	public Item restore(boolean log){
 		this.deleted = false;
 		this.save();
-		//Log Activity
+		if(log){
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.RESTORE);
+		}
 		return this;
 	}
 	
-	public Item update(){
+	public Item update(boolean isCheck){
 		this.createSmartInput();
 		this.save();
-		this.log(ActivityType.CHANGE);
+		if( !isCheck ){
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+		}else{
+			Activity.track(this, AppController.getLoggedin(), this.checkbox ? ActivityAction.CHECK : ActivityAction.UNCHECK);
+		}
 		return this;
 	}	
 
@@ -879,5 +849,22 @@ public class Item extends BasicItem implements IWidgetItem{
 		List<Item> items = Item.find("project = ? ORDER BY updated DESC", p).fetch();
 		deleteFilter.setParameter("deleted", false);
 		return items;
+	}
+
+	@Override
+	public Project getProject() {
+		return this.project;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+	
+	@Override
+	public String getActivityShowLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("item_id", id);
+		return Router.getFullUrl("Items.show", args);
 	}
 }

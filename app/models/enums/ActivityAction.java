@@ -1,13 +1,10 @@
 package models.enums;
 
-public enum ActivityType{
-	MESSAGE,
+public enum ActivityAction{
 	CHANGE,
-	COMMENT,
-	LIST,
-	ITEM,
 	CREATE,
 	DELETE,
+	RESTORE,
 	CHECK,
 	UNCHECK;
 }

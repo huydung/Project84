@@ -13,9 +13,9 @@ def sort2 = params.get('sort_2');
 #{set orderable_fs:orderable_fs /}
 <div style="position:relative">
 <div class="grid_4 listing_features">
-<form class="clearfix" action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
+<form class="clearfix" action="@{Listings.dashboard(l.id)}" method="GET" id="form-filters">
     #{if l.hasField('file')}
-        <div id="file-uploader" class="file-uploader highlight" style="height:50px" data-url="@{Listings.uploadFiles(_project.id, l.id)}"> 
+        <div id="file-uploader" class="file-uploader highlight" style="height:50px" data-url="@{Listings.uploadFiles(l.id)}"> 
         <em class="small">&{'labels.dragUpload'}</em>
         </div>
     #{/} 
@@ -95,13 +95,13 @@ def sort2 = params.get('sort_2');
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
     
-    <form id="quick-add-form" action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
+    <form id="quick-add-form" action="@{Items.doCreate( l.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
 	    <input type="text" name="input" class="item-quick-add" required="required" value="${params.get('input')}"/>
 	    
 	    <div class="tright">
 	    <a href="#inputhelp" class="reveal-toggle">&{'item.help'}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-	    <a href="@{Items.create(_project.id, l.id)}">&{'item.fullForm'}</a> 
+	    <a href="@{Items.create(l.id)}">&{'item.fullForm'}</a> 
 	    
 	    </div>
 	    <div id="inputhelp" class="tleft reveal small" style="display:none;">

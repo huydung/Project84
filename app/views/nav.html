@@ -10,7 +10,7 @@
 	    #{list items:_project.listings, as:'l'}
 	       #{if l.hasTab}
 	    <li data-id="${l.id}" class="item listing_nav ${l.listingName.slugify()}">
-	        <a href="@{Listings.dashboard( _project.id, l.id )}" class="${active == l.listingName.slugify() ? 'current' : ''}">
+	        <a href="@{Listings.dashboard( l.id )}" class="${active == l.listingName.slugify() ? 'current' : ''}">
 	        <span style="background:url(${l.iconPath})  no-repeat center 10px">${l.listingName}</span></a>
 	    </li>
 	       #{/}

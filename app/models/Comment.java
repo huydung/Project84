@@ -4,16 +4,22 @@ import play.*;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.db.jpa.*;
+import play.mvc.Router;
 
 import javax.persistence.*;
 
+import models.enums.ActivityAction;
+
 import org.hibernate.Filter;
 import org.hibernate.Session;
+
+import controllers.AppController;
+
 import java.util.*;
 
 @Entity
 
-public class Comment extends BasicItem {
+public class Comment extends BasicItem implements IActivityLoggabe {
 	
 	@Lob
 	@Required
@@ -44,13 +50,40 @@ public class Comment extends BasicItem {
 		super.beforeSave();
 		this.project = this.parent.project;
 	}
-	/*
-	public static List<Comment> findDeleted(){
-		Filter deleteFilter = ((Session)JPA.em().getDelegate()).getEnabledFilter("deleted");
-		deleteFilter.setParameter("deleted", true);
-		List<Comment> comments = Comment.findAll();
-		deleteFilter.setParameter("deleted", false);
-		return comments;
+	
+	@Override
+	public boolean create(){
+		boolean res = super.create();
+		if(res){
+			Activity.track(this, this.creator, ActivityAction.CREATE);
+		}
+		return res;
 	}
-	*/
+	
+	@Override
+	public Comment delete(){
+		this.deleted = true;
+		this.save();
+		Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+		return this;
+	}
+	
+	@Override
+	public Project getProject() {
+		return project;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getActivityShowLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("item_id",	this.parent.id);
+		String url = Router.getFullUrl("Items.show", args);
+		url += "#comment-" + this.id;
+		return url;
+	}
 }

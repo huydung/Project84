@@ -5,6 +5,7 @@ import play.data.binding.As;
 import play.data.validation.Required;
 import play.db.jpa.*;
 import play.i18n.Messages;
+import play.mvc.Router;
 
 import javax.persistence.*;
 
@@ -14,7 +15,7 @@ import com.huydung.helpers.ActionResult;
 import com.huydung.utils.MiscUtil;
 import com.huydung.utils.PermConfig;
 
-import models.enums.ActivityType;
+import models.enums.ActivityAction;
 import models.enums.ApprovalStatus;
 import models.enums.DoneStatus;
 import models.enums.PermissionKey;
@@ -27,7 +28,7 @@ import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Project extends BasicItem {
+public class Project extends BasicItem implements IActivityLoggabe {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -155,7 +156,7 @@ public class Project extends BasicItem {
 
     public ActionResult createAndGetResult(User actor){
     	if( this.validateAndSave() && this.id > 0 ){
-    		Activity.track(Messages.get("projects.created", actor.fullName), this, ActivityType.CHANGE, actor);
+    		Activity.track(Messages.get("projects.created", actor.fullName), this, ActivityAction.CHANGE, actor);
     		return new ActionResult(true);
     	}else{
     		return new ActionResult(false, 
@@ -166,7 +167,7 @@ public class Project extends BasicItem {
 
     public Project save(User user){
     	this.save();
-    	Activity.track("The project [" + this.name + "] has been updated by [" + user.nickName +"]", this, ActivityType.CHANGE, user);
+    	Activity.track("The project [" + this.name + "] has been updated by [" + user.nickName +"]", this, ActivityAction.CHANGE, user);
     	return this;
     }
     
@@ -185,9 +186,8 @@ public class Project extends BasicItem {
     			m.userEmail = userEmail;
     			boolean saved = m.validateAndSave();
     			if(saved){
-    				Activity.track(Messages.get(
-    					"membership.created.log", actor.fullName, userEmail), this, ActivityType.ITEM, actor);
-    				
+    				Activity.track(m, actor, ActivityAction.CREATE, Messages.get(
+        					"membership.created.log", actor.fullName, userEmail));
 	    			return new ActionResult(true, 
 	    					Messages.get("membership.created", user.nickName, user.email),
 	    					m);
@@ -223,9 +223,9 @@ public class Project extends BasicItem {
         		m.inviteKey = m.generateInvitationKey();
         		if( m.validateAndSave() ){
         			
-        			Activity.track(Messages.get(
-        					"membership.created.log", actor.fullName, userEmail), this, ActivityType.ITEM, actor);
-        				
+        			Activity.track(m, actor, ActivityAction.CREATE, Messages.get(
+        					"membership.created.log", actor.fullName, userEmail));
+        			
         			return new ActionResult(true, 
         				Messages.get("membership.invited", userEmail, userEmail),
         				m);
@@ -297,4 +297,21 @@ public class Project extends BasicItem {
     public boolean isActive(){
     	return status == DoneStatus.ONGOING;
     }
+
+	@Override
+	public Project getProject() {
+		return this;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getActivityShowLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("project_id", id);
+		return Router.getFullUrl("Projects.dashboard", args);
+	}
 }

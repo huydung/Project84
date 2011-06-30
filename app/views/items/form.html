@@ -14,10 +14,10 @@ boolean isCreating = (item.id <= 0);
 
 <form id="form-item" method="POST" class="horizontal-form" enctype="multipart/form-data"
     #{if isCreating}
-    action="@{Items.doCreateFromForm(_project.id, l.id)}"
+    action="@{Items.doCreateFromForm(l.id)}"
     #{/}
     #{else}
-    action="@{Items.doEdit(_project.id, l.id)}"
+    action="@{Items.doEdit(l.id)}"
     #{/}
     >
     #{if !isCreating}
@@ -26,7 +26,6 @@ boolean isCreating = (item.id <= 0);
     
     #{/}
     <input type="hidden" name="item.listing.id" value="${l.id}"/>
-    <input type="hidden" name="project_id" value="${_project.id}"/>
     <input type="hidden" name="listing_id" value="${l.id}"/>
     <input type="hidden" name="item.creator.id" value="${item?.creator?.id ?: loggedin.id}"/>
     #{hdfield name:'item.name', value:item.name, label:l.getFieldName('name'), required:true /}

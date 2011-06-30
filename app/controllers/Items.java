@@ -7,10 +7,11 @@ import java.util.List;
 
 import com.huydung.utils.MiscUtil;
 
+import models.Activity;
 import models.Item;
 import models.Listing;
 import models.User;
-import models.enums.ActivityType;
+import models.enums.ActivityAction;
 import play.data.Upload;
 import play.data.validation.Required;
 import play.data.validation.Valid;
@@ -36,8 +37,6 @@ public class Items extends AppController {
 	}	
 
 	public static void updateCheck(
-			@Required Long project_id, 
-			@Required Long listing_id,
 			@Required Long item_id,
 			@Required Boolean checked){
 		if(Validation.hasErrors()){
@@ -49,16 +48,12 @@ public class Items extends AppController {
 		}
 		item.checkbox = checked;
 		try{
-			item.save();
-			item.log( checked ? ActivityType.CHECK : ActivityType.UNCHECK);
+			item.update(true);
 			renderText("Item " + item.name + " updated!");
 		}catch(Exception e){error();}
 	}
 	
-	public static void updateField(
-			@Required Long project_id, 
-			@Required Long listing_id,
-			@Required Long item_id){
+	public static void updateField(	@Required Long item_id){
 		if(Validation.hasErrors()){
 			error(400, "Bad Request");
 		}
@@ -79,7 +74,7 @@ public class Items extends AppController {
 				Long id = Long.parseLong(parts[1]); if(id == null){error(400, "Bad Request");}
 				item.user = User.findById(id);
 				if( item.user != null ){
-					item.update();
+					item.update(false);
 					saved = true;				
 				}else{error(400, "Bad Request");}
 			}
@@ -89,14 +84,14 @@ public class Items extends AppController {
 				try {
 					Date d = sdf.parse(parts[1]);
 					item.date = d;
-					item.update();
+					item.update(false);
 					saved = true;
 				} catch (ParseException e) { error(400, "Bad Request");	}				
 			}
 			//Drag and Drop Category
 			else if( field.equals("category") ){
 				item.category = parts[1];
-				item.update();
+				item.update(false);
 				saved = true;				
 			}
 		}else{error(400, "Bad Request");}
@@ -106,17 +101,14 @@ public class Items extends AppController {
 				render("items/item.html");
 			}else{
 				flash.put("success", "Item " + item.name + " updated!");	
-				show(project_id, listing_id, item_id);
+				show(item_id);
 			}
 		}else{
-			Listings.dashboard(project_id, listing_id);
+			Listings.dashboard(item.listing.id);
 		}
 	}
 	
-	public static void show(
-			@Required Long project_id, 
-			@Required Long listing_id,
-			@Required Long item_id){
+	public static void show(@Required Long item_id){
 		if(Validation.hasErrors()){
 			error(403, "Bad Request");
 		}
@@ -129,12 +121,11 @@ public class Items extends AppController {
 	}
 	
 	public static void doCreate(
-			@Required Long project_id,
 			@Required Long listing_id, 			
 			@Required String input){
 		Item item = null;
 		if( Validation.hasErrors() ){
-			displayValidationMessage();
+			error(400, "Bad Request");
 		}else{
 			Listing l = getActiveListing();			
 			item = Item.createFromSmartInput(input, l);
@@ -142,18 +133,17 @@ public class Items extends AppController {
 			if(!item.create()){
 				displayValidationMessage();
 			}				
-		}
+			if( request.isAjax() ){
+				render("items/item.html", item);
+			}else{			
+				flash.put("success", "Item " + item.name + " created!");
+				Listings.dashboard(listing_id);
+			}
+		}		
 		
-		if( request.isAjax() ){
-			render("items/item.html", item);
-		}else{			
-			flash.put("success", "Item " + item.name + " created!");
-			Listings.dashboard(project_id, listing_id);
-		}
 	}
 	
 	public static void doCreateFromForm(
-			@Required Long project_id,
 			@Required Long listing_id, 			
 			@Valid Item item){
 		if( Validation.hasErrors() ){
@@ -167,16 +157,13 @@ public class Items extends AppController {
 			}catch(Exception e){error();}
 		}
 		if(params.get("redirectToCreate", Boolean.class)){	
-			create(project_id, listing_id);
+			create(listing_id);
 		}else{
-			Listings.dashboard(project_id, listing_id);
+			Listings.dashboard(listing_id);
 		}
 	}
 	
-	public static void edit(
-			@Required Long project_id,
-			@Required Long listing_id, 
-			@Required Long item_id){
+	public static void edit(@Required Long item_id){
 		if(Validation.hasErrors()){
 			notFound();
 		}
@@ -186,36 +173,30 @@ public class Items extends AppController {
 	}
 	
 	public static void create(
-			@Required Long project_id,
 			@Required Long listing_id){
 		Item item = new Item(getActiveListing());		
 		render("items/form.html", item);
 	}
 	
 	public static void quickEdit(
-			@Required Long project_id,
-			@Required Long listing_id,
 			@Required Long item_id,
 			@Required String input){
 		if(Validation.hasErrors()){notFound();}
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
-		Listing l = getActiveListing();
 		try{
 			item.updateFromSmartInput(input);		
-			item.update();
+			item.update(false);
 			if( request.isAjax() ){
 				render("items/item.html", item);
 			}else{
 				flash.put("success", "Item " + item.name + " updated!");
-				Listings.dashboard(project_id, listing_id);
+				Listings.dashboard(item.listing.id);
 			}
 		}catch(Exception e){ error(); }
 	}
 	
 	public static void doEdit(
-			@Required Long project_id,
-			@Required Long listing_id, 
 			@Valid Item item,
 			@Required Long item_id){
 		if( Validation.hasErrors() ){
@@ -223,14 +204,13 @@ public class Items extends AppController {
 			render("items/form.html", item);
 		}
 		handleFile(item);
-		item.update();
-		Listings.dashboard(project_id, listing_id);
+		item.update(false);
+		Listings.dashboard(item.listing.id);
 	}
 	
 	@Util
 	public static void handleFile(Item item){
 		List<Upload> uploads = (List<Upload>) Request.current().args.get("__UPLOADS");
-		//TODO: Need to rethink
 		if( uploads != null && uploads.size() > 0 ){
 			Upload upload = uploads.get(0);
 			if(upload.getSize() > 0){
@@ -252,10 +232,7 @@ public class Items extends AppController {
 	}
 	
 	
-	public static void delete(
-			@Required Long project_id,
-			@Required Long listing_id, 
-			@Required Long item_id){
+	public static void delete(@Required Long item_id){
 		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
@@ -265,12 +242,11 @@ public class Items extends AppController {
 			renderText(message);
 		}else{
 			flash.put("success", message);
-			Listings.dashboard(project_id, listing_id);
+			Listings.dashboard(item.listing.id);
 		}
 	}
 	
 	public static void restore(
-			@Required Long project_id,
 			@Required Long item_id){
 		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
 		Item item = getItem();
@@ -281,7 +257,7 @@ public class Items extends AppController {
 			renderText(message);
 		}else{
 			flash.put("success", message);
-			Projects.trash(project_id);
+			Projects.trash(item.project.id);
 		}
 	}
 	

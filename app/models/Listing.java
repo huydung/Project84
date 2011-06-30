@@ -11,17 +11,8 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
-import org.hibernate.annotations.Filter;
-
-import com.huydung.utils.ItemField;
-import com.huydung.utils.Link;
-import com.huydung.utils.MiscUtil;
-
-import controllers.AppController;
-
-import models.enums.ActivityType;
+import models.enums.ActivityAction;
 import models.features.BasicFeature;
 import models.features.CalculateFeature;
 import models.features.CalculateMethod;
@@ -29,7 +20,8 @@ import models.filters.BasicFilter;
 import models.filters.FilterFactory;
 import models.templates.ItemListTemplate;
 import models.templates.ListTemplate;
-import models.templates.ProjectListTemplate;
+
+import org.hibernate.annotations.Filter;
 
 import play.Play;
 import play.cache.Cache;
@@ -37,15 +29,20 @@ import play.data.validation.Check;
 import play.data.validation.CheckWith;
 import play.data.validation.Min;
 import play.data.validation.Required;
-import play.db.jpa.JPA;
 import play.db.jpa.Model;
 import play.i18n.Messages;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
 
+import com.huydung.utils.ItemField;
+import com.huydung.utils.Link;
+import com.huydung.utils.MiscUtil;
+
+import controllers.AppController;
+
 @Entity
 @Filter(name="deleted")
-public class Listing extends Model implements IWidget {
+public class Listing extends Model implements IWidget, IActivityLoggabe {
 	private static final long serialVersionUID = 1L;
 	
 	@Required
@@ -112,6 +109,15 @@ public class Listing extends Model implements IWidget {
 	}	
 	
 	@Override
+	public boolean validateAndSave(){
+		boolean res = super.validateAndSave();
+		if( res ){
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+		}
+		return res;
+	}
+	
+	@Override
 	public Listing delete(){
 		return delete(true);
 	}
@@ -124,8 +130,7 @@ public class Listing extends Model implements IWidget {
 		}
 		if(log){ 
 			User user = AppController.getLoggedin();
-			Activity.track("Listing [" + this.listingName + "] has been deleted by [" + user.nickName + "]", this.project, ActivityType.DELETE, user);
-			Activity.track("All Items in Listing [" +this.listingName+ "] has also be deleted.", project, ActivityType.DELETE, user);
+			Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
 		}
 		return this;
 	}
@@ -296,7 +301,6 @@ public class Listing extends Model implements IWidget {
 	@Override
 	public Link getFirstLink() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("project_id", this.project.id);
 		args.put("listing_id", this.id);
 		return new Link( 
 				Messages.get("labels.viewAll"),
@@ -308,7 +312,6 @@ public class Listing extends Model implements IWidget {
 	@Override
 	public Link getLastLink() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("project_id", this.project.id);
 		args.put("listing_id", this.id);
 		return new Link( 
 				Messages.get("labels.create"),
@@ -363,5 +366,22 @@ public class Listing extends Model implements IWidget {
 			}		
 		}
 		return true;
+	}
+
+	@Override
+	public String getType() {
+		return "Membership";
+	}
+
+	@Override
+	public Project getProject() {
+		return this.project;
+	}
+	
+	@Override
+	public String getActivityShowLink() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("listing_id", id);
+		return Router.getFullUrl("Listings.dashboard", args);
 	}
 }
