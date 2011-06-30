@@ -31,6 +31,7 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.jexl2.parser.StringParser;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.hibernate.Session;
 import org.hibernate.annotations.Filter;
 import org.w3c.dom.Node;
 
@@ -50,6 +51,7 @@ import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.data.validation.URL;
 import play.db.jpa.Blob;
+import play.db.jpa.JPA;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Router;
@@ -64,7 +66,8 @@ public class Item extends BasicItem implements IWidgetItem{
 	public static final String FIELDS_ORDERABLE = ",category,checkbox,date,user,";	
 	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
 	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
-	
+	public static final String SUPPORTED_FILE_ICONS = ",ac3,ace,ade,adp,ai,aif,au,avi,bat,bin,bmp,bup,cab,cat,chm,css,cue,dat,dcr,der,dic,divx,diz,dll,doc,docx,dos,dvd,dwg,emf,exc,fon,gif,hlp,html,ifo,inf,ini,ins,ip,iso,isp,java,jfif,jpeg,jpg,log,m4a,mid,mmf,mmm,mov,movie,mp2,mp2v,mp3,mp4,mpe,mpeg,mpg,mpv2,nfo,pdd,pdf,php,ppt,pptx,psd,rar,reg,rtf,scp,theme,tif,tiff,tlb,ttf,txt,uis,url,vbs,vcr,vob,wav,wba,wma,wmv,wpl,wri,wtx,xls,xlsx,xml,xsl,zap,zip,";
+	public static final String IMAGES_EXTS = ",png,jpg,bmp,gif,jpeg,";
 	private static final long serialVersionUID = 1L;
 	private static List<ItemField> _itemFields = null;
 	
@@ -108,7 +111,7 @@ public class Item extends BasicItem implements IWidgetItem{
 	/* File Attributes */
 	public Blob file;
 	public String file_name;
-	public String file_mimeType;
+	public String file_ext;
 	public Long file_size;
 	
 	/* Asset Attributes */
@@ -158,9 +161,6 @@ public class Item extends BasicItem implements IWidgetItem{
 	@PrePersist
 	public void beforeSave(){
 		super.beforeSave();
-		if( this.body.equals("<p>Initial content</p>") ){
-			this.body = null;
-		}
 		if(this.rawInput == null){
 			this.createSmartInput();
 		}
@@ -187,7 +187,7 @@ public class Item extends BasicItem implements IWidgetItem{
 			this.file = null;
 			this.file_name = null;
 			this.file_size = null;
-			this.file_mimeType = null;
+			this.file_ext = null;
 		}
 	}
 	
@@ -843,6 +843,17 @@ public class Item extends BasicItem implements IWidgetItem{
 		return this;
 	}
 	
+	public Item restore(){
+		return restore(true);
+	}
+	
+	public Item restore(boolean log){
+		this.deleted = false;
+		this.save();
+		//Log Activity
+		return this;
+	}
+	
 	public Item update(){
 		this.createSmartInput();
 		this.save();
@@ -860,5 +871,13 @@ public class Item extends BasicItem implements IWidgetItem{
 		}
 		xml += "</item>";
 		return xml;
+	}
+	
+	public static List<Item> findDeleted(Project p){
+		org.hibernate.Filter deleteFilter = ((Session)JPA.em().getDelegate()).getEnabledFilter("deleted");
+		deleteFilter.setParameter("deleted", true);
+		List<Item> items = Item.find("project = ? ORDER BY updated DESC", p).fetch();
+		deleteFilter.setParameter("deleted", false);
+		return items;
 	}
 }

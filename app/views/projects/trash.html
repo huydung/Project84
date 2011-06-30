@@ -1,0 +1,34 @@
+#{extends 'main.html' /}
+#{set title:_project.name + ' - ' + messages.get('project.trash') /}
+#{set pageTitle:title /}
+
+#{set tab:'trash'/}
+#{include 'projects/configtab.html' /}
+
+<em>&{'project.trash.intro'}</em>
+<hr/>
+<div class="grid_6">
+#{if deleted_items != null && deleted_items.size() > 0}
+
+	%{
+	String dateGroup = "";
+	}%
+	<ul class="nobullet">
+	#{list items:deleted_items, as:'i' }
+		%{ 
+		String updated = i.updated.format()
+		}%
+		#{ if !dateGroup.equals(updated) }
+		  %{ dateGroup = updated; %}
+		  <li class="main_category">${dateGroup}</li>
+		#{/}
+		<li><strong>${i.name}</strong>
+		  <a href="@{Items.restore(_project.id, i.id)}" class="small actions icon-link icon-link-refresh">&{'project.trash.restore'}</a>
+		</li>
+	#{/}
+	</ul>
+#{/}
+#{else}
+<strong>&{'project.trash.empty'}</strong>
+#{/}
+</div>

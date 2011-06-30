@@ -197,12 +197,14 @@ $(document).ready(function(){
 				stop = false;
 			};
 		});
+		
 		$('#accordions').accordion({
 			header: '.header',
 			collapsible: true,
 			active: false,
 			autoHeight: false
 		});
+		
 		$('#form-item #accordions,.listing_features #accordions').accordion("activate", 0);
 		$('#tabs').tabs();
 		
@@ -387,6 +389,16 @@ $(document).ready(function(){
 		  	hoverClass: "item-drop-active",
 			drop: afterDrop
 	    });
+		/** Draggable for Item to be deleted by dragging on recycle bin **/
+		var item_name = $item.find('.title').text();
+		$item.draggable({revert:true,
+			helper: function( event ){
+				return $( '<div class="highlight" style="width:64px;height:64px;font-size:10px">' + item_name + '</div>' );
+			},
+			cursorAt: {cursor:'move', top: 10, left: 10},
+			zIndex: 50,
+			appendTo : 'body'
+		});
 	};
 	
 	function processItemListings(){
@@ -423,7 +435,72 @@ $(document).ready(function(){
 		});
 		
 		$('#inline_date_picker').delegate('.draggable-date-cell a', 'mouseenter', function(){
-			$(this).draggable({revert:true});
+			$(this).draggable({
+				revert:true,
+				cursorAt: {cursor:'move', top: 10, left: 10},
+				zIndex: 100,
+				helper: 'clone', 
+				appendTo : 'body'
+			});
+		});
+		
+		/** Drag and Drop File Upload **/
+		hd.fileUploads = 0;
+		hd.fileResponsed = 0;
+		var $uploader = $('#file-uploader');
+		$uploader.fileupload({
+			dropZone: $('#file-uploader'),
+			url: $uploader.attr('data-url'),
+			fileInput: null,
+			singleFileUploads: true,
+			multipart: true
+		}).bind('fileuploadalways', function (e, data) {
+			hd.fileResponsed ++;
+			if( hd.fileResponsed == hd.fileUploads ){				
+				hd.fileResponsed = 0;
+				hd.fileUploads = 0;
+				$uploader.text( 'Reloading this page to display newly uploaded items...' );
+				window.location.href = window.location.href;
+			}
+		}).bind('fileuploadprogressall', function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$uploader.text('Uploading ' + hd.fileUploads + ' files: ' + progress + '%');
+		}).bind('fileuploaddrop', function (e, data) {
+			$.each(data.files, function (index, file) {
+		        hd.fileUploads ++;
+		    });
+			$uploader
+				.css('background-color', '#FFFFAA');
+	
+		}).bind('fileuploaddragover', function (e) {
+			$uploader.css('background-color', '#FF0084');
+		});
+		
+		/** Drag and Drop to delete **/
+		$recyclebin = $('#recycle_bin');
+		var pid = $recyclebin.attr('data-project');
+		var lid = $recyclebin.attr('data-listing');
+		$recyclebin.droppable({
+			hoverClass: "item-drop-active",
+			accept: 'li.item',
+			drop: function(event, ui){
+				var $dropped = $(ui.draggable);
+				var id = $dropped.attr('data-id');
+				if( id ){
+					var url = '' + hd.itemDeleteAction({
+						project_id: pid, listing_id: lid, item_id: id
+					});
+					alert(url);
+					$.post(url, null, function(response, status, xhr){
+						$('#item-' + id).remove();
+						$.gritter.add({
+							title: 'Deleted',
+							class_name: 'success',
+							text: response 
+						});
+					});
+				};	
+			}
 		});
 	};
 	
@@ -443,7 +520,13 @@ $(document).ready(function(){
 		});
 		
 		/** Drag and Drop to change item field * */
-		$('.draggable').draggable({revert:true});
+		$('.draggable').draggable({
+			revert:true,
+			cursorAt: {cursor:'move', top: 10, left: 10},
+			zIndex: 100,
+			helper: 'clone', 
+			appendTo : 'body'
+		});
 	};
 	
 	function processItemForm(){
@@ -463,8 +546,7 @@ $(document).ready(function(){
 			});
 		};	
 		
-		/** WYM EDITOR * */
-		
+		/** WYM EDITOR * */		
 		$('.wymeditor').wysiwyg({
 			resizeOptions: {},
 			controls: {

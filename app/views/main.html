@@ -11,8 +11,8 @@
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/app.css'}" media="screen" />
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/jquery.gritter.css'}" media="screen" />
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/js/fileuploader.css'}" media="screen" />
-<link rel="stylesheet" href="/public/assets/js/jwysiwyg/jquery.wysiwyg.css" type="text/css"/> 
-
+<link rel="stylesheet" href="/public/assets/js/jwysiwyg/jquery.wysiwyg.css" type="text/css" media="screen"/> 
+<link rel="stylesheet" href="/public/assets/js/uploader/jquery.fileupload-ui.css" type="text/css" media="screen" />
 <link type="text/css" href="@{'/public/assets/css/jquery-ui-1.8.12.custom.css'}" rel="stylesheet" media="screen" />  
 <link rel="stylesheet" type="text/css" href="@{'/public/assets/css/print.css'}" media="print"/>    
 #{get 'moreStyles' /}
@@ -160,25 +160,27 @@
 var hd = hd || {};
 hd.itemCheckAction = #{jsAction @Items.updateCheck(':project_id', ':listing_id', ':item_id', ':checked') /};
 hd.itemUpdateAction = #{jsAction @Items.updateField(':project_id', ':listing_id', ':item_id') /};
+hd.itemDeleteAction = #{jsAction @Items.delete(':project_id', ':listing_id', ':item_id') /};
 var d = new Date();
 hd.month = d.getMonth();
 hd.year = d.getFullYear();
 hd.dateFormat = '${loggedin != null ? com.huydung.helpers.DateFormatOption.toJsString(loggedin.dateFormat) : "yy-mm-dd"}';
 console.log(hd);
 </script>
-<script type="text/javascript" src="@{'/public/assets/js/jquery.min.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/blend/jquery.blend.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/jquery-ui-1.8.12.custom.min.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/jquery.gritter.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/fileuploader.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/confirm.js'}"></script>
-    <script type="text/javascript" src="@{'/public/assets/js/fixedtableheader.js'}"></script>
-    <!--  <script type="text/javascript" src="@{'/public/assets/js/wymeditor/jquery.wymeditor.pack.js'}"></script>-->
+<script type="text/javascript" src="/public/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/assets/js/blend/jquery.blend.js"></script>
+    <script type="text/javascript" src="/public/assets/js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="/public/assets/js/jquery.gritter.js"></script>
+    <script type="text/javascript" src="/public/assets/js/fileuploader.js"></script>
+    <script type="text/javascript" src="/public/assets/js/confirm.js"></script>
+    <script type="text/javascript" src="/public/assets/js/fixedtableheader.js"></script>
+    <script type="text/javascript" src="/public/assets/js/uploader/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/public/assets/js/uploader/jquery.fileupload.js"></script>
     <script type="text/javascript" src="/public/assets/js/jwysiwyg/jquery.wysiwyg.js"></script> 
-<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.image.js"></script> 
-<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.link.js"></script> 
-<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.table.js"></script> 
-    <script type="text/javascript" src="@{'/public/assets/js/app.js'}"></script>
+	<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.image.js"></script> 
+	<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.link.js"></script> 
+	<script type="text/javascript" src="/public/assets/js/jwysiwyg/controls/wysiwyg.table.js"></script> 
+    <script type="text/javascript" src="/public/assets/js/app.js"></script>
     #{get 'moreScripts' /}
 </body>
 </html>

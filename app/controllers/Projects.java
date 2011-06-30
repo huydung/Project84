@@ -262,4 +262,12 @@ public class Projects extends AppController {
     	response.setContentTypeIfNotSet("application/vnd.ms-excel");
     	
 	}
+	
+	public static void trash(Long project_id){
+		renderArgs.put("active", "settings");
+		Project p = getActiveProject();
+		if(p == null){error(400, "Bad Request");}
+		List<Item> deleted_items = Item.findDeleted(p);
+		render(deleted_items);
+	}
 }

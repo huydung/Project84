@@ -110,6 +110,9 @@ labels.no = No
 labels.itemIn = Item in
 labels.create = Create new
 labels.project = Project
+labels.dragUpload = Drag Files here to upload and create multiple Item at once 
+
+
 ## Time Left ##
 left.seconds = %d seconds left
 left.minutes = %d minutes left
@@ -165,10 +168,14 @@ project.template.listings = Below are the current listings of this project. Chec
 project.template.includeItems = Include Items of %s?
 project.template.craeteAction = Create Template
 project.templates = Project Templates & Export
-
+project.trash = Recycle Bin
 project.export.action = Download File
 project.export.help = Great news here: You can download an excel file contains all items in this project for offline reference! Please note that we do not support import from excel at the moment, so if you changed data in the excel file, you should repeat your action here on Project84 so everyone in the team can be updated.
 project.export = Export your project to Excel
+project.trash.intro = Here are the items that just have been deleted. In fact, they're not really deleted yet, so you can still restore them from here. But please note that they will be automatically deleted (actually delete, this time) by the system after 7 days. So if you find somebody (or even you) has deleted something by mistake, acts fast :)
+project.trash.restore = restore
+project.trash.restoreAll = restore all
+project.trash.empty = The trash is empty :)
 
 labels.project.create.short = Create Project
 labels.project.name = Project Name

@@ -82,7 +82,7 @@ public class Authorization extends Controller {
 		String method = request.actionMethod;
 		Membership m = AppController.getActiveMembership();
 		Project p = AppController.getActiveProject();
-		Listing l =  AppController.getListing();
+		Listing l =  AppController.getActiveListing();
 		Item item = AppController.getItem();
 		if( request.controllerClass == Projects.class ){			
 			checkProjectsController(method, m, p);

@@ -7,6 +7,9 @@
 .nomargin{margin:0 !important;}
 .einline{display:inline !important;}
 .nofloat{float:none;}
+ul.nobullet, ul.nobullet li{
+	list-style: none
+}
 .draggable{
 	cursor: move;
 }
@@ -470,12 +473,24 @@ li:hover .drag-handler{
 }
 
 #textcontent .form-quick-add{
-	width: 650px;
+	width: 580px;
 	position: absolute;
 	margin: 0 0 15px -5px;
 	z-index: 2;
 	top: 0;
-right: 0;
+    right: 70px;
+}
+#recycle_bin{
+	width:64px;
+	height:64px;
+	background:url('../images/bin.png') no-repeat;
+	position: absolute;
+	right: 0;
+	top:-5px;
+	text-decoration: none;
+}
+#recycle_bin.item-drop-active, #recycle_bin:hover{
+	background:url('../images/bin_open.png') no-repeat;
 }
 .listing_items{
 	margin-left: -5px;
@@ -489,14 +504,14 @@ right: 0;
 	border-top: dotted 1px #235E8b;
 	padding-left: 10px;
 }
-.listing_items li.main_category{
+li.main_category{
 	border-top: 0;
 	padding-top: 15px;
 	text-transform: uppercase;
 	font: bold 16px "Palatino linotype", "Times New Roman", serif;
 	color: #033E6B;
 }
-.listing_items li.main_category:first-child{
+ul li.main_category:first-child{
 	padding-top: 0;
 }
 .item.checked{
@@ -515,7 +530,7 @@ right: 0;
 }
 .listing_items li .subinfo li{
 	float:left;
-	width:33%;
+	width:30%;
 	overflow: hidden;
 	margin: 0;
 	border-top:none;
@@ -612,19 +627,19 @@ li:hover .actions, .full-item .actions, .full-item .comment:hover .actions{
 }
 /** FILTER BOX FOR USER **/
 
-.filter-box-user li{
+li.filter-user{
 	width: 50px; height: 50px;
 	position: relative;
 	float: left;
-	
+	list-style: none;
 	overflow: hidden;
 	
 }
-.filter-box-user li input{
+li.filter-user input{
 	position: absolute;
 	bottom: -2px; right: -2px;
 }
-.filter-box-user li .gravatar{
+li.filter-user .gravatar{
 	margin:0;
 }
 .filter-box li.checked{

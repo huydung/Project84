@@ -14,6 +14,11 @@ def sort2 = params.get('sort_2');
 <div style="position:relative">
 <div class="grid_4 listing_features">
 <form class="clearfix" action="@{Listings.dashboard(_project.id, l.id)}" method="GET" id="form-filters">
+    #{if l.hasField('file')}
+        <div id="file-uploader" class="file-uploader highlight" style="height:50px" data-url="@{Listings.uploadFiles(_project.id, l.id)}"> 
+        <em class="small">&{'labels.dragUpload'}</em>
+        </div>
+    #{/} 
     <div id="accordions">
 	    <div class="listing_groups">
 	    #{if features.size() > 0}
@@ -89,7 +94,7 @@ def sort2 = params.get('sort_2');
 	#{/}
 </div>
 <div class="form-quick-add grid_11 clearfix highlight">
-
+    
     <form id="quick-add-form" action="@{Items.doCreate( _project.id, l.id)}" class="inline tleft" method="POST">
 	    <strong>&{'item.quickAdd'}</strong>
 	    <input type="text" name="input" class="item-quick-add" required="required" value="${params.get('input')}"/>
@@ -115,20 +120,27 @@ def sort2 = params.get('sort_2');
         </div>
 	    
     </form>  
- 
+    
 </div>
+<a href="@{Projects.trash(_project.id)}" 
+id="recycle_bin" data-project="${_project.id}" data-listing="${l.id}"
+title="Click to go to the Project Recycle Bin">&nbsp;</a> 
 <div class="grid_11 listing_items">
-    #{if l.hasField('file')}
-        <div class="file-uploader"> 
-        Drag Files here to upload and create multiple Item at once 
-        </div>
-    #{/} 
+    
     <div class="items">
+	    
         #{if !isEmpty}
-        <div class="actions fright "><a href="#" class="showhide  icon-link icon-link-open" 
-        data-class="subinfo" data-hideText="&{'labels.hideAll'} &{'item.subinfo'}" data-showText="&{'labels.showAll'} &{'item.subinfo'}">&{'labels.hideAll'} &{'item.subinfo'}</a></div>
+        <div class="actions fright ">
+        <a href="#" class="showhide  icon-link icon-link-open" 
+        data-class="subinfo" data-hideText="&{'labels.hideAll'} &{'item.subinfo'}" data-showText="&{'labels.showAll'} &{'item.subinfo'}">&{'labels.hideAll'} &{'item.subinfo'}</a>
+        #{if l.hasField('file')}
+        <a href="#" class="icon-link icon-link-list">
+        Image Slideshow
+        </a>
+        #{/}
+        </div>
         <br/>
-	    <ul class="clearfix items" data-project-id="${_project.id}" data-listing-id="${l.id}">	    
+	    <ul class="clearfix items " style="clear:both;" data-project-id="${_project.id}" data-listing-id="${l.id}">	    
 		    %{
 		    String fieldSort1 = sort1 != null ? (sort1.split(' '))[0] : null;
 

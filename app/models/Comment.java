@@ -7,9 +7,8 @@ import play.db.jpa.*;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Filter;
-
-
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import java.util.*;
 
 @Entity
@@ -45,4 +44,13 @@ public class Comment extends BasicItem {
 		super.beforeSave();
 		this.project = this.parent.project;
 	}
+	/*
+	public static List<Comment> findDeleted(){
+		Filter deleteFilter = ((Session)JPA.em().getDelegate()).getEnabledFilter("deleted");
+		deleteFilter.setParameter("deleted", true);
+		List<Comment> comments = Comment.findAll();
+		deleteFilter.setParameter("deleted", false);
+		return comments;
+	}
+	*/
 }

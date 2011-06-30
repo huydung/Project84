@@ -61,8 +61,9 @@ String fn = f.fieldName;
 
     #{/}
     #{if fn == 'file' && item.file_name != null}
-        <strong>#{link-file id:item.id, name:item.file_name/}</strong> 
-
+        
+        <strong class="${item.file_ext}">#{link-file id:item.id, name:item.file_name/}</strong> 
+        
     #{/}
     </span>
 </li>

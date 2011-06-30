@@ -26,13 +26,13 @@ import play.templates.JavaExtensions;
 @With(Authorization.class)
 public class Items extends AppController {
 	
-	@Before(priority=2)
+	@Before(priority=2,unless={"displayFile","restore"})
 	protected static void setupListing(){
-		if( !request.actionMethod.toLowerCase().contains("displayfile") ){
-			Listing l = getListing();
-			if( l == null ){ error(400, "Bad Request"); }
-			renderArgs.put("active", JavaExtensions.slugify(l.listingName));
-		}
+
+		Listing l = getActiveListing();
+		if( l == null ){ error(400, "Bad Request"); }
+		renderArgs.put("active", JavaExtensions.slugify(l.listingName));
+
 	}	
 
 	public static void updateCheck(
@@ -136,7 +136,7 @@ public class Items extends AppController {
 		if( Validation.hasErrors() ){
 			displayValidationMessage();
 		}else{
-			Listing l = getListing();			
+			Listing l = getActiveListing();			
 			item = Item.createFromSmartInput(input, l);
 			item.creator = getLoggedin();
 			if(!item.create()){
@@ -188,7 +188,7 @@ public class Items extends AppController {
 	public static void create(
 			@Required Long project_id,
 			@Required Long listing_id){
-		Item item = new Item(getListing());		
+		Item item = new Item(getActiveListing());		
 		render("items/form.html", item);
 	}
 	
@@ -200,7 +200,7 @@ public class Items extends AppController {
 		if(Validation.hasErrors()){notFound();}
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
-		Listing l = getListing();
+		Listing l = getActiveListing();
 		try{
 			item.updateFromSmartInput(input);		
 			item.update();
@@ -228,7 +228,7 @@ public class Items extends AppController {
 	}
 	
 	@Util
-	private static void handleFile(Item item){
+	public static void handleFile(Item item){
 		List<Upload> uploads = (List<Upload>) Request.current().args.get("__UPLOADS");
 		//TODO: Need to rethink
 		if( uploads != null && uploads.size() > 0 ){
@@ -242,7 +242,8 @@ public class Items extends AppController {
 				}
 				item.file_name = upload.getFileName();
 				item.file_size = upload.getSize();
-				item.file_mimeType = upload.getContentType();
+					
+				item.file_ext = item.file_name.substring(item.file_name.lastIndexOf(".")+1);
 				item.file = new Blob();
 				item.file.set( upload.asStream() , upload.getContentType());
 				MiscUtil.ConsoleLog("set new file");
@@ -255,18 +256,32 @@ public class Items extends AppController {
 			@Required Long project_id,
 			@Required Long listing_id, 
 			@Required Long item_id){
-		if( Validation.hasErrors() ){
-			notFound();
-		}
+		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
 		Item item = getItem();
-		if( item == null ){
-			notFound("Item", item_id);
-		}
+		if( item == null ){	notFound("Item", item_id);	}
 		item.delete();
+		String message = "Item [" + item.name + "] has been deleted"; 
 		if( request.isAjax() ){
-			renderText("Deleted");
+			renderText(message);
 		}else{
+			flash.put("success", message);
 			Listings.dashboard(project_id, listing_id);
+		}
+	}
+	
+	public static void restore(
+			@Required Long project_id,
+			@Required Long item_id){
+		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
+		Item item = getItem();
+		if( item == null ){	notFound("Item", item_id);	}
+		item.restore();
+		String message = "Item [" + item.name + "] has been restored to [" + item.listing.listingName + "]"; 
+		if( request.isAjax() ){
+			renderText(message);
+		}else{
+			flash.put("success", message);
+			Projects.trash(project_id);
 		}
 	}
 	

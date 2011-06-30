@@ -99,7 +99,7 @@ public class Listings extends AppController {
 			notFound();
 		}
 		
-		Listing l = getListing();
+		Listing l = getActiveListing();
 		
 		/** FILTERING **/
 		//Only set default parameters if in the params are currently have only 2 
@@ -194,9 +194,24 @@ public class Listings extends AppController {
 		if(Validation.hasErrors()){
 			error(400, "Bad Request");
 		}
-		Listing l = getListing();
+		Listing l = getActiveListing();
+		if( l == null ){notFound();};
 		l.delete();
 		flash.put("success", "Listing [" + l.listingName + "] and ALL its related items has been deleted");
 		Projects.structure(project_id);
 	}
+	
+	public static void uploadFiles(Long project_id, Long listing_id){
+		Listing l = getActiveListing();
+		if( l == null ){notFound();};
+		Item item = new Item(l);
+		Items.handleFile(item);
+		if( item.file.exists() ){  
+			item.name = item.file_name.substring(0, item.file_name.length());
+		};
+		item.creator = getLoggedin();
+		item.create();
+		renderJSON("");
+	}
+	
 }

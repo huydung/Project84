@@ -161,7 +161,7 @@ public class AppController extends Controller {
 		return renderArgs.get("_project", Project.class);
 	}
 	
-	static Listing getListing(){
+	static Listing getActiveListing(){
 		return renderArgs.get("l", Listing.class);
 	}
 	
