@@ -8,6 +8,16 @@
     >${item.description}</textarea> 
     </div>
 #{/}
+#{if f.fieldName == 'checkbox'}
+    <div class="form-field field-description">
+    <label>${l.getFieldName('checkbox')}</label>
+    <input type="checkbox" 
+         name="item.checkbox"
+         value="true"
+         ${item.checkbox ? 'checked="checked"' : ''}      
+         />
+    </div>
+#{/}
 #{if f.fieldName == 'body'}
     <div class="form-field field-body">
     <label>${l.getFieldName('body')}</label>
@@ -153,7 +163,7 @@
     <div class="form-field field-cost">
     <label>${l.getFieldName('file')}</label>
     <div class="fleft">
-     #{if item.file.exists() && item.file_name != null}
+     #{if item.file != null && item.file.exists() && item.file_name != null}
     <strong class="small">&{'labels.currentFile'}: 
     <em>#{link-file id:item.id, name:item.file_name/}</em>
     </strong><br/>

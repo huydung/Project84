@@ -45,7 +45,7 @@ boolean canCheck = controllers.Authorization.check( _project.id, loggedin.id,
     #{/}
     
     <div class="inline-ui clearfix" data-drag="">
-        #{if item.file.exists()}
+        #{if item.file != null && item.file.exists()}
             <a href="@{Items.displayFile(item.id)}" target="_blank">
 	        #{if models.Item.SUPPORTED_FILE_ICONS.contains(',' + item.file_ext.toLowerCase() + ',') }
 	        <img style="margin-right:0px;" 

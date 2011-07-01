@@ -1,9 +1,9 @@
 #{extends 'main.html' /}
-#{set title:messages.get('project.configuration.long', _project.name) /}
+#{set title:_project.name + ' - ' + messages.get('project.templates') /}
 #{set pageTitle:title /}
 
 #{set tab:'templates'/}
-#{include 'projects/configtab.html' /}
+#{include 'projects/infotab.html' /}
 <div class="grid_15" style="margin-bottom: 30px;">
     <h2>&{'project.export'}</h2>
     <div class="clearfix">

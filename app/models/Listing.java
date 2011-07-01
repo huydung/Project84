@@ -108,29 +108,34 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 		}	
 	}	
 	
-	@Override
-	public boolean validateAndSave(){
+	public boolean validateAndSave(User user){
 		boolean res = super.validateAndSave();
 		if( res ){
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+			Activity.track(this, user, ActivityAction.CHANGE);
 		}
 		return res;
 	}
 	
-	@Override
-	public Listing delete(){
-		return delete(true);
+	public boolean validateAndCreate(User user){
+		boolean res = super.validateAndCreate();
+		if( res ){
+			Activity.track(this, user, ActivityAction.CREATE);
+		}
+		return res;
 	}
 	
-	public Listing delete(boolean log){
+	public Listing delete(User user){
+		return delete(user, true);
+	}
+	
+	public Listing delete(User user, boolean log){
 		this.deleted = true;
 		this.save();
 		for( Item item : this.items ){
-			item.delete(false);
+			item.delete();
 		}
 		if(log){ 
-			User user = AppController.getLoggedin();
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+			Activity.track(this, user, ActivityAction.DELETE);
 		}
 		return this;
 	}
@@ -151,9 +156,9 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 			String[] fieldStr = this.fields.split(",");
 			for(String f : fieldStr){
 				String[] parts = f.split(":");
-				if( !parts[0].equals("name") ){
+				//if( !parts[0].equals("name") ){
 					fs.add(new ItemField(parts[0], parts[1]));
-				}
+				//}
 			}
 		}
 		return fs;
@@ -284,7 +289,7 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 	}
 
 	@Override
-	public String getName() {
+	public String getWidgetName() {
 		return this.listingName;
 	}
 
@@ -345,13 +350,13 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 		return des;
 	}
 	
-	public boolean addItems(List<ItemListTemplate> itls){
+	public boolean addItems(User user, List<ItemListTemplate> itls){
 		if(itls!=null){
 			for( ItemListTemplate itl : itls ){
 				Item item = new Item(this);
 				item.copyProperties(itl.item);
 				//Make sure the constrained fields are respected
-				item.creator = AppController.getLoggedin();
+				item.creator = user;
 				item.project = this.project;
 				item.listing = this;
 				//Make sure user is null, because this is a new project
@@ -370,7 +375,7 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 
 	@Override
 	public String getType() {
-		return "Membership";
+		return "Listing";
 	}
 
 	@Override
@@ -383,5 +388,10 @@ public class Listing extends Model implements IWidget, IActivityLoggabe {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("listing_id", id);
 		return Router.getFullUrl("Listings.dashboard", args);
+	}
+	
+	@Override
+	public String getLogName() {
+		return this.listingName;
 	}
 }

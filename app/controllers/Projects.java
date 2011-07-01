@@ -2,56 +2,42 @@ package controllers;
 
 import java.io.File;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Activity;
+import models.Comment;
+import models.Item;
+import models.Listing;
+import models.Project;
+import models.RolePermission;
+import models.User;
+import models.enums.PermissionKey;
+import models.enums.Role;
+import models.templates.ProjectTemplate;
+import models.vos.VProject;
 import net.sf.jxls.transformer.XLSTransformer;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.varia.DenyAllFilter;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import play.Play;
+import play.data.validation.Required;
+import play.data.validation.Validation;
+import play.mvc.Before;
+import play.mvc.With;
+import play.vfs.VirtualFile;
 
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.ItemField;
 import com.huydung.utils.MiscUtil;
 import com.huydung.utils.PermConfig;
-
-import models.Activity;
-import models.Item;
-import models.Listing;
-import models.Membership;
-import models.Project;
-import models.RolePermission;
-import models.User;
-import models.enums.ActivityAction;
-import models.enums.ApprovalStatus;
-import models.enums.DoneStatus;
-import models.enums.PermissionKey;
-import models.enums.Role;
-import models.templates.ListTemplate;
-import models.templates.ProjectTemplate;
-import models.vos.VProject;
-import play.Logger;
-import play.Play;
-import play.data.binding.As;
-import play.data.validation.Required;
-import play.data.validation.Valid;
-import play.data.validation.Validation;
-import play.i18n.Lang;
-import play.i18n.Messages;
-import play.mvc.*;
-import play.vfs.VirtualFile;
-import play.data.binding.*;
-import play.data.binding.types.DateBinder;
 
 @With(Authorization.class)
 public class Projects extends AppController { 
@@ -110,7 +96,7 @@ public class Projects extends AppController {
     		displayError(res.getMessage(), "set-creator-when-save-project");    		
     		render("projects/create.html", project, templates);
     	}    	
-    	project.copyFromTemplate(project.fromTemplate);
+    	project.copyFromTemplate(user, project.fromTemplate);
     	
     	if( !res.isSuccess() ){
     		displayWarning(res.getMessage(), "save-activity-when-create-project");
@@ -119,6 +105,7 @@ public class Projects extends AppController {
     }
 	
 	public static void structure(Long project_id){
+		//Display Listings configuration page
 		Project p = getActiveProject();
 		renderArgs.put("active", "settings");
 		if(p != null){
@@ -131,6 +118,7 @@ public class Projects extends AppController {
 	}
 	
 	public static void permissions(Long project_id){
+		//Display permissions page
 		Project p = getActiveProject();
 		if( p == null ){ error(400, "Bad Request"); }
 		LinkedHashMap<String, List<PermConfig>> perms = 
@@ -143,17 +131,7 @@ public class Projects extends AppController {
 	public static void savePermissions(Long project_id){
 		Project p = getActiveProject();
 		if( p == null ){ error(400, "Bad Request"); }
-		for( Role r : Role.values() ){
-			String key = "permConfigs[" + r.toString() + "][]";
-			String[] perms = params.getAll(key);
-			String permisisons = StringUtils.join(perms, ",");
-			for( RolePermission rp : p.rolePermissions ){
-				if( rp.role == r ){
-					rp.permissions = permisisons;
-					rp.save();
-				}
-			}
-		}
+		p.updatePermissions(params, getLoggedin());
 		flash.put("success", "Permissions for Members of the Project have been saved");
 		permissions(project_id);
 	}
@@ -174,7 +152,7 @@ public class Projects extends AppController {
 	public static void delete(Long project_id){
 		Project p = getActiveProject();
 		if( p == null ){ notFound(); }
-		p.delete();
+		p.delete(getLoggedin());
 		Application.homepage();
 	}
 	
@@ -269,5 +247,15 @@ public class Projects extends AppController {
 		if(p == null){error(400, "Bad Request");}
 		List<Item> deleted_items = Item.findDeleted(p);
 		render(deleted_items);
+	}
+	
+	public static void recent(Long project_id){
+		User user = getLoggedin();
+		Project p = getActiveProject();
+		Date lastLoggedIn = Security.getLastLoggedIn();
+		List<Activity> activities = Activity.findSinceDate(lastLoggedIn, p);
+		List<Item> items = Item.findSinceDate(lastLoggedIn, p);
+		List<Comment> comments = Comment.findSinceDate(lastLoggedIn, p);
+		render( activities, items, comments, lastLoggedIn );
 	}
 }

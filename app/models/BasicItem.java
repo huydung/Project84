@@ -71,7 +71,7 @@ public class BasicItem extends Model {
 	public String getType(){
 		Class clazz = this.getClass();
 		if( clazz != Item.class ){
-			return clazz.getName();
+			return clazz.getSimpleName();
 		}else{
 			return JavaExtensions.slugify(((Item)this).listing.listingName);
 		}

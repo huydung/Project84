@@ -9,6 +9,7 @@ import play.i18n.Messages;
 import play.libs.WS;
 import play.libs.XPath;
 import play.mvc.*;
+import sun.security.action.GetLongAction;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -81,7 +82,7 @@ public class Application extends Controller {
     		String token = params.get("token");
 	    	User user = User.getFromRpx(token);
 	    	if(user != null){
-	    		Security.setConnectedUser(user.id);
+	    		Security.setConnectedUser(user);
 	    		
 	    		if( user.hasProfile ){
 	    			Application.app();
@@ -102,7 +103,7 @@ public class Application extends Controller {
     
     public static void devLogin(Long id){
     	User user = User.findById(id);
-    	Security.setConnectedUser(id);
+    	Security.setConnectedUser(user);
     	if( user.hasProfile ){
 			Application.app();
 		}else{
@@ -131,8 +132,8 @@ public class Application extends Controller {
 						session.put("invitationId", id);
 						flash.put("info", Messages.get("invitation.pleaseLogin"));
 					} else {
-						//user has denied to join
-						m.deny();
+						//user has denied to join						
+						m.deny(null);
 						flash.put("success", Messages.get("invitation.denied", 
 								m.project.creator.fullName,
 								m.project.name));						

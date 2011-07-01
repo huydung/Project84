@@ -92,9 +92,6 @@ public class User extends Model {
     			user.hasProfile = false;
     			//user.dateFormat = "";
     			user.save();
-    		}else{
-    			user.lastLoggedIn = new Date();
-    			user.save();
     		}
     		return user;
     	}catch(Exception e){

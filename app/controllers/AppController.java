@@ -111,8 +111,8 @@ public class AppController extends Controller {
     			Item item = Item.findById(item_id);
     			if( item != null ) { 
     				renderArgs.put("item", item);
-    				renderArgs.put("listing_id", item.listing.id);
-    				renderArgs.put("project_id", item.project.id); 
+    				params.put("listing_id", ""+item.listing.id);
+    				params.put("project_id", ""+item.project.id); 
     			};    			
     		}
 			
@@ -122,7 +122,7 @@ public class AppController extends Controller {
     			Listing l = Listing.findById(listing_id);
     			if( l != null ) { 
     				renderArgs.put("l", l);
-    				renderArgs.put("project_id", l.project.id); 
+    				params.put("project_id",  ""+l.project.id); 
     			};    			
     		}
     		

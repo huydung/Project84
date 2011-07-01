@@ -504,7 +504,7 @@ li:hover .drag-handler{
 	border-top: dotted 1px #235E8b;
 	padding-left: 10px;
 }
-li.main_category{
+li.main_category, div.main_category{
 	border-top: 0;
 	padding-top: 15px;
 	text-transform: uppercase;

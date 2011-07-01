@@ -116,19 +116,19 @@ public class Bootstrap extends Job {
 		milestones.fields = "name:Name,date:Date,checkbox:Completed?";
 		milestones.save();
 		
-		Item it1 = Item.createFromSmartInput("Chốt Sketch và Design, thanh toán 40%", null);
+		Item it1 = Item.createFromSmartInput("Chốt Sketch và Design, thanh toán 40%", null, huydung);
 		it1.creator = null; it1.save();
 		milestones.addItem(it1);
 		
-		Item it2 = Item.createFromSmartInput("Hoàn thiện và chạy phần Website", null);
+		Item it2 = Item.createFromSmartInput("Hoàn thiện và chạy phần Website", null, huydung);
 		it2.creator = null; it2.save();
 		milestones.addItem(it2);
 		
-		Item it3 = Item.createFromSmartInput("Hoàn thiện phần back-end & Quản lý", null);
+		Item it3 = Item.createFromSmartInput("Hoàn thiện phần back-end & Quản lý", null, hanguyen);
 		it3.creator = null; it3.save();
 		milestones.addItem(it3);
 		
-		Item it4 = Item.createFromSmartInput("Hướng dẫn sử dụng & Tài liệu. Thanh toán 100%.", null);
+		Item it4 = Item.createFromSmartInput("Hướng dẫn sử dụng & Tài liệu. Thanh toán 100%.", null, hanguyen);
 		it4.creator = null; it4.save();
 		milestones.addItem(it4);
 		
@@ -145,7 +145,7 @@ public class Bootstrap extends Job {
 		files.iconPath = "/public/appicons/finder.png";
 		files.mainField = "name";
 		files.subField = "created";		
-		files.fields = "name:Name,file:File,user:Author,category:Category";		
+		files.fields = "name:Name,file:File,category:Category,user:Author";		
 		files.save();
 		
 		ListTemplate discussions = new ListTemplate("Discussions", true, null);
@@ -197,7 +197,7 @@ public class Bootstrap extends Job {
 		tasks2.iconPath = "/public/appicons/note-2.png";
 		tasks2.mainField = "name";
 		tasks2.subField = "date";		
-		tasks2.fields = "name:Name,number:Priority,date:Due Date,user:Assigned To,checkbox:Completed?,category:Todo List";		
+		tasks2.fields = "name:Name,number:Priority,category:Todo List,date:Due Date,user:Assigned To,checkbox:Completed?";		
 		tasks2.save();		
 		
 		ListTemplate discussions2 = new ListTemplate("discussions2", true, null);
@@ -205,7 +205,7 @@ public class Bootstrap extends Job {
 		discussions2.iconPath = "/public/appicons/__discussions.png";
 		discussions2.mainField = "name";
 		discussions2.subField = "user";		
-		discussions2.fields = "name:Title,body:Content,user:Author,category:Category";		
+		discussions2.fields = "name:Title,body:Content,category:Category,user:Author";		
 		discussions2.save();
 		
 		ListTemplate costs2 = new ListTemplate("Shopping List", true, null);
@@ -236,7 +236,7 @@ public class Bootstrap extends Job {
 		wd.description = "Đám cưới mong chờ giữa Chú rể và Cô dâu";
 		wd.updated = wd.created;
 		wd.createAndGetResult(huydung);		
-		wd.copyFromTemplate(wedding);		
+		wd.copyFromTemplate(huydung, wedding);		
 		wd.assignCreator(huydung, "Broom");
 		wd.addMember("oakman.hd@gmail.com", "Bride", false, huydung);
 		

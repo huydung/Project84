@@ -46,6 +46,10 @@ public class Comment extends BasicItem implements IActivityLoggabe {
 		return Comment.find( "parent = ? ", item ).fetch();
 	}
 	
+	public static List<Comment> findSinceDate(Date d, Project p){
+		return Comment.find("project = ? AND created >= ?", p, d).fetch();
+	}
+	
 	public void beforeSave(){
 		super.beforeSave();
 		this.project = this.parent.project;
@@ -60,11 +64,10 @@ public class Comment extends BasicItem implements IActivityLoggabe {
 		return res;
 	}
 	
-	@Override
-	public Comment delete(){
+	public Comment delete(User user){
 		this.deleted = true;
 		this.save();
-		Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+		Activity.track(this, user, ActivityAction.DELETE);
 		return this;
 	}
 	
@@ -74,7 +77,7 @@ public class Comment extends BasicItem implements IActivityLoggabe {
 	}
 
 	@Override
-	public String getName() {
+	public String getLogName() {
 		return name;
 	}
 

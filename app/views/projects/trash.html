@@ -3,7 +3,7 @@
 #{set pageTitle:title /}
 
 #{set tab:'trash'/}
-#{include 'projects/configtab.html' /}
+#{include 'projects/infotab.html' /}
 
 <em>&{'project.trash.intro'}</em>
 <hr/>
@@ -22,8 +22,8 @@
 		  %{ dateGroup = updated; %}
 		  <li class="main_category">${dateGroup}</li>
 		#{/}
-		<li><strong>${i.name}</strong>
-		  <a href="@{Items.restore(_project.id, i.id)}" class="small actions icon-link icon-link-refresh">&{'project.trash.restore'}</a>
+		<li>[${i.listing.listingName}] <strong>${i.name}</strong>
+		  <a href="@{Items.restore(i.id)}" class="small actions icon-link icon-link-refresh">&{'project.trash.restore'}</a>
 		</li>
 	#{/}
 	</ul>

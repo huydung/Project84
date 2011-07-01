@@ -32,6 +32,9 @@ actions.contactWarning = This is not critical, but please <a href="/contact?acti
 actions.contactError = Please retry, or <a href="/contact?action=%s">Contact Us</a> so we can fix it for you. Thank you!
 
 ## LABELS ##
+labels.nothingNew = Nothing new since the last time you logged in :)
+labels.title = Title
+labels.type = Type
 labels.mainLang = Main language
 labels.hasBeen = has been
 labels.send = Send
@@ -116,7 +119,9 @@ labels.itemIn = Item in
 labels.create = Create new
 labels.project = Project
 labels.dragUpload = Drag Files here to upload and create multiple Item at once 
-
+labels.haveBeen = has been
+labels.comment = Comment
+labels.item = Item
 
 ## Time Left ##
 left.seconds = %d seconds left
@@ -151,6 +156,7 @@ invitation.pleaseLogin = You're almost there! Please login with either of your e
 invitation.denied = You've successfully notify %s that you'll not join in the %s project
 membership.created.log = %s has invited %s to join the project. 
 ## PROJECT ##
+project.justHappens = Just Happens
 project.create = Create new Project
 project.member = Member
 project.members = Members
@@ -181,6 +187,7 @@ project.trash.intro = Here are the items that just have been deleted. In fact, t
 project.trash.restore = restore
 project.trash.restoreAll = restore all
 project.trash.empty = The trash is empty :)
+project.permisisonChanged = Permisisons of members in [PROJECT: %s] has been updated by [%s]
 
 labels.project.create.short = Create Project
 labels.project.name = Project Name
@@ -207,7 +214,7 @@ message.pleaseAnswer = Please response to this invitation from %s:
 
 ## ACTIVITIES ##
 labels.activity.recent = Recent activities in the project
-
+labels.activity = Activity
 
 ## ITEM FIELDS ##
 f.deleted = Deleted

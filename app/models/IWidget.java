@@ -6,7 +6,7 @@ import java.util.Map;
 import com.huydung.utils.Link;
 
 public interface IWidget {
-	public String getName();
+	public String getWidgetName();
 	public String getSubName();
 	public String getHtmlClass();
 	public Link getFirstLink();

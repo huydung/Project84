@@ -1,0 +1,44 @@
+<${_tag}> 
+	#{if _item instanceof models.Comment}
+	    <span class="item_type item_type_comment">
+	        <img src="/public/assets/icons/balloons.png" class="fleft" width="16" height="16"/>
+	        &{'labels.comment'}
+	    </span>
+	    
+	#{/}
+	#{if _item instanceof models.Item}
+	    <span class="item_type item_type_comment">
+	        <img src="${_item.listing.iconPath}"  class="fleft" width="16" height="16"/>
+	        ${_item.listing.listingName}
+	    </span>
+	#{/}
+	#{if _item instanceof models.Activity}
+	    <span class="item_type item_type_activity">
+	        <img src="/public/assets/icons/bookmark.png" class="fleft" width="16" height="16"/>
+	        &{'labels.activity'}
+	    </span>
+	#{/}
+</${_tag}>
+<${_tag}> 
+	#{if _item instanceof models.Comment}
+	    <a href="@{Items.show(_item.parent.id)}#comment-${_item.id}">
+	    <strong class="item_name">${_item.name}</strong></a> on 
+	    <em> <a href="@{Items.show(_item.parent.id)}">
+	    ${_item.parent.name.abbr(50)}</a> </em>
+	    
+	#{/}
+	#{if _item instanceof models.Item}
+	    <a href="@{Items.show(_item.id)}">
+	    <strong class="item_name">${_item.name}</strong>
+	    </a>
+	#{/}
+	#{if _item instanceof models.Activity}
+	    <a href="${_item.link}">
+	    <strong class="item_name">${_item.message}</strong>
+	    </a>
+	#{/}
+</${_tag}>
+<${_tag}> <span class="user">${_item.creator.fullName}</span> </${_tag}>
+<${_tag}>
+    <em class="date fright">${_item.created.format('hh:mm ' + _dateFormat)}</em>
+</${_tag}>

@@ -6,14 +6,20 @@ import play.data.validation.Required;
 import play.db.jpa.*;
 import play.i18n.Messages;
 import play.mvc.Router;
+import play.mvc.Scope.Params;
 
 import javax.persistence.*;
 
+import notifiers.Emails;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Filter;
 
 import com.huydung.helpers.ActionResult;
 import com.huydung.utils.MiscUtil;
 import com.huydung.utils.PermConfig;
+
+import controllers.AppController;
 
 import models.enums.ActivityAction;
 import models.enums.ApprovalStatus;
@@ -156,7 +162,7 @@ public class Project extends BasicItem implements IActivityLoggabe {
 
     public ActionResult createAndGetResult(User actor){
     	if( this.validateAndSave() && this.id > 0 ){
-    		Activity.track(Messages.get("projects.created", actor.fullName), this, ActivityAction.CHANGE, actor);
+    		Activity.track(this, actor, ActivityAction.CREATE);
     		return new ActionResult(true);
     	}else{
     		return new ActionResult(false, 
@@ -167,7 +173,24 @@ public class Project extends BasicItem implements IActivityLoggabe {
 
     public Project save(User user){
     	this.save();
-    	Activity.track("The project [" + this.name + "] has been updated by [" + user.nickName +"]", this, ActivityAction.CHANGE, user);
+    	Activity.track(this, user, ActivityAction.CHANGE);
+    	return this;
+    }
+    
+    public Project updatePermissions(Params params, User user){
+    	for( Role r : Role.values() ){
+			String key = "permConfigs[" + r.toString() + "][]";
+			String[] perms = params.getAll(key);
+			String permisisons = StringUtils.join(perms, ",");
+			for( RolePermission rp : this.rolePermissions ){
+				if( rp.role == r ){
+					rp.permissions = permisisons;
+					rp.save();
+				}
+			}
+			String message = Messages.getMessage(this.lang, "project.permisisonChanged", this.name, user.nickName);
+			Activity.track(this, user, ActivityAction.CHANGE, message);
+		}
     	return this;
     }
     
@@ -225,7 +248,7 @@ public class Project extends BasicItem implements IActivityLoggabe {
         			
         			Activity.track(m, actor, ActivityAction.CREATE, Messages.get(
         					"membership.created.log", actor.fullName, userEmail));
-        			
+        			Emails.sendInvitationToMember(userEmail, actor.id, m.project.id, m.id, m.isClient());
         			return new ActionResult(true, 
         				Messages.get("membership.invited", userEmail, userEmail),
         				m);
@@ -262,7 +285,7 @@ public class Project extends BasicItem implements IActivityLoggabe {
     	return widgets;
     }
     
-    public void copyFromTemplate(ProjectTemplate pt){
+    public void copyFromTemplate(User user, ProjectTemplate pt){
     	buildRolePermissions();
     	refresh();
     	this.fromTemplate = pt;
@@ -271,26 +294,26 @@ public class Project extends BasicItem implements IActivityLoggabe {
     	//refresh();
     	List<ListTemplate> lts = pt.getListTemplates();
     	for( ListTemplate lt : lts ){    		
-    		Listing l = addListing(lt, lt.name);
+    		Listing l = addListing(lt, lt.name, user);
     		MiscUtil.ConsoleLog("New Listing ID : "+l.id);
     		l.refresh();
-    		l.addItems(lt.items);
+    		l.addItems(user, lt.items);
     	}  	
     	
     }
     
-    public Listing addListing(ListTemplate lt, String name){
+    public Listing addListing(ListTemplate lt, String name, User user){
     	Listing l = Listing.createFromTemplate(lt, this);
     	l.listingName = name;
-    	l.save();
+    	l.validateAndCreate(user);
 		addListingPermissions(l);
 		return l;
     }
     
-    @Override
-    public Project delete(){    	
+    public Project delete(User user){    	
     	this.deleted = true;
     	this.save();
+    	Activity.track(this, user, ActivityAction.DELETE);
     	return this;
     }
     
@@ -304,7 +327,7 @@ public class Project extends BasicItem implements IActivityLoggabe {
 	}
 
 	@Override
-	public String getName() {
+	public String getLogName() {
 		return name;
 	}
 

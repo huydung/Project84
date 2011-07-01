@@ -9,23 +9,8 @@ POST    /rpx                                                Application.rpx
 GET     /users/{id}                                         Users.profile
 POST    /users/                                             Users.saveProfile
 
-GET     /projects                                           Projects.overview
-GET     /project/create                                     Projects.create
-POST    /project/create                                     Projects.doCreate
-GET     /project/{project_id}                               Projects.dashboard
-GET     /project/{project_id}/memberships                   Memberships.dashboard
-POST    /project/{project_id}/memberships                   Memberships.doCreate
-GET     /project/{project_id}/settings                      Projects.structure
-GET     /project/{project_id}/memberships/{id}/delete       Memberships.delete
-GET     /project/{project_id}/memberships/{id}/edit         Memberships.edit
-POST    /project/{project_id}/memberships/{id}/edit         Memberships.edit
-GET     /invitation/{reply}/{id}/{inviteKey}                Application.inviteResponseFromEmail
-POST    /memberships/responses                              Memberships.saveInvitationResponse
-POST    /project/{project_id}/listings/orderings/{listing_ids}   Listings.saveOrderings
-GET     /project/{project_id}/listings/{listing_id}                 Listings.dashboard
-POST    /project/{project_id}/listings/{listing_id}/create  Items.doCreate
-GET     /items/{item_id} Items.show
-POST    /items/{item_id}/quickEdit  Items.quickEdit                      
+POST    /project/{project_id}/listings/orderings/{listing_ids}             Listings.saveOrderings
+                    
 GET     /admin                                              Admin.admin
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

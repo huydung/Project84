@@ -36,6 +36,7 @@ import play.db.jpa.Blob;
 import play.db.jpa.JPA;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
+import sun.security.action.GetLongAction;
 
 import com.huydung.utils.ItemField;
 import com.huydung.utils.Link;
@@ -49,7 +50,7 @@ import controllers.AppController;
 public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 	public static final String FIELDS_ORDERABLE = ",category,checkbox,date,user,";	
 	public static final String FIELDS_FILTERABLE = ",date,number,user,category,checkbox,name,";
-	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,name,id,rawInput,";
+	public static final String FIELDS_REQUIRED = ",project,deleted,listing,created,creator,updated,type,id,rawInput,";
 	public static final String SUPPORTED_FILE_ICONS = ",ac3,ace,ade,adp,ai,aif,au,avi,bat,bin,bmp,bup,cab,cat,chm,css,cue,dat,dcr,der,dic,divx,diz,dll,doc,docx,dos,dvd,dwg,emf,exc,fon,gif,hlp,html,ifo,inf,ini,ins,ip,iso,isp,java,jfif,jpeg,jpg,log,m4a,mid,mmf,mmm,mov,movie,mp2,mp2v,mp3,mp4,mpe,mpeg,mpg,mpv2,nfo,pdd,pdf,php,ppt,pptx,psd,rar,reg,rtf,scp,theme,tif,tiff,tlb,ttf,txt,uis,url,vbs,vcr,vob,wav,wba,wma,wmv,wpl,wri,wtx,xls,xlsx,xml,xsl,zap,zip,";
 	public static final String IMAGES_EXTS = ",png,jpg,bmp,gif,jpeg,";
 	private static final long serialVersionUID = 1L;
@@ -221,6 +222,10 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 		return findByListing(listing, filter, sort, 200);
 	}
 	
+	public static List<Item> findSinceDate(Date d, Project p){
+		return Item.find("project = ? AND created >= ?", p, d).fetch();
+	}
+	
 	public static List<Item> findByListing(Listing listing, String filter, String sort, int limit){
 		String query = "deleted = 0 AND listing = ?";
 		if( filter != null && !filter.isEmpty() ){
@@ -369,8 +374,8 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 		//this.save();
 	}
 	
-	public void updateFromSmartInput(String input){
-		Item item2 = Item.createFromSmartInput(input, this.listing);
+	public void updateFromSmartInput(String input, User user){
+		Item item2 = Item.createFromSmartInput(input, this.listing, user);
 		//Loop non-null field in item2 and copy to this item		
 		copyProperties(item2);		
 	}
@@ -399,12 +404,12 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 		}
 	}
 
-	public static Item createFromSmartInput(String input, Listing l){
+	public static Item createFromSmartInput(String input, Listing l, User user){
 		Calendar now = new GregorianCalendar();
-		return createFromSmartInput(input, l, now);
+		return createFromSmartInput(input, l, now, user);
 	}
 	
-	public static Item createFromSmartInput(String input, Listing l, Calendar basedDate){
+	public static Item createFromSmartInput(String input, Listing l, Calendar basedDate, User user){
 		//We'll add a blank character before and after the input string
 		//so our parser can guarantee that keyword are prefix/suffix by a \s
 		String name = " " + input + " ";		
@@ -427,7 +432,7 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 		name = Pattern.compile("\\s{2,}").matcher(name).replaceAll(" ");
 		name = name.trim();
 		item.name = name;
-		item.creator = AppController.getLoggedin();
+		item.creator = user;
 		return item;
 	}
 	
@@ -783,50 +788,49 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 		return Comment.getCommentsOfItem(this);
 	}
 	
-	@Override
-	public boolean create(){
+	public boolean create(User user){
+		this.creator = user;
 		boolean res = super.create();
 		if( res ){
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.CREATE);
+			Activity.track(this, user, ActivityAction.CREATE);
 		}
 		return res;
 	}
 	
-	@Override
-	public Item delete(){
-		return delete(true);
+	public Item delete(User user){
+		return delete(user, true);
 	}
 	
-	public Item delete(boolean log){
+	public Item delete(User user, boolean log){
 		this.deleted = true;
 		//Do not need to delete file here, because this is just a soft delete
 		this.save();
 		if(log){
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+			Activity.track(this, user, ActivityAction.DELETE);
 		}
 		return this;
 	}
 	
-	public Item restore(){
-		return restore(true);
+	public Item restore(User user){
+		return restore(user, true);
 	}
 	
-	public Item restore(boolean log){
+	public Item restore(User user, boolean log){
 		this.deleted = false;
 		this.save();
 		if(log){
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.RESTORE);
+			Activity.track(this, user, ActivityAction.RESTORE);
 		}
 		return this;
 	}
 	
-	public Item update(boolean isCheck){
+	public Item update(User user, boolean isCheck){
 		this.createSmartInput();
 		this.save();
 		if( !isCheck ){
-			Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+			Activity.track(this, user, ActivityAction.CHANGE);
 		}else{
-			Activity.track(this, AppController.getLoggedin(), this.checkbox ? ActivityAction.CHECK : ActivityAction.UNCHECK);
+			Activity.track(this, user, this.checkbox ? ActivityAction.CHECK : ActivityAction.UNCHECK);
 		}
 		return this;
 	}	
@@ -857,7 +861,7 @@ public class Item extends BasicItem implements IWidgetItem, IActivityLoggabe{
 	}
 
 	@Override
-	public String getName() {
+	public String getLogName() {
 		return this.name;
 	}
 	

@@ -2,7 +2,5 @@
     <ul class="clearfix">
         <li class="${ tab == 'structure' ? 'active' : '' }"><a href="@{Projects.structure(_project.id)}">&{'project.listings'}</a></li>
         <li class="${ tab == 'info' ? 'active' : '' }"><a href="@{Projects.edit(_project.id)}">&{'project.edit'}</a></li>
-        <li class="${ tab == 'templates' ? 'active' : '' }"><a href="@{Projects.templates(_project.id)}">&{'project.templates'}</a></li>
-        <li class="${ tab == 'trash' ? 'active' : '' }"><a href="@{Projects.trash(_project.id)}">&{'project.trash'}</a></li>
     </ul>
 </div>

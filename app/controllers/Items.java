@@ -48,7 +48,7 @@ public class Items extends AppController {
 		}
 		item.checkbox = checked;
 		try{
-			item.update(true);
+			item.update(getLoggedin(), true);
 			renderText("Item " + item.name + " updated!");
 		}catch(Exception e){error();}
 	}
@@ -74,7 +74,7 @@ public class Items extends AppController {
 				Long id = Long.parseLong(parts[1]); if(id == null){error(400, "Bad Request");}
 				item.user = User.findById(id);
 				if( item.user != null ){
-					item.update(false);
+					item.update(getLoggedin(), false);
 					saved = true;				
 				}else{error(400, "Bad Request");}
 			}
@@ -84,14 +84,14 @@ public class Items extends AppController {
 				try {
 					Date d = sdf.parse(parts[1]);
 					item.date = d;
-					item.update(false);
+					item.update(getLoggedin(), false);
 					saved = true;
 				} catch (ParseException e) { error(400, "Bad Request");	}				
 			}
 			//Drag and Drop Category
 			else if( field.equals("category") ){
 				item.category = parts[1];
-				item.update(false);
+				item.update(getLoggedin(), false);
 				saved = true;				
 			}
 		}else{error(400, "Bad Request");}
@@ -128,9 +128,8 @@ public class Items extends AppController {
 			error(400, "Bad Request");
 		}else{
 			Listing l = getActiveListing();			
-			item = Item.createFromSmartInput(input, l);
-			item.creator = getLoggedin();
-			if(!item.create()){
+			item = Item.createFromSmartInput(input, l, getLoggedin());
+			if(!item.create(getLoggedin())){
 				displayValidationMessage();
 			}				
 			if( request.isAjax() ){
@@ -152,7 +151,7 @@ public class Items extends AppController {
 		}else{		
 			handleFile(item);
 			try{
-				item.create();
+				item.create(getLoggedin());
 				flash.put("success", "Item " + item.name + " created!");			
 			}catch(Exception e){error();}
 		}
@@ -185,8 +184,9 @@ public class Items extends AppController {
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
 		try{
-			item.updateFromSmartInput(input);		
-			item.update(false);
+			User user = getLoggedin();
+			item.updateFromSmartInput(input, user);		
+			item.update(user, false);
 			if( request.isAjax() ){
 				render("items/item.html", item);
 			}else{
@@ -204,7 +204,7 @@ public class Items extends AppController {
 			render("items/form.html", item);
 		}
 		handleFile(item);
-		item.update(false);
+		item.update(getLoggedin(), false);
 		Listings.dashboard(item.listing.id);
 	}
 	
@@ -236,7 +236,7 @@ public class Items extends AppController {
 		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
-		item.delete();
+		item.delete(getLoggedin());
 		String message = "Item [" + item.name + "] has been deleted"; 
 		if( request.isAjax() ){
 			renderText(message);
@@ -251,7 +251,7 @@ public class Items extends AppController {
 		if( Validation.hasErrors() ){ error(400, "Bad Request"); } 
 		Item item = getItem();
 		if( item == null ){	notFound("Item", item_id);	}
-		item.restore();
+		item.restore(getLoggedin());
 		String message = "Item [" + item.name + "] has been restored to [" + item.listing.listingName + "]"; 
 		if( request.isAjax() ){
 			renderText(message);

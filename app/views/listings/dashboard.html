@@ -14,6 +14,7 @@ def sort2 = params.get('sort_2');
 <div style="position:relative">
 <div class="grid_4 listing_features">
 <form class="clearfix" action="@{Listings.dashboard(l.id)}" method="GET" id="form-filters">
+    <input type="hidden" value="${l.id}" name="listing_id" />
     #{if l.hasField('file')}
         <div id="file-uploader" class="file-uploader highlight" style="height:50px" data-url="@{Listings.uploadFiles(l.id)}"> 
         <em class="small">&{'labels.dragUpload'}</em>
@@ -25,14 +26,14 @@ def sort2 = params.get('sort_2');
 	        <h3 class="header">&{'listing.features'}</h3>
 	        <div>
 	           <select name="listing_feature">
-	               <option>-- select --</option>
+	               <option value="">-- select --</option>
 	               #{list items:features, as:'feature'}
 	               <option value="${feature.getIdentifier()}"
 	                   ${ feature.isActive() ? 'selected="selected"' : '' }
 	               >${feature.getName()}</option>
 	               #{/}
 	           </select>	         
-	           #{if params.get('listing_feature') != null}
+	           #{if params.get('listing_feature') != null && !params.get('listing_feature').isEmpty()}
 		           <div class="feature_result highlight fleft">
 		           #{list items:features, as:'feature'}
 	                   #{if feature.isActive()}

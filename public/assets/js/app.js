@@ -161,7 +161,6 @@ $(document).ready(function(){
 		  var $menulis = $menuul.find('li');
 		  
 		  $menuul.width( ($menulis.width()) * $menulis.length );
-		  // alert($menuul);
 		  var margin = (($menu.width() - $menuul.width()) / ($menulis.length - 1));
 		  // lay lis over each other to fit the room
 		  if( margin < 0 ){ 
@@ -289,7 +288,6 @@ $(document).ready(function(){
 		$('#portlets .widget-column-1').each(function(){
 			var h = $(this).height();
 			portlet_max_height = portlet_max_height < h ? h : portlet_max_height;
-			// alert(portlet_max_height + 30);
 		}).height(portlet_max_height + 30);
 	};
 	
@@ -374,7 +372,6 @@ $(document).ready(function(){
 					}
 				};
 			};
-			//alert(data);
 			if( data ){
 				var url = '' + hd.itemUpdateAction({
 					item_id: item_id
@@ -486,7 +483,6 @@ $(document).ready(function(){
 					var url = '' + hd.itemDeleteAction({
 						item_id: id
 					});
-					alert(url);
 					$.post(url, null, function(response, status, xhr){
 						$('#item-' + id).remove();
 						$.gritter.add({

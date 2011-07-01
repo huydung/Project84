@@ -88,16 +88,15 @@ public class Membership extends Model implements IWidget, IWidgetItem, IActivity
 		}	
 	}
 	
-	public void update(){
+	public void update(User user){
 		this.save();
-		Activity.track(this, AppController.getLoggedin(), ActivityAction.CHANGE);
+		Activity.track(this, user, ActivityAction.CHANGE);
 	}
-    
-	@Override
-	public Membership delete(){
+
+	public Membership delete(User user){
 		this.deleted = true;
 		this.save();
-		Activity.track(this, AppController.getLoggedin(), ActivityAction.DELETE);
+		Activity.track(this, user, ActivityAction.DELETE);
 		return this;
 	}
 	
@@ -203,10 +202,10 @@ public class Membership extends Model implements IWidget, IWidgetItem, IActivity
     	Activity.track(this, user, ActivityAction.CHANGE, message);
     }
     
-    public void deny(){
+    public void deny(User actor){
     	this.status = ApprovalStatus.DENIED;
     	this.save();
-    	Activity.track(this, user, ActivityAction.CHANGE, Messages.get("members.invite.description.DENIED.log", this.userEmail));
+    	Activity.track(this, actor, ActivityAction.CHANGE, Messages.get("members.invite.description.DENIED.log", this.userEmail));
     }
     
     public static Membership findByProjectAndUser(Project project, User user){
@@ -247,9 +246,15 @@ public class Membership extends Model implements IWidget, IWidgetItem, IActivity
     }
 
 	@Override
-	public String getName() {		
+	public String getWidgetName() {		
 		return Messages.get("project.people");
 	}
+	
+	@Override
+	public String getLogName() {		
+		return this.getEmail();
+	}
+	
 	@Override
 	public String getSubName() {		
 		return Messages.get("user.lastLoggedIn");

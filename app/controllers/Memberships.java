@@ -45,9 +45,9 @@ public class Memberships extends AppController {
 			error(403, "Access Denied");
 		}
 		
+		//Get list of all memberships and separate them into Members and Clients
 		if( _project != null && (_project.needMembers )){
 			List<Membership> members = Membership.findByProject(_project, 0);
-
 			List<Membership> clients = new ArrayList<Membership>();
 			if(members != null){
 				for(Iterator<Membership> ite = members.iterator(); ite.hasNext();){
@@ -85,23 +85,15 @@ public class Memberships extends AppController {
 			params.flash();
 			displayError(r.getMessage(), "add-member");			
 		}else{
-			Membership m = (Membership)r.getData();
-			//send email
-			if(m != null){
-				Emails.sendInvitationToMember(email, getLoggedin().id, project_id, m.id, m.isClient());
-				flash.put("success", Messages.get("labels.emailSent", email));
-			}
+			flash.put("success", Messages.get("labels.emailSent", email));
 		}
 		dashboard(project_id);
 	}
 	
 	public static void edit(@Required Long id, @Required Long project_id){
 		Membership membership = Membership.findById(id);
-		if( membership != null ){
-			render("memberships/form_edit.html", membership);
-		}else{
-			notFound("Membership", id);
-		}
+		if( membership == null ){notFound("Membership", id);}
+		render("memberships/form_edit.html", membership);
 	}
 	
 	public static void doEdit(
@@ -112,16 +104,16 @@ public class Memberships extends AppController {
 			dashboard(project_id);
 		}
 		Membership m = Membership.findById(id);
-		if(m != null){
-			m.title = title;
-			if( getActiveProject().allow(
-					getActiveMembership(), PermissionKey.EDIT_USERS_PERMISSIONS) ){
-				m.setRoles(roles);
-			}			
-			m.update();
-			flash.put("success", "Membership has been updated");	
-			dashboard(project_id);
-		}
+		if( m == null ){notFound("Membership", id);}
+		
+		m.title = title;
+		if( getActiveProject().allow(
+				getActiveMembership(), PermissionKey.EDIT_USERS_PERMISSIONS) ){
+			m.setRoles(roles);
+		}			
+		m.update(getLoggedin());
+		flash.put("success", "Membership has been updated");	
+		dashboard(project_id);		
 	}
 	
 	public static void delete(@Required Long id, @Required Long project_id){
@@ -129,10 +121,10 @@ public class Memberships extends AppController {
 			displayValidationMessage();			
 		}else{
 			Membership m = Membership.findById(id);
-			if( m != null ){
-				m.delete();
-				flash.put("success", "Membership deleted");			
-			}
+			if( m == null ){notFound("Membership", id);}
+			
+			m.delete(getLoggedin());
+			flash.put("success", "Membership deleted");			
 		}		
 		dashboard(project_id);
 	}
@@ -149,13 +141,13 @@ public class Memberships extends AppController {
 				String[] results = s.split("-");
 				Long id = Long.parseLong(results[0], 10);
 				Membership m = Membership.findById(id);
-				if( m != null){
-					if( results[1].equals("true") ){
-						m.accept(getLoggedin());
-					}else{
-						m.deny();
-					}
-				}
+				if( m == null ){notFound("Membership", id);}
+				
+				if( results[1].equals("true") ){
+					m.accept(getLoggedin());
+				}else{
+					m.deny(getLoggedin());
+				}				
 			}
 		}
 		if( session.contains("destination") ){

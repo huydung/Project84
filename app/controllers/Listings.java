@@ -9,6 +9,7 @@ import com.huydung.utils.MiscUtil;
 import models.Item;
 import models.Listing;
 import models.Project;
+import models.User;
 import models.features.BasicFeature;
 import models.filters.BasicFilter;
 import models.templates.ListTemplate;
@@ -30,7 +31,7 @@ public class Listings extends AppController {
 			Listing l = Listing.findById(Long.parseLong(id));
 			if( l!= null && l.project == p ){
 				l.ordering = i;
-				l.save();
+				l.validateAndSave(getLoggedin());
 				i++;
 			}			
 		}
@@ -46,7 +47,7 @@ public class Listings extends AppController {
 				Validation.addError("template_id", "Template not found");
 				displayValidationMessage();
 			}			
-			getActiveProject().addListing(lt, name);
+			getActiveProject().addListing(lt, name, getLoggedin());
 		}
 		
 		Projects.structure(project_id);
@@ -81,7 +82,7 @@ public class Listings extends AppController {
 		}
 		listing.setItemFields(itfs);
 		
-		if (!listing.validateAndSave()){
+		if (!listing.validateAndSave(getLoggedin())){
 			displayValidationMessage();
 			Projects.structure(listing.project.id);
 		}else{
@@ -194,7 +195,7 @@ public class Listings extends AppController {
 		}
 		Listing l = getActiveListing();
 		if( l == null ){notFound();};
-		l.delete();
+		l.delete(getLoggedin());
 		flash.put("success", "Listing [" + l.listingName + "] and ALL its related items has been deleted");
 		Projects.structure(l.project.id);
 	}
@@ -207,8 +208,8 @@ public class Listings extends AppController {
 		if( item.file.exists() ){  
 			item.name = item.file_name.substring(0, item.file_name.length());
 		};
-		item.creator = getLoggedin();
-		item.create();
+		User user = getLoggedin();
+		item.create(user);
 		renderJSON("");
 	}
 	

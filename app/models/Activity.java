@@ -1,7 +1,11 @@
 package models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +14,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.Query;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.poi.openxml4j.opc.TargetMode;
 
 import com.huydung.helpers.ActionResult;
@@ -18,7 +25,9 @@ import com.huydung.utils.Link;
 
 import models.enums.ActivityAction;
 
+import play.data.binding.types.DateBinder;
 import play.data.validation.Required;
+import play.db.jpa.JPA;
 import play.db.jpa.Model;
 import play.i18n.Lang;
 import play.i18n.Messages;
@@ -40,6 +49,9 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	@Required
 	public Long targetId;
 	
+	@Required 
+	public String link;
+	
 	@Required
 	@ManyToOne
 	public Project project;
@@ -47,6 +59,11 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	@Enumerated(EnumType.STRING)
 	@Required
 	public ActivityAction action;
+	
+	public Activity(Project project){
+		super();
+		this.project = project;
+	}
 
 	public Activity(Project project, User user, ActivityAction action, Long targetId){
 		super();
@@ -61,6 +78,30 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 		this.created = new Date();
 	};
 	
+	public static List<Activity> findSinceDate(Date d, Project p){
+		return Activity.find("project = ? AND created >= ?", p, d).fetch();
+	}
+	
+	public static List<Date> findAvailableDateBefore(Date d, Project p){
+		String sql = "SELECT DISTINCT(DATE_FORMAT(created, '%Y-%m-%d')) FROM Activity WHERE project = ? AND created < ?";
+		Query query = JPA.em().createNativeQuery(sql);
+		query.setParameter(1, p);
+		query.setParameter(2, d);
+		List results = query.getResultList();
+		Iterator<Object> ite = results.iterator();
+		List<Date> dates = new ArrayList<Date>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		while(ite.hasNext()){			
+			try {
+				Date date = sdf.parse(ite.next().toString());
+				dates.add(date);
+			} catch (ParseException e) {
+				//Do nothing
+			}
+			
+		}
+		return dates;
+	}
 	
 	/** LOGGING UTILITY **/
 	public static Activity track(IActivityLoggabe obj, User user, ActivityAction action){
@@ -69,8 +110,15 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	
 	public static Activity track(IActivityLoggabe obj, User user, ActivityAction action, String message){
 		Activity a = new Activity(obj.getProject(), user, action, obj.getId());
+		a.link = obj.getActivityShowLink();
+		String nickName;
+		if( user == null ){
+			nickName = "not Loggedin";
+		}else{
+			nickName = user.nickName;
+		}
 		if( message == null ){
-			a.message = buildMessage(a.project.lang, obj.getType(), obj.getName(), user.nickName, action.toString());
+			a.message = buildMessage(a.project.lang, obj.getType(), obj.getLogName(), nickName, action.toString());
 		}else{
 			a.message = message;
 		}
@@ -81,18 +129,9 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 	protected static String buildMessage(
 			String lang, String type, String name, String userName, String action
 		){
-		String userLang = null;
-		if( !lang.equals(Lang.get()) ){
-			userLang = Lang.get();
-			Lang.set(lang);
-		}
-		String msg = "[" + type.toUpperCase() + ": " + name + "] " 
-			+ Messages.get("labels.haveBeen") + " " + Messages.get("labels." + action.toLowerCase()) + " " + Messages.get("labels.by")
-			+ "[" + userName + "]";
-		if( userLang != null ){
-			Lang.set(userLang);
-		}
-		return msg;
+		return "[" + type.toUpperCase() + ": " + name + "] " 
+			+ Messages.getMessage(lang, "labels.haveBeen") + " " + Messages.getMessage(lang, "labels." + action.toLowerCase()) + " " + Messages.getMessage(lang, "labels.by")
+			+ " [" + userName + "]";
 	}
 	
 	@Override
@@ -102,11 +141,11 @@ public class Activity extends Model implements IWidget, IWidgetItem {
 
 	@Override
 	public Link getInfo() {	
-		return new Link(this.message, "#");
+		return new Link(this.message, this.link);
 	}
 
 	@Override
-	public String getName() {		
+	public String getWidgetName() {	
 		return Messages.get("labels.activity.recent");
 	}
 

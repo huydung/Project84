@@ -2,6 +2,9 @@
 #{set title: _project.name + ' - ' + messages.get('project.dashboard')/}
 #{set pageTitle: _project.name + ' - ' + messages.get('project.dashboard') /}
 
+#{set tab:'dashboard'/}
+#{include 'projects/infotab.html' /}
+
 #{if _project}
 <strong>[${_project.status}]</strong><br/>
 #{if _project.deadline != null && _project.isActive()}

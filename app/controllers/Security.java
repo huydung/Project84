@@ -1,6 +1,12 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.huydung.utils.MiscUtil;
+
 import play.mvc.Controller;
+import sun.security.action.GetLongAction;
 import models.User;
 
 public class Security extends Controller {
@@ -13,8 +19,23 @@ public class Security extends Controller {
 		return session.get("identifier");
 	}
 	
-	static void setConnectedUser(Long uid){		
-		session.put("identifier", uid);
+	static void setConnectedUser(User user){		
+		session.put("lastLoggedIn", user.lastLoggedIn.getTime());
+		MiscUtil.ConsoleLog("Last time you loggedin: " + user.lastLoggedIn);
+		user.lastLoggedIn = new Date();
+		user.save();
+		session.put("identifier", user.id);
+	}
+	
+	static Date getLastLoggedIn(){
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		String lli = session.get("lastLoggedIn");
+		if( lli != null ){
+			return new Date(Long.parseLong(lli));
+		}else{
+			MiscUtil.ConsoleLog("Error when trying to get lastLoggedIn from session");
+			return new Date();
+		}
 	}
 	
 	public static void logout(){

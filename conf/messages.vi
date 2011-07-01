@@ -63,6 +63,10 @@ actions.contactError = Xin hãy thử lại, hoặc <a href="/contact?action=%s"
 
 
 ## LABELS ##
+labels.nothingNew = Không có gì mới kể từ lần cuối bạn đăng nhập :)
+labels.comment = Bình luận
+labels.title = Tiêu đề
+labels.type = Kiểu
 labels.mainLang = Ngôn ngữ chính
 labels.hasBeen = đã được
 labels.send = Gửi
@@ -150,7 +154,7 @@ labels.itemIn = 1 mục trong
 labels.create = Tạo mới
 labels.project = Dự án
 labels.dragUpload = Kéo 1 hoặc nhiều Files thả vào đây để upload và tạo nhiều đầu mục 1 lúc 
-
+labels.item = Đầu mục
 
 ## MEMBERSHIP ##
 membership.created = Một lời mời tham gia project đã được gửi đến %s (%s) thành công.
@@ -169,6 +173,7 @@ members.invite.description.ACCEPTED.emailChanged = <em>%s</em> đã tham gia và
 members.invite.description.DENIED.log = %s đã từ chối tham gia vào dự án.
 membership.created.log = %s đã mời %s tham gia dự án. 
 ## PROJECT ##
+project.justHappens = Mới xảy ra
 project.create = Tạo dự án mới
 project.member = Thành viên
 project.members = Các thành viên
@@ -204,7 +209,8 @@ project.trash.intro = Dưới đây là những đầu mục mới bị xóa. Tr
 project.trash.restore = phục hồi
 project.trash.restoreAll = phục hồi toàn bộ
 project.trash.empty = Thùng rác hiện đang rỗng :)
-
+project.permisisonChanged = Phân quyền cho thành viên của [PROJECT: %s] đã được cập nhật bởi [%s]
+labels.haveBeen = đã được
 labels.project.create.short = Tạo dự án
 labels.project.name = Tên dự án
 labels.project.deadline = Hạn chót
@@ -245,7 +251,8 @@ message.pleaseAnswer = Xin hãy phúc đáp lời mời của %s:
 messages.invitations = <strong>Wow, chờ chút!</strong> Bạn vừa nhận được lời mời tham gia dự án mới!
 
 ## ACTIVITY ##
-labels.activity.recent = Những thay đổi gần đây nhất
+labels.activity.recent = Những hoạt động gần đây nhất
+labels.activity = Hoạt động
 
 ## ITEM FIELDS ##
 

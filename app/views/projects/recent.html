@@ -1,0 +1,81 @@
+#{extends 'main.html' /}
+#{set title:_project.name + ' - ' + messages.get('project.justHappens') /}
+#{set pageTitle:title /}
+
+#{set tab:'recent'/}
+#{include 'projects/infotab.html' /}
+
+<p>
+<em>Dưới đây là những thay đổi trong dự án kể từ lần cuối bạn đăng nhập (${lastLoggedIn.format('hh:mm ' + loggedin.dateFormat)})</em>
+</p>
+<div class="accordions recent">
+    <div class="bordered fright" id="toc">        
+        <h2>Types of content</h2>
+        <ul>
+            <li><a href="#items">&{'labels.item'}</a></li> 
+            <li><a href="#comments">&{'labels.comment'}</a></li>  
+            <li><a href="#activities">&{'labels.activity'}</a></li>   
+        </ul>
+    </div>
+    <table class="box-table">
+        <thead>
+            <th>&{'labels.type'}</th>
+            <th>&{'labels.title'}</th>
+            <th>&{'labels.writtenBy'}</th>
+            <th>&{'labels.writtenOn'}</th>
+        </thead>
+        <tbody>
+        
+        <!-- ITEMS -->
+        <tr><td colspan="4">
+                <div class="main_category" id="items">&{'labels.item'}</div><a href="#toc" class="fright">&uarr;&uarr;</a>
+        </td></tr>
+        #{if items != null && items.size() > 0}
+	        #{list items:items, as:'item'}
+	        <tr>
+	            #{entity tag:'td', item:item, dateFormat:loggedin.dateFormat /}
+	        </tr>
+	        #{/}
+        #{/}
+        #{else}
+            <tr><td colspan="4">
+                <em class="description">&{'labels.nothingNew'}</em>
+            </td></tr>
+        #{/}
+        
+        <!-- COMMENTS -->
+        <tr><td colspan="4">
+                <div class="main_category" id="comments">&{'labels.comment'}</div><a href="#toc" class="fright">&uarr;&uarr;</a>
+        </td></tr>
+        #{if comments != null && comments.size() > 0}
+            #{list items:comments, as:'item'}
+            <tr>
+                #{entity tag:'td', item:item, dateFormat:loggedin.dateFormat /}
+            </tr>
+            #{/}
+        #{/}
+        #{else}
+            <tr><td colspan="4">
+                <em class="description">&{'labels.nothingNew'}</em>
+            </td></tr>
+        #{/}
+        
+        <!-- ACTIVITIES -->
+        <tr><td colspan="4">
+                <div class="main_category" id="activities">&{'labels.activity'}</div><a href="#toc" class="fright">&uarr;&uarr;</a>
+        </td></tr>
+        #{if activities != null && activities.size() > 0}
+            #{list items:activities, as:'item'}
+            <tr>
+                #{entity tag:'td', item:item, dateFormat:loggedin.dateFormat /}
+            </tr>
+            #{/}
+        #{/}
+        #{else}
+            <tr><td colspan="4">
+                <em class="description">&{'labels.nothingNew'}</em>
+            </td></tr>
+        #{/}
+        </tbody>
+    </table>
+</div>
